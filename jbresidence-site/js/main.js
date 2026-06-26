@@ -409,8 +409,43 @@ const TRANSLATIONS = {
     'cta-sub': 'A short WhatsApp message is enough — purpose, budget range, and timeline. I\'ll point you to the right district before we talk projects.',
     'cta-btn': 'Chat with Sam on WhatsApp',
 
+
+    // New Phase 1 keys
+    'hero-eyebrow': 'Independent Property Guide · Johor Bahru',
+    'hero-btn-areas': 'Explore Areas',
+    'hero-btn-guides': 'Buying Guides',
+    'nav-areas': 'Areas',
+    'nav-projects': 'Projects',
+    'nav-guides': 'Guides',
+    'projects-eyebrow': 'Featured Projects',
+    'projects-headline': 'Communities worth a look right now.',
+    'projects-sub': 'A shortlist, not a directory — the projects I would bring a qualified buyer to today.',
+    'projects-all': 'View all projects',
+    'guides-eyebrow': 'Buying Guides',
+    'guides-headline': 'Everything you need to know before you buy.',
+    'guides-sub': 'Topic clusters covering Forest City, MM2H, JS-SEZ, golf communities, retirement, and more.',
+    'guides-all': 'All guides',
+    'guide-fc': 'Forest City',
+    'guide-fc-desc': 'SFZ status, island living, Golf Villa, MM2H — the complete Forest City picture.',
+    'guide-mm2h': 'MM2H Programme',
+    'guide-mm2h-desc': 'Eligibility, deposit requirements, Forest City SFZ track, and how to apply.',
+    'guide-sez': 'JS-SEZ',
+    'guide-sez-desc': 'The Johor-Singapore Special Economic Zone and what it means for property values.',
+    'guide-golf': 'Golf Communities',
+    'guide-golf-desc': 'Horizon Hills, Forest City Golf, Leisure Farm — golf-facing properties compared.',
+    'guide-schools': 'International Schools',
+    'guide-schools-desc': 'Which townships sit closest to Johor\'s best international schools.',
+    'guide-retire': 'Retirement in JB',
+    'guide-retire-desc': 'Cost of living, healthcare, lifestyle, and the best communities for retirees.',
+    'articles-eyebrow': 'Latest Articles',
+    'articles-headline': 'Recent guides and market analysis.',
+    'articles-all': 'All articles',
+    'about-eyebrow': 'About Sam Tee',
+    'footer-areas': 'Areas',
+    'footer-guides': 'Guides',
+
     // Footer
-    'footer-tagline': 'Independent guidance for buyers across Iskandar Puteri, Johor Bahru Town, and Forest City.',
+    'footer-tagline': 'The independent property knowledge base for Johor Bahru — Forest City, Iskandar Puteri, MM2H, JS-SEZ, and beyond.',
     'footer-districts': 'Districts',
     'footer-contact': 'Contact',
   },
@@ -479,8 +514,78 @@ const TRANSLATIONS = {
     'cta-sub': '一条简短的WhatsApp消息就够了——用途、预算范围和时间线。我会在推荐项目之前为您指引正确的片区。',
     'cta-btn': '与Sam在WhatsApp上交流',
 
+
+    // New Phase 1 keys
+    'hero-eyebrow': 'Independent Property Guide · Johor Bahru',
+    'hero-btn-areas': 'Explore Areas',
+    'hero-btn-guides': 'Buying Guides',
+    'nav-areas': 'Areas',
+    'nav-projects': 'Projects',
+    'nav-guides': 'Guides',
+    'projects-eyebrow': 'Featured Projects',
+    'projects-headline': 'Communities worth a look right now.',
+    'projects-sub': 'A shortlist, not a directory — the projects I would bring a qualified buyer to today.',
+    'projects-all': 'View all projects',
+    'guides-eyebrow': 'Buying Guides',
+    'guides-headline': 'Everything you need to know before you buy.',
+    'guides-sub': 'Topic clusters covering Forest City, MM2H, JS-SEZ, golf communities, retirement, and more.',
+    'guides-all': 'All guides',
+    'guide-fc': 'Forest City',
+    'guide-fc-desc': 'SFZ status, island living, Golf Villa, MM2H — the complete Forest City picture.',
+    'guide-mm2h': 'MM2H Programme',
+    'guide-mm2h-desc': 'Eligibility, deposit requirements, Forest City SFZ track, and how to apply.',
+    'guide-sez': 'JS-SEZ',
+    'guide-sez-desc': 'The Johor-Singapore Special Economic Zone and what it means for property values.',
+    'guide-golf': 'Golf Communities',
+    'guide-golf-desc': 'Horizon Hills, Forest City Golf, Leisure Farm — golf-facing properties compared.',
+    'guide-schools': 'International Schools',
+    'guide-schools-desc': 'Which townships sit closest to Johor\'s best international schools.',
+    'guide-retire': 'Retirement in JB',
+    'guide-retire-desc': 'Cost of living, healthcare, lifestyle, and the best communities for retirees.',
+    'articles-eyebrow': 'Latest Articles',
+    'articles-headline': 'Recent guides and market analysis.',
+    'articles-all': 'All articles',
+    'about-eyebrow': 'About Sam Tee',
+    'footer-areas': 'Areas',
+    'footer-guides': 'Guides',
+
+
+    // New Phase 1 keys
+    'hero-eyebrow': '独立房产指南 · 柔佛新山',
+    'hero-btn-areas': '探索片区',
+    'hero-btn-guides': '置业指南',
+    'nav-areas': '片区',
+    'nav-projects': '项目',
+    'nav-guides': '指南',
+    'projects-eyebrow': '精选项目',
+    'projects-headline': '值得关注的房产社区。',
+    'projects-sub': '精选推荐，非全面目录——这些是我目前会带合格买家实地考察的项目。',
+    'projects-all': '查看全部项目',
+    'guides-eyebrow': '置业指南',
+    'guides-headline': '购买前需了解的一切。',
+    'guides-sub': '涵盖森林城市、MM2H、JS-SEZ、高尔夫社区、退休养老等专题。',
+    'guides-all': '全部指南',
+    'guide-fc': '森林城市',
+    'guide-fc-desc': 'SFZ地位、海岛生活、高尔夫别墅、MM2H——完整森林城市指南。',
+    'guide-mm2h': 'MM2H计划',
+    'guide-mm2h-desc': '申请资格、存款要求、森林城市SFZ通道及申请流程。',
+    'guide-sez': 'JS-SEZ',
+    'guide-sez-desc': '柔新特别经济区及其对房产价值的影响。',
+    'guide-golf': '高尔夫社区',
+    'guide-golf-desc': 'Horizon Hills、森林城市高尔夫、Leisure Farm——高尔夫房产横向对比。',
+    'guide-schools': '国际学校',
+    'guide-schools-desc': '柔佛最优秀国际学校的周边房产购买指南。',
+    'guide-retire': '新山退休生活',
+    'guide-retire-desc': '生活成本、医疗资源、生活方式，以及最适合退休人士的社区。',
+    'articles-eyebrow': '最新文章',
+    'articles-headline': '近期指南与市场分析。',
+    'articles-all': '全部文章',
+    'about-eyebrow': '关于Sam Tee',
+    'footer-areas': '片区',
+    'footer-guides': '指南',
+
     // Footer
-    'footer-tagline': '为依斯干达公主城、新山市区及森林城市的买家提供独立专业指导。',
+    'footer-tagline': '柔佛新山房产独立知识库——森林城市、依斯干达、MM2H、JS-SEZ及更多专题。',
     'footer-districts': '片区',
     'footer-contact': '联系方式',
   }
@@ -536,3 +641,180 @@ document.addEventListener('DOMContentLoaded', () => {
   initReveal();
   initLangToggle();
 });
+
+// ============================================
+// PHASE 1 ADDITIONS
+// ============================================
+
+// ---- Extended placeholder articles (all areas) ----
+const ALL_ARTICLES = [
+  // Forest City
+  { title: 'Forest City Ghost Town or Opportunity? The Honest Answer in 2026', summary: 'The ghost town label followed Forest City for years. Here is what the current data actually shows — and what it means for buyers today.', body: 'exists', image_url: 'https://images.unsplash.com/photo-1582719471384-894fbb16e074?q=80&w=800&auto=format&fit=crop', link: 'articles/forest-city-ghost-town-or-opportunity.html', area: 'Forest City', topics: 'forest-city' },
+  { title: 'Is Forest City Worth Buying in 2026? An Advisor\'s Honest Assessment', summary: 'Who Forest City suits, who it does not, and the honest case for and against buying there right now.', body: 'exists', image_url: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=800&auto=format&fit=crop', link: 'articles/is-forest-city-worth-buying-2026.html', area: 'Forest City', topics: 'forest-city' },
+  { title: 'Can Forest City Qualify for MM2H? The SFZ Programme Explained', summary: 'Forest City is the only project in Malaysia with its own MM2H category — lower deposit, no minimum price. Here is exactly how it works.', body: 'exists', image_url: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?q=80&w=800&auto=format&fit=crop', link: 'articles/forest-city-mm2h-sfz-guide.html', area: 'Forest City', topics: 'forest-city,mm2h' },
+  { title: 'Forest City Golf Villa: What It Is, What You Get, and Who It Suits', summary: 'An inside look at the V120 Golf Villa — private garden, rooftop terrace, golf course view, and 5-year free membership. Real photos from an actual unit visit.', body: 'exists', image_url: 'photos/villa-garden-exterior.jpg', link: 'articles/forest-city-golf-villa-guide.html', area: 'Forest City', topics: 'forest-city,golf' },
+  { title: 'Living in a Forest City Highrise: What to Expect in 2026', summary: 'Sea views, resort facilities, island air, and how the living environment compares to mainland Johor — an honest walkthrough for buyers considering a Forest City apartment.', body: 'exists', image_url: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=800&auto=format&fit=crop', link: 'articles/forest-city-highrise-living-2026.html', area: 'Forest City', topics: 'forest-city' },
+  { title: 'Why Buyers Choose Forest City: The Island Lifestyle Nobody Talks About', summary: 'The mangrove corridor, two world-ranked golf courses, five-star resort facilities, beach access, and duty-free island living — the lifestyle case for Forest City.', body: 'exists', image_url: 'fc-pool.jpg', link: 'articles/forest-city-island-lifestyle.html', area: 'Forest City', topics: 'forest-city,retirement' },
+  // Iskandar Puteri placeholders
+  { title: 'Iskandar Puteri Landed Property: Buyer\'s Guide 2026', summary: 'What to know before buying a gated landed home in Eco Botanic, Horizon Hills, or East Ledang.', body: '', image_url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=800&auto=format&fit=crop', link: '#', area: 'Iskandar Puteri', topics: 'iskandar-puteri,buying-guide' },
+  { title: 'Horizon Hills vs Eco Botanic vs East Ledang: Which Should You Buy?', summary: 'A side-by-side comparison of the three most popular landed townships in Iskandar Puteri for families and retirees.', body: '', image_url: 'https://images.unsplash.com/photo-1592595896551-12b371d546d5?q=80&w=800&auto=format&fit=crop', link: '#', area: 'Iskandar Puteri', topics: 'iskandar-puteri,buying-guide' },
+  { title: 'International Schools Near Iskandar Puteri: 2026 Guide', summary: 'Which established townships sit closest to Johor\'s best international schools — and how to plan your purchase around school zones.', body: '', image_url: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=800&auto=format&fit=crop', link: '#', area: 'Iskandar Puteri', topics: 'iskandar-puteri,schools' },
+  { title: 'Retiring in Iskandar Puteri: Golf, Healthcare, and Cost of Living', summary: 'Why retirees keep choosing Iskandar Puteri — and what you actually need to plan for.', body: '', image_url: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=800&auto=format&fit=crop', link: '#', area: 'Iskandar Puteri', topics: 'iskandar-puteri,retirement,golf' },
+  // JB Town placeholders
+  { title: '3 Things to Watch Before Buying in Johor Bahru Town', summary: 'The city-centre market has nuances most buyers miss. Here\'s what matters before you sign.', body: '', image_url: 'https://images.unsplash.com/photo-1605723517503-3cadb5818a0c?q=80&w=800&auto=format&fit=crop', link: '#', area: 'JB Town', topics: 'jb-town,buying-guide' },
+  // MM2H
+  { title: 'MM2H Malaysia 2026: Full Application Guide', summary: 'Eligibility, deposit amounts, income requirements, and the step-by-step application process explained.', body: '', image_url: 'https://images.unsplash.com/photo-1555400038-63f5ba517a47?q=80&w=800&auto=format&fit=crop', link: '#', area: 'General', topics: 'mm2h,buying-guide' },
+  // JS-SEZ
+  { title: 'JS-SEZ Explained: What the Johor-Singapore Special Economic Zone Means for Property', summary: 'How the JS-SEZ framework changes the investment case for Iskandar properties close to the checkpoints.', body: '', image_url: 'https://images.unsplash.com/photo-1518563172008-e56c5dfbaef6?q=80&w=800&auto=format&fit=crop', link: '#', area: 'General', topics: 'js-sez,buying-guide' },
+];
+
+// ---- Extended placeholder projects with data-area for filtering ----
+const EXTENDED_PROJECTS = [
+  {
+    slug: 'horizon-hills', area: 'Iskandar Puteri', project_name: 'Horizon Hills',
+    tagline: 'Gated golf community, mature landscaping', price_range: 'RM 2.5M – RM 6M',
+    tenure: 'Freehold', commute_note: '~15 min to Second Link',
+    description: "Horizon Hills is one of Iskandar Puteri's most established landed townships, built around an 18-hole golf course with 24-hour guarded security across its precincts.\n\n[Sam to add: specific precinct recommendations, comparable resale transactions, and any current promotions.]",
+    status: 'Now selling',
+    image_url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1200&auto=format&fit=crop',
+    published: 'TRUE'
+  },
+  {
+    slug: 'eco-botanic', area: 'Iskandar Puteri', project_name: 'Eco Botanic',
+    tagline: 'Eco-themed township, strong family amenities', price_range: 'RM 1.8M – RM 4.5M',
+    tenure: 'Freehold', commute_note: '~20 min to Second Link',
+    description: "Eco Botanic is a nature-themed township with extensive parks, lakes, and family-oriented amenities. It draws buyers looking for a balance between greenery and connectivity.\n\n[Sam to add: specific precinct recommendations, schools nearby, and current promotions.]",
+    status: 'Now selling',
+    image_url: 'https://images.unsplash.com/photo-1592595896551-12b371d546d5?q=80&w=1200&auto=format&fit=crop',
+    published: 'TRUE'
+  },
+  {
+    slug: 'east-ledang', area: 'Iskandar Puteri', project_name: 'East Ledang',
+    tagline: 'Premium gated enclave, larger plot sizes', price_range: 'RM 2M – RM 5M',
+    tenure: 'Freehold', commute_note: '~25 min to Second Link',
+    description: "East Ledang is a premium gated enclave known for larger plot sizes and a quieter, more exclusive feel than neighbouring townships.\n\n[Sam to add: specific precinct recommendations and current promotions.]",
+    status: 'Now selling',
+    image_url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop',
+    published: 'TRUE'
+  },
+  {
+    slug: 'forest-city-golf-villa', area: 'Forest City', project_name: 'Forest City Golf Villa',
+    tagline: 'Private landed villa on the golf course', price_range: 'RM 1.5M – RM 3.5M',
+    tenure: 'Strata', commute_note: '~30 min to Second Link',
+    description: "The Forest City Golf Villa (V120) is a two-storey landed strata property set directly on the golf course — with private garden, rooftop terrace, and a 5-year golf membership included.\n\n[Sam to add: current availability, pricing updates, and comparison with high-rise options.]",
+    status: 'Now selling',
+    image_url: 'photos/villa-garden-exterior.jpg',
+    published: 'TRUE'
+  },
+  {
+    slug: 'forest-city-high-rise', area: 'Forest City', project_name: 'Forest City High Rise',
+    tagline: 'Sea-view apartments, resort facilities', price_range: 'RM 400K – RM 1.5M',
+    tenure: 'Strata', commute_note: '~30 min to Second Link',
+    description: "Forest City's high-rise apartments offer sea views, resort-style pools, and island living at price points that are hard to match this close to Singapore.\n\n[Sam to add: specific towers, floor comparison, and current promotions.]",
+    status: 'Now selling',
+    image_url: 'fc-pool.jpg',
+    published: 'TRUE'
+  },
+  {
+    slug: 'rf-princess-cove', area: 'JB Town', project_name: 'R&F Princess Cove',
+    tagline: 'Waterfront high-rise, Causeway access', price_range: 'RM 500K – RM 1.5M',
+    tenure: 'Strata', commute_note: '~5 min to Causeway',
+    description: "R&F Princess Cove is a large waterfront development in JB city centre — walking distance to the Causeway, with an internal retail and hospitality offering.\n\n[Sam to add: resale market, rental yields, and current conditions.]",
+    status: 'Now selling',
+    image_url: 'https://images.unsplash.com/photo-1605723517503-3cadb5818a0c?q=80&w=1200&auto=format&fit=crop',
+    published: 'TRUE'
+  },
+];
+
+// Merge with PLACEHOLDER_PROJECTS (sheet data takes priority)
+async function getProjectsExtended() {
+  const rows = await fetchSheet(SHEET_CONFIG.projectsCsvUrl);
+  if (rows && rows.length) return rows.filter(r => r.published === 'TRUE');
+  return EXTENDED_PROJECTS;
+}
+
+// Updated renderProjects to accept optional limit and work for all areas or specific area
+async function renderProjects(area, targetSelector, limit) {
+  const target = document.querySelector(targetSelector);
+  if (!target) return;
+  const all = await getProjectsExtended();
+  let list = area ? all.filter(p => p.area === area) : all;
+  if (limit) list = list.slice(0, limit);
+  if (!list.length) {
+    target.innerHTML = '<p style="color:var(--ink-muted); padding: 40px 0;">More projects coming soon.</p>';
+    return;
+  }
+  target.innerHTML = list.map(p => projectCardHtmlExtended(p)).join('');
+  initReveal();
+}
+
+function projectCardHtmlExtended(p) {
+  const bg = p.image_url ? `background-image:url('${p.image_url}')` : '';
+  const slug = p.slug || slugify(p.project_name);
+  const href = slug ? `project.html?slug=${encodeURIComponent(slug)}` : '#';
+  return `
+    <a href="${href}" class="project-card reveal" style="${bg}" data-area="${p.area || ''}">
+      <span class="project-status">${p.status || 'Enquire'}</span>
+      <div class="project-body">
+        <div class="project-name">${p.project_name}</div>
+        <div class="project-price">${p.price_range || ''}</div>
+        <div class="project-desc">${p.tagline || ''}</div>
+        <span class="project-cta">View project</span>
+      </div>
+    </a>`;
+}
+
+// Render all articles across all areas
+async function renderAllArticles(targetSelector, limit) {
+  const target = document.querySelector(targetSelector);
+  if (!target) return;
+  const rows = await fetchSheet(SHEET_CONFIG.articlesCsvUrl);
+  let list = rows && rows.length ? rows.filter(r => r.published === 'TRUE') : ALL_ARTICLES;
+  if (limit) list = list.slice(0, limit);
+  target.innerHTML = list.map(a => articleCardHtmlExtended(a)).join('');
+  initReveal();
+}
+
+function articleCardHtmlExtended(a) {
+  const hasContent = a.body && a.body.trim().length > 0;
+  const img = a.image_url
+    ? `<div class="card-img" style="background-image:url('${a.image_url}'); background-size:cover;"></div>`
+    : `<div class="card-img"></div>`;
+  const href = a.link && a.link !== '#' ? a.link : '#';
+  const tag = href !== '#' ? 'a' : 'div';
+  const linkAttr = href !== '#' ? `href="${href}"` : '';
+  const topics = a.topics || '';
+  return `
+    <${tag} ${linkAttr} class="card reveal ${hasContent ? '' : 'card-placeholder'}" style="text-decoration:none;" data-topics="${topics}">
+      ${img}
+      <div class="card-body">
+        <div class="card-eyebrow">${a.area || 'Market insight'}</div>
+        <h3 class="card-title">${a.title}</h3>
+        <p class="card-excerpt">${a.summary || ''}</p>
+        <span class="card-link">${hasContent ? 'Read more' : 'Coming soon'}</span>
+      </div>
+    </${tag}>`;
+}
+
+// ---- Mobile nav dropdown toggle ----
+document.addEventListener('DOMContentLoaded', () => {
+  const toggle = document.querySelector('.nav-toggle');
+  const links = document.querySelector('.nav-links');
+  const dropdownToggle = document.querySelector('.nav-dropdown-toggle');
+  const dropdownMenu = document.querySelector('.nav-dropdown-menu');
+
+  if (dropdownToggle && dropdownMenu) {
+    dropdownToggle.addEventListener('click', (e) => {
+      if (window.innerWidth <= 860) {
+        e.preventDefault();
+        dropdownMenu.classList.toggle('mobile-open');
+      }
+    });
+  }
+});
+
+// Updated getProjects to use extended data
+const _originalGetProjects = getProjects;
+async function getProjects() {
+  return getProjectsExtended();
+}
