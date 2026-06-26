@@ -4,10 +4,8 @@
 
 // ---- Config: fill these in once your Google Sheet is published ----
 const SHEET_CONFIG = {
-  // Publish your Sheet as CSV: File > Share > Publish to web > select tab > CSV
-  // Paste the resulting link for each tab below.
-  articlesCsvUrl: '', // e.g. 'https://docs.google.com/spreadsheets/d/e/XXXX/pub?gid=0&single=true&output=csv'
-  projectsCsvUrl: ''  // second tab's published CSV link
+  articlesCsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTa-aRyJ9WRiO0Y3pOOCSvVuOqerrp2Ul2S-WDb1II6ICJPkuzhufGwPaS2vJ341qumrBR6Fi3cBtyw/pub?gid=995398957&single=true&output=csv',
+  projectsCsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTa-aRyJ9WRiO0Y3pOOCSvVuOqerrp2Ul2S-WDb1II6ICJPkuzhufGwPaS2vJ341qumrBR6Fi3cBtyw/pub?gid=0&single=true&output=csv'
 };
 
 const WHATSAPP_NUMBER = '601156348518'; // update to your active WhatsApp number, digits only with country code
