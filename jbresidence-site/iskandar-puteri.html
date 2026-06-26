@@ -10,14 +10,22 @@
 <body>
 
 <nav class="nav">
-  <a href="index.html" class="nav-brand">SAM TEE <span>| Property Advisor</span></a>
+  <a href="index.html" class="nav-brand">THE JB RESIDENCE <span>| Property Guide</span></a>
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
-    <li><a href="jb-town.html">Johor Bahru Town</a></li>
-    <li><a href="iskandar-puteri.html" class="active">Iskandar Puteri</a></li>
-    <li><a href="forest-city.html">Forest City</a></li>
+    <li class="nav-dropdown">
+      <a href="#" class="nav-dropdown-toggle">Areas &#9660;</a>
+      <ul class="nav-dropdown-menu">
+        <li><a href="jb-town.html">Johor Bahru Town</a></li>
+        <li><a href="iskandar-puteri.html" class="active">Iskandar Puteri</a></li>
+        <li><a href="forest-city.html">Forest City</a></li>
+      </ul>
+    </li>
+    <li><a href="projects.html">Projects</a></li>
+    <li><a href="articles.html">Guides</a></li>
   </ul>
-  <button class="nav-toggle" aria-label="Open menu">☰</button>
+  <button class="lang-toggle" data-current-lang="en" aria-label="Switch language">&#20013;&#25991;</button>
+  <button class="nav-toggle" aria-label="Open menu">&#9776;</button>
 </nav>
 
 <!-- ============ HERO ============ -->
@@ -100,8 +108,8 @@
   <div class="wrap">
     <div class="footer-top">
       <div>
-        <div class="footer-brand">SAM TEE <span>| Property Advisor</span></div>
-        <p class="footer-tagline">Independent guidance for buyers across Iskandar Puteri, Johor Bahru Town, and Forest City.</p>
+        <div class="footer-brand">THE JB RESIDENCE <span>| Property Guide</span></div>
+        <p class="footer-tagline">The independent property knowledge base for Johor Bahru.</p>
       </div>
       <div class="footer-cols">
         <div class="footer-col">
@@ -109,6 +117,14 @@
           <a href="jb-town.html">Johor Bahru Town</a>
           <a href="iskandar-puteri.html">Iskandar Puteri</a>
           <a href="forest-city.html">Forest City</a>
+        </div>
+        
+        <div class="footer-col">
+          <h4>Guides</h4>
+          <a href="articles.html?topic=mm2h">MM2H</a>
+          <a href="articles.html?topic=js-sez">JS-SEZ</a>
+          <a href="articles.html?topic=golf">Golf Communities</a>
+          <a href="articles.html?topic=retirement">Retirement</a>
         </div>
         <div class="footer-col">
           <h4>Contact</h4>
@@ -122,7 +138,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© Sam Tee, Property Advisor.</span>
+      <span>© The JB Residence. Sam Tee, Property Advisor. · v2.2</span>
       <span>Iskandar Puteri, Johor, Malaysia</span>
     </div>
   </div>

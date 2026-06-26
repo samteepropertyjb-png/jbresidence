@@ -3,36 +3,66 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sam Tee | Property Advisor — Iskandar Puteri, Johor Bahru &amp; Forest City</title>
-<meta name="description" content="Sam Tee is a property advisor specialising in landed homes across Iskandar Puteri, Johor Bahru Town, and Forest City, Johor. Independent, consultant-style guidance for local and international buyers.">
+<title>The JB Residence — Independent Property Guide for Johor Bahru, Iskandar Puteri & Forest City</title>
+<meta name="description" content="The most complete independent property guide for Johor Bahru — covering Forest City, Iskandar Puteri, MM2H, JS-SEZ, golf communities, international schools, and buying guides for local and foreign buyers.">
+<meta property="og:title" content="The JB Residence — Independent Property Guide for Johor Bahru">
+<meta property="og:description" content="Independent property knowledge for Forest City, Iskandar Puteri, and Johor Bahru Town. Buying guides, area intelligence, and expert advice from Sam Tee.">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://thejbresidence.com/">
 <link rel="stylesheet" href="style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "RealEstateAgent",
+  "name": "The JB Residence",
+  "description": "Independent property guide for Johor Bahru — Forest City, Iskandar Puteri, MM2H, JS-SEZ, golf communities and buying guides.",
+  "url": "https://thejbresidence.com",
+  "areaServed": [
+    {"@type": "City", "name": "Johor Bahru"},
+    {"@type": "Place", "name": "Iskandar Puteri"},
+    {"@type": "Place", "name": "Forest City"}
+  ],
+  "employee": {
+    "@type": "Person",
+    "name": "Sam Tee",
+    "jobTitle": "Property Advisor",
+    "telephone": "+601156348518"
+  }
+}
+</script>
 </head>
 <body>
 
-<nav class="nav">
-  <a href="index.html" class="nav-brand">SAM TEE <span>| Property Advisor</span></a>
+<nav class="nav" id="main-nav">
+  <a href="index.html" class="nav-brand">THE JB RESIDENCE <span>| Property Guide</span></a>
   <ul class="nav-links">
     <li><a href="index.html" class="active" data-i18n="nav-home">Home</a></li>
-    <li><a href="jb-town.html" data-i18n="nav-jbt">Johor Bahru Town</a></li>
-    <li><a href="iskandar-puteri.html" data-i18n="nav-ip">Iskandar Puteri</a></li>
-    <li><a href="forest-city.html" data-i18n="nav-fc">Forest City</a></li>
+    <li class="nav-dropdown">
+      <a href="#" class="nav-dropdown-toggle" data-i18n="nav-areas">Areas ▾</a>
+      <ul class="nav-dropdown-menu">
+        <li><a href="jb-town.html" data-i18n="nav-jbt">Johor Bahru Town</a></li>
+        <li><a href="iskandar-puteri.html" data-i18n="nav-ip">Iskandar Puteri</a></li>
+        <li><a href="forest-city.html" data-i18n="nav-fc">Forest City</a></li>
+      </ul>
+    </li>
+    <li><a href="projects.html" data-i18n="nav-projects">Projects</a></li>
+    <li><a href="articles.html" data-i18n="nav-guides">Guides</a></li>
   </ul>
-  <button class="lang-toggle" data-current-lang="en" aria-label="Switch language" style="background:none;border:1px solid rgba(255,255,255,0.4);color:var(--white);font-size:12px;font-weight:700;letter-spacing:0.08em;padding:6px 14px;border-radius:100px;cursor:pointer;margin-right:8px;transition:all 0.2s ease;">中文</button>
+  <button class="lang-toggle" data-current-lang="en" aria-label="Switch language">中文</button>
   <button class="nav-toggle" aria-label="Open menu">☰</button>
 </nav>
 
 <!-- ============ HERO ============ -->
 <header class="hero" style="background-image: url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1600&auto=format&fit=crop');">
   <div class="hero-content">
-    <div class="hero-tags">
-      <span class="tag">Landed Property</span>
-      <span class="tag">Family Living</span>
-      <span class="tag">Retirement</span>
-      <span class="tag">Investment</span>
+    <div class="hero-eyebrow" data-i18n="hero-eyebrow">Independent Property Guide · Johor Bahru</div>
+    <h1 class="hero-title" data-i18n="hero-title">The Independent Property Guide for Johor Bahru, Iskandar Puteri & Forest City.</h1>
+    <p class="hero-sub" data-i18n="hero-sub">Forest City · Iskandar Puteri · JB Town · MM2H · JS-SEZ · Golf Communities · International Schools · Retirement</p>
+    <div class="hero-ctas">
+      <a href="iskandar-puteri.html" class="btn btn-gold" data-i18n="hero-btn-areas">Explore Areas</a>
+      <a href="articles.html" class="btn btn-outline" data-i18n="hero-btn-guides">Buying Guides</a>
     </div>
-    <h1 class="hero-title" data-i18n="hero-title">Your property advisor for Johor, built on local ground truth.</h1>
-    <!-- EDIT: Hero tagline below -->
-    <p class="hero-sub" data-i18n="hero-sub">I help families and investors find the right properties across Iskandar Puteri, Johor Bahru Town, and Special Financial Zone, Forest City — with the trade-offs explained upfront, not after you've signed.</p>
     <div class="hero-meta">
       <img src="sam-edited.jpg" alt="Sam Tee" style="object-position: top center;">
       <div class="hero-meta-text">
@@ -43,159 +73,61 @@
   </div>
 </header>
 
-<!-- ============ PROFILE SPLIT ============ -->
-<!-- EDIT: Profile section — photo src, name, title, and tagline below -->
-<section class="on-navy" style="padding: 72px 0;">
+<!-- ============ TOPIC BAND ============ -->
+<div class="topic-band">
   <div class="wrap">
-    <div style="display:grid; grid-template-columns: 380px 1fr; gap: 64px; align-items: center;">
-
-      <!-- Photo -->
-      <div style="position:relative; display:flex; justify-content:center;">
-        <div style="
-          position:relative;
-          width:320px;
-          flex-shrink:0;
-        ">
-          <!-- Gold accent line behind photo -->
-          <div style="
-            position:absolute;
-            left:-16px; bottom:-16px;
-            width:100%; height:100%;
-            border: 2px solid rgba(201,147,58,0.4);
-            border-radius:2px;
-          "></div>
-          <img
-            src="sam-edited.jpg"
-            alt="Sam Tee, Property Advisor"
-            style="
-              width:320px;
-              display:block;
-              position:relative;
-              z-index:1;
-              mix-blend-mode: lighten;
-            "
-          >
-        </div>
-      </div>
-
-      <!-- Text -->
-      <div class="reveal">
-        <div class="eyebrow" style="color: var(--gold-400);" data-i18n="profile-eyebrow">Your property advisor</div>
-        <h2 style="
-          font-family: var(--font-display);
-          font-size: clamp(36px, 4vw, 52px);
-          color: var(--white);
-          margin-top: 12px;
-          line-height: 1.1;
-          letter-spacing: 0.01em;
-        ">Sam Tee</h2>
-        <div style="
-          width: 48px; height: 2px;
-          background: var(--gold-500);
-          margin: 18px 0;
-        "></div>
-        <p style="
-          font-size: 17px;
-          color: rgba(255,255,255,0.82);
-          line-height: 1.7;
-          max-width: 480px;
-          margin-bottom: 12px;
-        " data-i18n="profile-role">Property Advisor · REN 80322</p>
-        <p style="
-          font-size: 16px;
-          color: rgba(255,255,255,0.68);
-          line-height: 1.7;
-          max-width: 480px;
-          margin-bottom: 32px;
-        " data-i18n="profile-desc">Specialising in landed properties across Iskandar Puteri, Johor Bahru Town, and Special Financial Zone, Forest City. I help buyers understand their options before committing to any project.</p>
-        <div style="display:flex; gap:14px; flex-wrap:wrap;">
-          <a href="https://wa.me/601156348518?text=Hi%20Sam%2C%20I%27d%20like%20to%20find%20out%20more%20about%20Johor%20property." target="_blank" rel="noopener" class="btn btn-gold">Chat on WhatsApp</a>
-          <a href="iskandar-puteri.html" class="btn btn-outline">Explore properties</a>
-        </div>
-        <div style="display:flex; gap:20px; margin-top:22px; align-items:center;">
-          <a href="https://www.youtube.com/@SamTeeJBProperty" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.55); display:inline-flex; align-items:center; gap:7px; font-size:13px; transition:color 0.2s ease;" onmouseover="this.style.color='#C9933A'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.5 31.5 0 0 0 24 12a31.5 31.5 0 0 0-.5-5.8zM9.75 15.5v-7l6.25 3.5-6.25 3.5z"/></svg>
-            YouTube
-          </a>
-          <a href="https://www.facebook.com/samteejb/" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.55); display:inline-flex; align-items:center; gap:7px; font-size:13px; transition:color 0.2s ease;" onmouseover="this.style.color='#C9933A'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.88v2.27h3.32l-.53 3.5h-2.79V24C19.61 23.1 24 18.1 24 12.07z"/></svg>
-            Facebook
-          </a>
-        </div>
-      </div>
-
+    <div class="topic-scroll">
+      <a href="forest-city.html" class="topic-pill">Forest City</a>
+      <a href="iskandar-puteri.html" class="topic-pill">Iskandar Puteri</a>
+      <a href="jb-town.html" class="topic-pill">JB Town</a>
+      <a href="articles.html?topic=mm2h" class="topic-pill">MM2H</a>
+      <a href="articles.html?topic=js-sez" class="topic-pill">JS-SEZ</a>
+      <a href="articles.html?topic=golf" class="topic-pill">Golf Communities</a>
+      <a href="articles.html?topic=schools" class="topic-pill">International Schools</a>
+      <a href="articles.html?topic=retirement" class="topic-pill">Retirement</a>
+      <a href="articles.html?topic=buying-guide" class="topic-pill">Buying Guides</a>
     </div>
   </div>
-</section>
+</div>
 
-<!-- ============ ABOUT / POSITIONING ============ -->
-<section class="on-white">
-  <div class="wrap">
-    <div class="brief-grid">
-      <div class="brief-col reveal">
-        <div class="eyebrow" data-i18n="about-eyebrow">About Sam</div>
-        <!-- EDIT: About section headline below -->
-        <h2 class="section-title" style="font-size:28px; margin-top:8px;" data-i18n="about-headline">Understand first. Property later.</h2>
-        <div class="divider"></div>
-        <!-- EDIT: About paragraph 1 below -->
-        <p data-i18n="about-p1">Most buyers in Johor get sold a project before anyone asks what they actually need. I work the other way — understanding your purpose first: family relocation, retirement, or investment, then matching that to the right community and price range.</p>
-        <!-- EDIT: About paragraph 2 below -->
-        <p data-i18n="about-p2" data-i18n-html="true">I specialise in <strong>Johor Bahru Town and Iskandar Puteri properties from RM 1M to RM 10M</strong> across established communities, with deep familiarity in local market dynamics and the ownership rules that matter for both Malaysian and international buyers.</p>
-      </div>
-      <div class="brief-col reveal">
-        <div class="eyebrow" data-i18n="why-eyebrow">Why work with me</div>
-        <!-- EDIT: Why work with me headline below -->
-        <h2 class="section-title" style="font-size:28px; margin-top:8px;" data-i18n="why-headline">Local ground truth, explained plainly.</h2>
-        <div class="divider"></div>
-        <!-- EDIT: Why paragraph 1 below -->
-        <p data-i18n="why-p1">I also create video content breaking down Johor property strategy — so by the time we speak, you've likely already seen how I think about this market.</p>
-        <!-- EDIT: Why paragraph 2 below -->
-        <p data-i18n="why-p2">Every recommendation comes with the trade-offs, not just the highlights. If a project isn't right for your situation, I'll tell you before you waste a viewing trip.</p>
-        <div class="stat-row">
-          <div class="stat"><div class="stat-num">RM 1M–10M</div><div class="stat-label" data-i18n="stat-range">Focus range</div></div>
-          <div class="stat"><div class="stat-num">3</div><div class="stat-label" data-i18n="stat-districts">Core districts</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ MARKET SNAPSHOT ============ -->
+<!-- ============ MARKET INSIGHTS ============ -->
 <section class="on-navy">
   <div class="wrap">
     <div class="section-head reveal">
       <div>
-        <div class="eyebrow">Market snapshot</div>
-        <!-- EDIT: Market snapshot headline below -->
+        <div class="eyebrow" data-i18n="market-eyebrow">Latest Market Insights</div>
         <h2 class="section-title on-dark" data-i18n="market-headline">Where the Johor market stands today.</h2>
-        <p class="section-sub on-dark">A quick read on current conditions across the districts I cover — updated as the market moves.</p>
+        <p class="section-sub on-dark" data-i18n="market-sub">Current conditions across the three districts — updated as the market moves.</p>
       </div>
     </div>
     <div class="grid-3">
-      <div class="card reveal">
-        <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop'); background-size:cover;"></div>
-        <div class="card-body">
-          <div class="card-eyebrow">Johor Bahru Town</div>
-          <h3 class="card-title" data-i18n="market-jbt-title">City-centre projects remain the accessible entry point</h3>
-          <p class="card-excerpt">For buyers working with tighter budgets, select exemption projects in the city centre are still the most accessible way into the market.</p>
+      <a href="jb-town.html" class="insight-card reveal">
+        <div class="insight-img" style="background-image:url('https://images.unsplash.com/photo-1605723517503-3cadb5818a0c?q=80&w=800&auto=format&fit=crop');"></div>
+        <div class="insight-body">
+          <div class="insight-tag">Johor Bahru Town</div>
+          <h3 class="insight-title" data-i18n="market-jbt-title">City-centre projects remain the accessible entry point</h3>
+          <p class="insight-excerpt" data-i18n="market-jbt-excerpt">Select exemption projects in the city centre are still the most accessible way into the market for buyers working with tighter budgets.</p>
+          <span class="insight-link">Read market brief →</span>
         </div>
-      </div>
-      <div class="card reveal">
-        <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1592595896551-12b371d546d5?q=80&w=800&auto=format&fit=crop'); background-size:cover;"></div>
-        <div class="card-body">
-          <div class="card-eyebrow">Iskandar Puteri</div>
-          <h3 class="card-title" data-i18n="market-ip-title">Landed demand holding steady in established townships</h3>
-          <p class="card-excerpt">Eco Botanic, Horizon Hills, and East Ledang continue to see consistent interest from families and retirees seeking gated, mature communities.</p>
+      </a>
+      <a href="iskandar-puteri.html" class="insight-card reveal">
+        <div class="insight-img" style="background-image:url('https://images.unsplash.com/photo-1592595896551-12b371d546d5?q=80&w=800&auto=format&fit=crop');"></div>
+        <div class="insight-body">
+          <div class="insight-tag">Iskandar Puteri</div>
+          <h3 class="insight-title" data-i18n="market-ip-title">Landed demand holding steady in established townships</h3>
+          <p class="insight-excerpt" data-i18n="market-ip-excerpt">Eco Botanic, Horizon Hills, and East Ledang continue to see consistent interest from families and retirees seeking gated, mature communities.</p>
+          <span class="insight-link">Read market brief →</span>
         </div>
-      </div>
-      <div class="card reveal">
-        <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?q=80&w=800&auto=format&fit=crop'); background-size:cover;"></div>
-        <div class="card-body">
-          <div class="card-eyebrow">Forest City</div>
-          <h3 class="card-title" data-i18n="market-fc-title">Special Financial Zone status reshaping the investment conversation</h3>
-          <p class="card-excerpt">Special financial zone status has changed the calculus for investors weighing Forest City against other Iskandar districts.</p>
+      </a>
+      <a href="forest-city.html" class="insight-card reveal">
+        <div class="insight-img" style="background-image:url('https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?q=80&w=800&auto=format&fit=crop');"></div>
+        <div class="insight-body">
+          <div class="insight-tag">Forest City</div>
+          <h3 class="insight-title" data-i18n="market-fc-title">Special Financial Zone status reshaping the investment conversation</h3>
+          <p class="insight-excerpt" data-i18n="market-fc-excerpt">SFZ designation has changed the calculus for investors and lifestyle buyers weighing Forest City against other Iskandar districts.</p>
+          <span class="insight-link">Read market brief →</span>
         </div>
-      </div>
+      </a>
     </div>
   </div>
 </section>
@@ -205,34 +137,33 @@
   <div class="wrap">
     <div class="section-head reveal">
       <div>
-        <div class="eyebrow">Explore by district</div>
-        <h2 class="section-title" data-i18n="explore-headline">Three districts, three very different buyer profiles.</h2>
-        <p class="section-sub">Each has its own pricing, character, and lifestyle fit. Pick where your interest sits and I'll walk you through it in detail.</p>
+        <div class="eyebrow" data-i18n="explore-eyebrow">Explore Areas</div>
+        <h2 class="section-title" data-i18n="explore-headline">Three districts. Three very different buyer profiles.</h2>
+        <p class="section-sub" data-i18n="explore-sub">Each has its own pricing, character, and lifestyle fit. Pick where your interest sits.</p>
       </div>
     </div>
     <div class="area-grid">
       <a href="jb-town.html" class="area-card reveal" style="background-image:url('https://images.unsplash.com/photo-1605723517503-3cadb5818a0c?q=80&w=900&auto=format&fit=crop');">
         <div class="area-card-body">
-          <div class="area-card-eyebrow">Entry point</div>
+          <div class="area-card-eyebrow" data-i18n="area-jbt-eyebrow">Entry Point</div>
           <div class="area-card-title" data-i18n="area-jbt-title">Johor Bahru Town</div>
-          <p class="area-card-desc">City-centre living and accessible entry-level projects close to the Causeway.</p>
+          <p class="area-card-desc" data-i18n="area-jbt-desc">City-centre living and accessible entry-level projects close to the Causeway.</p>
           <span class="area-card-link" data-i18n="area-jbt-link">Explore Johor Bahru Town</span>
         </div>
       </a>
       <a href="iskandar-puteri.html" class="area-card reveal" style="background-image:url('https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=900&auto=format&fit=crop');">
         <div class="area-card-body">
-          <div class="area-card-eyebrow">Core focus</div>
+          <div class="area-card-eyebrow" data-i18n="area-ip-eyebrow">Core Focus</div>
           <div class="area-card-title" data-i18n="area-ip-title">Iskandar Puteri</div>
-          <p class="area-card-desc">Eco Botanic, Horizon Hills, East Ledang — landed family and retirement living.</p>
+          <p class="area-card-desc" data-i18n="area-ip-desc">Eco Botanic, Horizon Hills, East Ledang — landed family and retirement living.</p>
           <span class="area-card-link" data-i18n="area-ip-link">Explore Iskandar Puteri</span>
         </div>
       </a>
       <a href="forest-city.html" class="area-card reveal" style="background-image:url('https://images.unsplash.com/photo-1582719471384-894fbb16e074?q=80&w=900&auto=format&fit=crop');">
         <div class="area-card-body">
-          <div class="area-card-eyebrow">Special zone</div>
+          <div class="area-card-eyebrow" data-i18n="area-fc-eyebrow">Special Zone</div>
           <div class="area-card-title" data-i18n="area-fc-title">Forest City</div>
-          <!-- EDIT: Forest City area card description below -->
-          <p class="area-card-desc">Special Financial Zone with tax incentives and a distinct island lifestyle proposition.</p>
+          <p class="area-card-desc" data-i18n="area-fc-desc">Special Financial Zone with tax incentives and a distinct island lifestyle proposition.</p>
           <span class="area-card-link" data-i18n="area-fc-link">Explore Forest City</span>
         </div>
       </a>
@@ -240,13 +171,139 @@
   </div>
 </section>
 
+<!-- ============ FEATURED PROJECTS ============ -->
+<section class="on-white">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow" data-i18n="projects-eyebrow">Featured Projects</div>
+        <h2 class="section-title" data-i18n="projects-headline">Communities worth a look right now.</h2>
+        <p class="section-sub" data-i18n="projects-sub">A shortlist, not a directory — the projects I would bring a qualified buyer to today.</p>
+      </div>
+      <a href="projects.html" class="btn btn-outline-dark" data-i18n="projects-all">View all projects</a>
+    </div>
+    <div class="project-grid" id="home-projects"></div>
+  </div>
+</section>
+
+<!-- ============ BUYING GUIDES ============ -->
+<section class="on-offwhite">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow" data-i18n="guides-eyebrow">Buying Guides</div>
+        <h2 class="section-title" data-i18n="guides-headline">Everything you need to know before you buy.</h2>
+        <p class="section-sub" data-i18n="guides-sub">Topic clusters covering Forest City, MM2H, JS-SEZ, golf communities, retirement, and more.</p>
+      </div>
+      <a href="articles.html" class="btn btn-outline-dark" data-i18n="guides-all">All guides</a>
+    </div>
+    <div class="guides-grid">
+      <a href="forest-city.html" class="guide-cluster reveal">
+        <div class="guide-cluster-icon">🏝</div>
+        <div class="guide-cluster-label" data-i18n="guide-fc">Forest City</div>
+        <p class="guide-cluster-desc" data-i18n="guide-fc-desc">SFZ status, island living, Golf Villa, MM2H — the complete Forest City picture.</p>
+        <span class="guide-cluster-link">Explore →</span>
+      </a>
+      <a href="articles.html?topic=mm2h" class="guide-cluster reveal">
+        <div class="guide-cluster-icon">🛂</div>
+        <div class="guide-cluster-label" data-i18n="guide-mm2h">MM2H Programme</div>
+        <p class="guide-cluster-desc" data-i18n="guide-mm2h-desc">Eligibility, deposit requirements, Forest City SFZ track, and how to apply.</p>
+        <span class="guide-cluster-link">Explore →</span>
+      </a>
+      <a href="articles.html?topic=js-sez" class="guide-cluster reveal">
+        <div class="guide-cluster-icon">⚡</div>
+        <div class="guide-cluster-label" data-i18n="guide-sez">JS-SEZ</div>
+        <p class="guide-cluster-desc" data-i18n="guide-sez-desc">The Johor-Singapore Special Economic Zone and what it means for property values.</p>
+        <span class="guide-cluster-link">Explore →</span>
+      </a>
+      <a href="articles.html?topic=golf" class="guide-cluster reveal">
+        <div class="guide-cluster-icon">⛳</div>
+        <div class="guide-cluster-label" data-i18n="guide-golf">Golf Communities</div>
+        <p class="guide-cluster-desc" data-i18n="guide-golf-desc">Horizon Hills, Forest City Golf, Leisure Farm — golf-facing properties compared.</p>
+        <span class="guide-cluster-link">Explore →</span>
+      </a>
+      <a href="articles.html?topic=schools" class="guide-cluster reveal">
+        <div class="guide-cluster-icon">🎓</div>
+        <div class="guide-cluster-label" data-i18n="guide-schools">International Schools</div>
+        <p class="guide-cluster-desc" data-i18n="guide-schools-desc">Which townships sit closest to Johor's best international schools.</p>
+        <span class="guide-cluster-link">Explore →</span>
+      </a>
+      <a href="articles.html?topic=retirement" class="guide-cluster reveal">
+        <div class="guide-cluster-icon">🌿</div>
+        <div class="guide-cluster-label" data-i18n="guide-retire">Retirement in JB</div>
+        <p class="guide-cluster-desc" data-i18n="guide-retire-desc">Cost of living, healthcare, lifestyle, and the best communities for retirees.</p>
+        <span class="guide-cluster-link">Explore →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LATEST ARTICLES ============ -->
+<section class="on-white">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow" data-i18n="articles-eyebrow">Latest Articles</div>
+        <h2 class="section-title" data-i18n="articles-headline">Recent guides and market analysis.</h2>
+      </div>
+      <a href="articles.html" class="btn btn-outline-dark" data-i18n="articles-all">All articles</a>
+    </div>
+    <div class="grid-3" id="home-articles"></div>
+  </div>
+</section>
+
+<!-- ============ ABOUT SAM ============ -->
+<section class="on-navy about-sam-section">
+  <div class="wrap">
+    <div class="about-sam-grid">
+      <div class="about-sam-photo reveal">
+        <div class="photo-frame">
+          <div class="photo-accent"></div>
+          <img src="sam-edited.jpg" alt="Sam Tee, Property Advisor" style="mix-blend-mode:lighten;">
+        </div>
+      </div>
+      <div class="about-sam-text reveal">
+        <div class="eyebrow" style="color:var(--gold-400);" data-i18n="about-eyebrow">About Sam Tee</div>
+        <h2 class="about-sam-name">Sam Tee</h2>
+        <div class="divider"></div>
+        <p class="about-sam-role" data-i18n="profile-role">Property Advisor · REN 80322</p>
+        <p class="about-sam-desc" data-i18n="about-p1">Most buyers in Johor get sold a project before anyone asks what they actually need. I work the other way — understanding your purpose first: family relocation, retirement, or investment, then matching that to the right community and price range.</p>
+        <p class="about-sam-desc" data-i18n="about-p2" data-i18n-html="true">I specialise in <strong>Johor Bahru Town and Iskandar Puteri properties from RM 1M to RM 10M</strong> across established communities, with deep familiarity in local market dynamics and the ownership rules that matter for both Malaysian and international buyers.</p>
+        <div class="about-sam-stats">
+          <div class="stat">
+            <div class="stat-num">RM 1M–10M</div>
+            <div class="stat-label" data-i18n="stat-range">Focus Range</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">3</div>
+            <div class="stat-label" data-i18n="stat-districts">Core Districts</div>
+          </div>
+        </div>
+        <div class="about-sam-ctas">
+          <a href="https://wa.me/601156348518?text=Hi%20Sam%2C%20I%27d%20like%20to%20find%20out%20more%20about%20Johor%20property." target="_blank" rel="noopener" class="btn btn-gold" data-i18n="profile-btn-wa">Chat on WhatsApp</a>
+          <a href="iskandar-puteri.html" class="btn btn-outline" data-i18n="profile-btn-explore">Explore Properties</a>
+        </div>
+        <div class="about-sam-social">
+          <a href="https://www.youtube.com/@SamTeeJBProperty" target="_blank" rel="noopener" class="social-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.5 31.5 0 0 0 24 12a31.5 31.5 0 0 0-.5-5.8zM9.75 15.5v-7l6.25 3.5-6.25 3.5z"/></svg>
+            YouTube
+          </a>
+          <a href="https://www.facebook.com/samteejb/" target="_blank" rel="noopener" class="social-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.88v2.27h3.32l-.53 3.5h-2.79V24C19.61 23.1 24 18.1 24 12.07z"/></svg>
+            Facebook
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ CTA ============ -->
-<section class="on-navy" style="padding: 72px 0;">
+<section class="on-offwhite cta-section">
   <div class="wrap" style="text-align:center;">
-    <div class="eyebrow reveal" style="justify-content:center; display:flex;">Let's talk</div>
-    <!-- EDIT: Closing CTA headline below -->
-    <h2 class="section-title on-dark reveal" style="margin-top:8px;" data-i18n="cta-headline">Not sure where to start? Send me your situation.</h2>
-    <p class="section-sub on-dark reveal" style="margin: 14px auto 32px; text-align:center;">A short WhatsApp message is enough — purpose, budget range, and timeline. I'll point you to the right district before we talk projects.</p>
+    <div class="eyebrow reveal" style="justify-content:center; display:flex;" data-i18n="cta-eyebrow">Let's Talk</div>
+    <h2 class="section-title reveal" style="margin-top:8px;" data-i18n="cta-headline">Not sure where to start? Send me your situation.</h2>
+    <p class="section-sub reveal" style="margin: 14px auto 32px; text-align:center;" data-i18n="cta-sub">A short WhatsApp message is enough — purpose, budget range, and timeline. I'll point you to the right district before we talk projects.</p>
     <a class="btn btn-gold reveal" href="https://wa.me/601156348518?text=Hi%20Sam%2C%20I%27d%20like%20to%20find%20out%20more%20about%20Johor%20property." target="_blank" rel="noopener" data-i18n="cta-btn">Chat with Sam on WhatsApp</a>
   </div>
 </section>
@@ -255,31 +312,42 @@
 <footer>
   <div class="wrap">
     <div class="footer-top">
-      <div>
-        <div class="footer-brand">SAM TEE <span>| Property Advisor</span></div>
-        <p class="footer-tagline" data-i18n="footer-tagline">Independent guidance for buyers across Iskandar Puteri, Johor Bahru Town, and Forest City.</p>
+      <div class="footer-brand-block">
+        <div class="footer-brand">THE JB RESIDENCE <span>| Property Guide</span></div>
+        <p class="footer-tagline" data-i18n="footer-tagline">The independent property knowledge base for Johor Bahru — Forest City, Iskandar Puteri, MM2H, JS-SEZ, and beyond.</p>
       </div>
       <div class="footer-cols">
         <div class="footer-col">
-          <h4>Districts</h4>
+          <h4 data-i18n="footer-areas">Areas</h4>
           <a href="jb-town.html" data-i18n="nav-jbt">Johor Bahru Town</a>
           <a href="iskandar-puteri.html" data-i18n="nav-ip">Iskandar Puteri</a>
           <a href="forest-city.html" data-i18n="nav-fc">Forest City</a>
         </div>
         <div class="footer-col">
-          <h4>Contact</h4>
+          <h4 data-i18n="footer-guides">Guides</h4>
+          <a href="articles.html?topic=mm2h">MM2H</a>
+          <a href="articles.html?topic=js-sez">JS-SEZ</a>
+          <a href="articles.html?topic=golf">Golf Communities</a>
+          <a href="articles.html?topic=retirement">Retirement</a>
+        </div>
+        <div class="footer-col">
+          <h4 data-i18n="footer-contact">Contact</h4>
           <a href="https://wa.me/601156348518" target="_blank" rel="noopener">WhatsApp</a>
           <p>REN 80322</p>
-          <div style="margin-top:14px; display:flex; flex-direction:column;">
-          <a href="https://www.youtube.com/@SamTeeJBProperty" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;color:rgba(255,255,255,0.6);font-size:13px;margin-bottom:10px;transition:color 0.2s ease;" onmouseover="this.style.color='#C9933A'" onmouseout="this.style.color='rgba(255,255,255,0.6)'"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.5 31.5 0 0 0 24 12a31.5 31.5 0 0 0-.5-5.8zM9.75 15.5v-7l6.25 3.5-6.25 3.5z"/></svg> YouTube</a>
-          <a href="https://www.facebook.com/samteejb/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;color:rgba(255,255,255,0.6);font-size:13px;margin-bottom:10px;transition:color 0.2s ease;" onmouseover="this.style.color='#C9933A'" onmouseout="this.style.color='rgba(255,255,255,0.6)'"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.88v2.27h3.32l-.53 3.5h-2.79V24C19.61 23.1 24 18.1 24 12.07z"/></svg> Facebook</a>
+          <div class="footer-social">
+            <a href="https://www.youtube.com/@SamTeeJBProperty" target="_blank" rel="noopener" class="social-link">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.5 31.5 0 0 0 0 12a31.5 31.5 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.5 31.5 0 0 0 24 12a31.5 31.5 0 0 0-.5-5.8zM9.75 15.5v-7l6.25 3.5-6.25 3.5z"/></svg> YouTube
+            </a>
+            <a href="https://www.facebook.com/samteejb/" target="_blank" rel="noopener" class="social-link">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.04V9.41c0-3.02 1.8-4.7 4.54-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.88v2.27h3.32l-.53 3.5h-2.79V24C19.61 23.1 24 18.1 24 12.07z"/></svg> Facebook
+            </a>
           </div>
         </div>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© Sam Tee, Property Advisor.</span>
-      <span>Iskandar Puteri, Johor, Malaysia</span>
+      <span>© The JB Residence. Sam Tee, Property Advisor. · v2.2</span>
+      <span>Johor Bahru, Malaysia</span>
     </div>
   </div>
 </footer>
@@ -289,5 +357,9 @@
 </a>
 
 <script src="js/main.js"></script>
+<script>
+  renderProjects(null, '#home-projects', 3);
+  renderAllArticles('#home-articles', 3);
+</script>
 </body>
 </html>
