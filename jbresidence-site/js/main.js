@@ -801,11 +801,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const dropdownToggle = document.querySelector('.nav-dropdown-toggle');
   const dropdownMenu = document.querySelector('.nav-dropdown-menu');
 
-  if (dropdownToggle && dropdownMenu) {
+  const megaPanel = document.querySelector('.nav-mega-panel');
+  if (dropdownToggle && megaPanel) {
     dropdownToggle.addEventListener('click', (e) => {
       if (window.innerWidth <= 860) {
         e.preventDefault();
-        dropdownMenu.classList.toggle('mobile-open');
+        megaPanel.classList.toggle('mobile-open');
       }
     });
   }

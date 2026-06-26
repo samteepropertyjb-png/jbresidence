@@ -1038,11 +1038,11 @@ footer {
 .nav-brand { font-size: 16px; }
 .nav-brand span { color: var(--gold-400); font-size: 14px; }
 
-/* ---------- Nav dropdown ---------- */
+/* ---------- Nav dropdown / mega menu ---------- */
 .nav-dropdown { position: relative; }
-
 .nav-dropdown-toggle { cursor: pointer; }
 
+/* Legacy small dropdown — kept for mobile fallback */
 .nav-dropdown-menu {
   display: none;
   position: absolute;
@@ -1057,12 +1057,6 @@ footer {
   z-index: 200;
   border-top: 2px solid var(--gold-500);
 }
-
-.nav-dropdown:hover .nav-dropdown-menu,
-.nav-dropdown-menu:hover {
-  display: block;
-}
-
 .nav-dropdown-menu li { list-style: none; }
 .nav-dropdown-menu a {
   display: block;
@@ -1075,11 +1069,59 @@ footer {
   border-bottom: none !important;
   transition: background 0.15s ease, color 0.15s ease;
 }
-.nav-dropdown-menu a:hover,
-.nav-dropdown-menu a.active {
-  background: rgba(201,147,58,0.12);
-  color: var(--gold-400);
+.nav-dropdown-menu a:hover { background: rgba(201,147,58,0.12); color: var(--gold-400); }
+
+/* Mega panel — replaces the small dropdown on desktop */
+.nav-mega-panel {
+  display: none;
+  position: absolute;
+  top: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--navy-900);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-top: 2px solid var(--gold-500);
+  padding: 28px 32px;
+  width: 580px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.45);
+  z-index: 200;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
 }
+
+.nav-dropdown:hover .nav-mega-panel { display: grid; }
+
+.nav-mega-col {
+  padding: 0 20px;
+  border-right: 1px solid rgba(255,255,255,0.07);
+}
+.nav-mega-col:first-child { padding-left: 0; }
+.nav-mega-col:last-child { padding-right: 0; border-right: none; }
+
+.nav-mega-heading {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-500);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.nav-mega-panel a {
+  display: block;
+  padding: 6px 0;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: rgba(255,255,255,0.72);
+  text-transform: none !important;
+  border-bottom: none !important;
+  transition: color 0.15s ease;
+}
+.nav-mega-panel a:hover { color: var(--gold-400); }
 
 /* ---------- Hero updates ---------- */
 .hero-eyebrow {
@@ -1498,19 +1540,22 @@ footer {
   .page-hero { padding: 110px 0 44px; }
   .topic-filter-btn { padding: 13px 14px; }
 
-  /* Nav dropdown on mobile — show below toggle */
-  .nav-dropdown .nav-dropdown-menu {
-    position: static;
-    transform: none;
-    border: none;
-    box-shadow: none;
-    padding: 0 0 0 16px;
-    min-width: auto;
-    border-top: none;
-    background: transparent;
+  /* Mega panel — collapse to list on mobile */
+  .nav-dropdown:hover .nav-mega-panel { display: none; }
+  .nav-mega-panel {
+    position: static !important;
+    transform: none !important;
+    width: auto !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 0 0 16px !important;
+    background: transparent !important;
+    display: none;
+    grid-template-columns: 1fr !important;
   }
-  .nav-dropdown:hover .nav-dropdown-menu { display: none; }
-  .nav-dropdown-menu.mobile-open { display: block; }
-  .nav-dropdown-menu a { padding: 8px 0; font-size: 14px; color: rgba(255,255,255,0.7); }
+  .nav-mega-panel.mobile-open { display: grid !important; }
+  .nav-mega-col { padding: 0 !important; border-right: none !important; margin-bottom: 12px; }
+  .nav-mega-heading { font-size: 9px; margin-bottom: 6px; }
+  .nav-mega-panel a { padding: 5px 0; font-size: 14px; color: rgba(255,255,255,0.7); }
   .nav-dropdown-toggle::after { content: ''; }
 }
