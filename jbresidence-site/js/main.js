@@ -150,10 +150,28 @@ const PLACEHOLDER_PROJECTS = [
     slug: 'rf-princess-cove', area: 'JB Town', project_name: 'R&F Princess Cove – Phase 3',
     tagline: 'Border-adjacent high-rise with direct RTS Link connectivity to Singapore',
     price_range: 'Enquire for pricing',
-    tenure: 'Leasehold 99 years',
+    tenure: 'Freehold',
     commute_note: '650m sheltered walk to JB CIQ · RTS Link (Bukit Chagar) to Woodlands North MRT',
-    description: "R&F Princess Cove is Johor Bahru's highest-profile residential landmark — a mixed-use masterplan built immediately adjacent to the JB Customs, Immigration and Quarantine (CIQ) complex, the busiest land border crossing in the world with 350,000 travellers daily. Phase 3, known as New Casa Suites @ Mercu 3, is the latest tower in this development, carrying forward the same connectivity-first proposition with upgraded facilities and direct RTS access.\n\nThe single most important fact about this address is the 650-metre sheltered walkway connecting the development directly to JB CIQ. You walk from your lobby, covered, to immigration in under ten minutes — no vehicle needed. With the RTS Link (Rapid Transit System) — Bukit Chagar station, the Johor Bahru terminus — now operational, that walk continues on rail into Woodlands North MRT station in Singapore, where it connects to the Thomson-East Coast Line and the rest of the Singapore MRT network. The commute from lobby to Orchard Road is shorter from this address than from any other Malaysian property.\n\nPhase 3's Urban Sky Park occupies Level 6 — a full active floor with swimming pool, jacuzzi, kids' pool, covered BBQ lawn, leisure lawn, tennis court, basketball court, outdoor gym, gym room, yoga room, leisure track, sauna, childcare centre, and multipurpose room. Level 4 adds indoor badminton hall, snooker room, and table tennis room — plus the covered link bridge that connects directly into R&F Mall, with over 450 retail outlets within the same complex. The 450-metre Sky Lounge Jogging Track on Level 6 is the only elevated jogging track of its kind in Johor Bahru.\n\nThe wider R&F Princess Cove masterplan includes Johor Bahru's first opera house — the R&F Performing Arts Centre — a private marina yacht club on the International Marina Boulevard, and waterfront promenade access along the Strait of Johor. These are not future plans: they are operating today.\n\nUnit types in Phase 3 range from studio suites at 313 sq ft to four-bedroom family suites at 1,555 sq ft. The full range: Studio (313 sq ft), 1-Bedroom (555–593 sq ft), 2-Bedroom (781–894 sq ft), 3-Bedroom (894–1,156 sq ft), and 4-Bedroom (1,555 sq ft). Every unit is delivered with quality timber main entrance door, aluminium frame glazed windows, full-height tiles in bathroom and kitchen, and glass balcony railings — standard finishes for the new-launch tier.\n\nThe investment case is direct: border-adjacent, RTS-connected, linked to a 450-outlet mall, with demonstrable rental demand driven by cross-border commuters who need a JB base within walking distance of Singapore. R&F Princess Cove has consistently ranked as Malaysia's most-viewed condominium rental listing across major property portals — a metric reflecting actual tenant interest, not developer marketing. Phase 3 offers a new-launch entry point into that established rental market.",
-    status: 'New Launch',
+    description: "R&F Princess Cove is Johor Bahru's highest-profile residential landmark — a mixed-use masterplan built immediately adjacent to the JB Customs, Immigration and Quarantine (CIQ) complex, the busiest land border crossing in the world with 350,000 travellers daily. Phase 3, known as New Casa Suites @ Mercu 3, is the latest tower in this development, carrying forward the same connectivity-first proposition with upgraded facilities and direct RTS access.\n\nThe single most important fact about this address is the 650-metre sheltered walkway connecting the development directly to JB CIQ. You walk from your lobby, covered, to immigration in under ten minutes — no vehicle needed. With the RTS Link (Rapid Transit System) — Bukit Chagar station, the Johor Bahru terminus — now operational, that walk continues on rail into Woodlands North MRT station in Singapore, where it connects to the Thomson-East Coast Line and the rest of the Singapore MRT network. The commute from lobby to Orchard Road is shorter from this address than from any other Malaysian property.\n\nPhase 3's Urban Sky Park occupies Level 6 — a full active floor with swimming pool, jacuzzi, kids' pool, covered BBQ lawn, leisure lawn, tennis court, basketball court, outdoor gym, gym room, yoga room, leisure track, sauna, childcare centre, and multipurpose room. Level 4 adds indoor badminton hall, snooker room, and table tennis room — plus the covered link bridge that connects directly into R&F Mall, with over 450 retail outlets within the same complex. The 450-metre Sky Lounge Jogging Track on Level 6 is the only elevated jogging track of its kind in Johor Bahru.\n\nThe wider R&F Princess Cove masterplan includes Johor Bahru's first opera house — the R&F Performing Arts Centre — a private marina yacht club on the International Marina Boulevard, and waterfront promenade access along the Strait of Johor. These are not future plans: they are operating today.\n\nThe investment case is direct: border-adjacent, RTS-connected, linked to a 450-outlet mall, with demonstrable rental demand driven by cross-border commuters who need a JB base within walking distance of Singapore. R&F Princess Cove has consistently ranked as Malaysia's most-viewed condominium rental listing across major property portals — a metric reflecting actual tenant interest, not developer marketing. Phase 3 offers a new-launch entry point into that established rental market.",
+    unit_types: [
+      { type: 'Studio', size: '313 sq ft' },
+      { type: '1-Bedroom', size: '555 – 593 sq ft' },
+      { type: '2-Bedroom', size: '781 – 894 sq ft' },
+      { type: '3-Bedroom', size: '894 – 1,156 sq ft' },
+      { type: '4-Bedroom', size: '1,555 sq ft' },
+    ],
+    features: [
+      'Freehold title — rare for high-rise in JB Town',
+      '650m sheltered walkway direct to JB CIQ — no car needed',
+      'RTS Link (Bukit Chagar) to Woodlands North MRT — Singapore rail access',
+      'Urban Sky Park (Level 6): pool, jacuzzi, kids pool, tennis, basketball, gym, yoga room, sauna, 450m jogging track',
+      'Level 4: indoor badminton, snooker, table tennis + covered link bridge to R&F Mall (450+ outlets)',
+      'R&F Performing Arts Centre & private marina yacht club within the masterplan',
+      'Waterfront promenade along the Strait of Johor',
+      'Unit finishes: timber main door, aluminium glazed windows, full-height tiles, glass balcony railings',
+      "Malaysia's most-viewed condo rental listing — proven cross-border commuter demand",
+    ],
+    status: 'Launch 2025',
     image_url: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?q=80&w=1200&auto=format&fit=crop',
     published: 'TRUE'
   },
@@ -305,6 +323,44 @@ async function renderProjectPage() {
         </div>
       </div>
     </section>
+
+    ${(p.unit_types && p.unit_types.length) || (p.features && p.features.length) ? `
+    <section class="on-offwhite" style="padding: 60px 0;">
+      <div class="wrap">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;">
+          ${p.unit_types && p.unit_types.length ? `
+          <div class="reveal">
+            <div class="eyebrow" style="margin-bottom:12px;">Unit Types</div>
+            <table style="width:100%; border-collapse:collapse; font-family:var(--font-body); font-size:15px;">
+              <thead>
+                <tr style="border-bottom:2px solid var(--gold-500);">
+                  <th style="text-align:left; padding:8px 0; color:var(--ink); font-weight:600;">Type</th>
+                  <th style="text-align:right; padding:8px 0; color:var(--ink); font-weight:600;">Built-up</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${p.unit_types.map(u => `
+                <tr style="border-bottom:1px solid #e8e6e0;">
+                  <td style="padding:10px 0; color:var(--ink);">${u.type}</td>
+                  <td style="padding:10px 0; color:var(--ink-muted); text-align:right;">${u.size}</td>
+                </tr>`).join('')}
+              </tbody>
+            </table>
+          </div>` : ''}
+          ${p.features && p.features.length ? `
+          <div class="reveal">
+            <div class="eyebrow" style="margin-bottom:12px;">Key Features</div>
+            <ul style="list-style:none; padding:0; margin:0;">
+              ${p.features.map(f => `
+              <li style="display:flex; gap:10px; padding:9px 0; border-bottom:1px solid #e8e6e0; font-family:var(--font-body); font-size:15px; color:var(--ink-muted); line-height:1.5;">
+                <span style="color:var(--gold-500); flex-shrink:0; margin-top:2px;">✓</span>
+                <span>${f}</span>
+              </li>`).join('')}
+            </ul>
+          </div>` : ''}
+        </div>
+      </div>
+    </section>` : ''}
 
     ${p.images && p.images.length ? `
     <section class="on-navy" style="padding: 60px 0;">
@@ -738,10 +794,28 @@ const EXTENDED_PROJECTS = [
     slug: 'rf-princess-cove', area: 'JB Town', project_name: 'R&F Princess Cove – Phase 3',
     tagline: 'Border-adjacent high-rise with direct RTS Link connectivity to Singapore',
     price_range: 'Enquire for pricing',
-    tenure: 'Leasehold 99 years',
+    tenure: 'Freehold',
     commute_note: '650m sheltered walk to JB CIQ · RTS Link (Bukit Chagar) to Woodlands North MRT',
-    description: "R&F Princess Cove is Johor Bahru's highest-profile residential landmark — a mixed-use masterplan built immediately adjacent to the JB Customs, Immigration and Quarantine (CIQ) complex, the busiest land border crossing in the world with 350,000 travellers daily. Phase 3, known as New Casa Suites @ Mercu 3, is the latest tower in this development, carrying forward the same connectivity-first proposition with upgraded facilities and direct RTS access.\n\nThe single most important fact about this address is the 650-metre sheltered walkway connecting the development directly to JB CIQ. You walk from your lobby, covered, to immigration in under ten minutes — no vehicle needed. With the RTS Link (Rapid Transit System) — Bukit Chagar station, the Johor Bahru terminus — now operational, that walk continues on rail into Woodlands North MRT station in Singapore, where it connects to the Thomson-East Coast Line and the rest of the Singapore MRT network. The commute from lobby to Orchard Road is shorter from this address than from any other Malaysian property.\n\nPhase 3's Urban Sky Park occupies Level 6 — a full active floor with swimming pool, jacuzzi, kids' pool, covered BBQ lawn, leisure lawn, tennis court, basketball court, outdoor gym, gym room, yoga room, leisure track, sauna, childcare centre, and multipurpose room. Level 4 adds indoor badminton hall, snooker room, and table tennis room — plus the covered link bridge that connects directly into R&F Mall, with over 450 retail outlets within the same complex. The 450-metre Sky Lounge Jogging Track on Level 6 is the only elevated jogging track of its kind in Johor Bahru.\n\nThe wider R&F Princess Cove masterplan includes Johor Bahru's first opera house — the R&F Performing Arts Centre — a private marina yacht club on the International Marina Boulevard, and waterfront promenade access along the Strait of Johor. These are not future plans: they are operating today.\n\nUnit types in Phase 3 range from studio suites at 313 sq ft to four-bedroom family suites at 1,555 sq ft. The full range: Studio (313 sq ft), 1-Bedroom (555–593 sq ft), 2-Bedroom (781–894 sq ft), 3-Bedroom (894–1,156 sq ft), and 4-Bedroom (1,555 sq ft). Every unit is delivered with quality timber main entrance door, aluminium frame glazed windows, full-height tiles in bathroom and kitchen, and glass balcony railings.\n\nThe investment case is direct: border-adjacent, RTS-connected, linked to a 450-outlet mall, with demonstrable rental demand driven by cross-border commuters who need a JB base within walking distance of Singapore. R&F Princess Cove has consistently ranked as Malaysia's most-viewed condominium rental listing across major property portals — a metric reflecting actual tenant interest. Phase 3 offers a new-launch entry point into that established rental market.",
-    status: 'New Launch',
+    description: "R&F Princess Cove is Johor Bahru's highest-profile residential landmark — a mixed-use masterplan built immediately adjacent to the JB Customs, Immigration and Quarantine (CIQ) complex, the busiest land border crossing in the world with 350,000 travellers daily. Phase 3, known as New Casa Suites @ Mercu 3, is the latest tower in this development, carrying forward the same connectivity-first proposition with upgraded facilities and direct RTS access.\n\nThe single most important fact about this address is the 650-metre sheltered walkway connecting the development directly to JB CIQ. You walk from your lobby, covered, to immigration in under ten minutes — no vehicle needed. With the RTS Link (Rapid Transit System) — Bukit Chagar station, the Johor Bahru terminus — now operational, that walk continues on rail into Woodlands North MRT station in Singapore, where it connects to the Thomson-East Coast Line and the rest of the Singapore MRT network. The commute from lobby to Orchard Road is shorter from this address than from any other Malaysian property.\n\nPhase 3's Urban Sky Park occupies Level 6 — a full active floor with swimming pool, jacuzzi, kids' pool, covered BBQ lawn, leisure lawn, tennis court, basketball court, outdoor gym, gym room, yoga room, leisure track, sauna, childcare centre, and multipurpose room. Level 4 adds indoor badminton hall, snooker room, and table tennis room — plus the covered link bridge that connects directly into R&F Mall, with over 450 retail outlets within the same complex. The 450-metre Sky Lounge Jogging Track on Level 6 is the only elevated jogging track of its kind in Johor Bahru.\n\nThe wider R&F Princess Cove masterplan includes Johor Bahru's first opera house — the R&F Performing Arts Centre — a private marina yacht club on the International Marina Boulevard, and waterfront promenade access along the Strait of Johor. These are not future plans: they are operating today.\n\nThe investment case is direct: border-adjacent, RTS-connected, linked to a 450-outlet mall, with demonstrable rental demand driven by cross-border commuters who need a JB base within walking distance of Singapore. R&F Princess Cove has consistently ranked as Malaysia's most-viewed condominium rental listing across major property portals — a metric reflecting actual tenant interest. Phase 3 offers a new-launch entry point into that established rental market.",
+    unit_types: [
+      { type: 'Studio', size: '313 sq ft' },
+      { type: '1-Bedroom', size: '555 – 593 sq ft' },
+      { type: '2-Bedroom', size: '781 – 894 sq ft' },
+      { type: '3-Bedroom', size: '894 – 1,156 sq ft' },
+      { type: '4-Bedroom', size: '1,555 sq ft' },
+    ],
+    features: [
+      'Freehold title — rare for high-rise in JB Town',
+      '650m sheltered walkway direct to JB CIQ — no car needed',
+      'RTS Link (Bukit Chagar) to Woodlands North MRT — Singapore rail access',
+      'Urban Sky Park (Level 6): pool, jacuzzi, kids pool, tennis, basketball, gym, yoga room, sauna, 450m jogging track',
+      'Level 4: indoor badminton, snooker, table tennis + covered link bridge to R&F Mall (450+ outlets)',
+      'R&F Performing Arts Centre & private marina yacht club within the masterplan',
+      'Waterfront promenade along the Strait of Johor',
+      'Unit finishes: timber main door, aluminium glazed windows, full-height tiles, glass balcony railings',
+      "Malaysia's most-viewed condo rental listing — proven cross-border commuter demand",
+    ],
+    status: 'Launch 2025',
     image_url: 'https://rfmalaysia.com/wp-content/uploads/2026/01/3.jpg',
     images: [
       { url: 'https://rfmalaysia.com/wp-content/uploads/2025/11/project03_02_img01.jpg', caption: 'New Casa Suites exterior' },
