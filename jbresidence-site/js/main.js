@@ -253,8 +253,8 @@ function projectCardHtml(p) {
 
 async function getProjects() {
   const rows = await fetchSheet(SHEET_CONFIG.projectsCsvUrl);
-  if (rows && rows.length) return rows.filter(r => r.published === 'TRUE');
-  return PLACEHOLDER_PROJECTS;
+  const valid = rows ? rows.filter(r => r.published === 'TRUE') : [];
+  return valid.length ? valid : PLACEHOLDER_PROJECTS;
 }
 
 async function renderArticles(area, targetSelector) {
@@ -887,8 +887,8 @@ const EXTENDED_PROJECTS = [
 // Merge with PLACEHOLDER_PROJECTS (sheet data takes priority)
 async function getProjectsExtended() {
   const rows = await fetchSheet(SHEET_CONFIG.projectsCsvUrl);
-  if (rows && rows.length) return rows.filter(r => r.published === 'TRUE');
-  return EXTENDED_PROJECTS;
+  const valid = rows ? rows.filter(r => r.published === 'TRUE') : [];
+  return valid.length ? valid : EXTENDED_PROJECTS;
 }
 
 // Updated renderProjects to accept optional limit and work for all areas or specific area
