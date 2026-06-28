@@ -263,8 +263,8 @@ async function renderArticles(area, targetSelector) {
   const rows = await fetchSheet(SHEET_CONFIG.articlesCsvUrl);
   let list;
   if (rows) {
-    list = rows.filter(r => r.area === area && r.published === 'TRUE');
-    if (!list.length) list = PLACEHOLDER_ARTICLES[area] || [];
+    const sheetList = rows.filter(r => r.area === area && r.published === 'TRUE' && r.link && r.link !== '#');
+    list = sheetList.length ? sheetList : PLACEHOLDER_ARTICLES[area] || [];
   } else {
     list = PLACEHOLDER_ARTICLES[area] || [];
   }
