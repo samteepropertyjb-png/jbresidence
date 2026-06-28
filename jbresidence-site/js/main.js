@@ -801,6 +801,32 @@ const EXTENDED_PROJECTS = [
     published: 'TRUE'
   },
   {
+    slug: 'riveria-garden-wawari', area: 'Iskandar Puteri', project_name: 'Riveria Garden @ Wawari',
+    tagline: 'KSL freehold riverside township — 627 acres along Sungai Melayu, minutes from EduCity',
+    price_range: 'Enquire for pricing',
+    tenure: 'Freehold',
+    commute_note: 'Minutes to Tuas Checkpoint via Second Link Expressway',
+    description: "Riveria Garden @ Wawari is KSL Holdings' flagship township project in Iskandar Puteri — a 627-acre freehold master-planned community built along the scenic Sungai Melayu riverfront. It is one of the largest freehold landed developments to launch in Iskandar Puteri in recent years, positioned at the quieter, greener end of the district near EduCity and the Tuas Checkpoint corridor.\n\nThe township is built around three core ideas. First, individual freehold land titles on every unit — not strata, not leasehold. Second, a riverside setting: the development faces Sungai Melayu, with landscaped riverfront promenades designed as the centrepiece of daily community life. Third, a scaled amenities programme anchored by The Wawari Club — a full-facility club built for both casual and active residents, with co-working lounges, sports courts, gymnasium, and swimming facilities.\n\nThe landed units in Riveria Garden are designed around 20-foot frontage terrace homes with 2-car porches, thoughtfully laid-out interior spaces, and bathroom configurations suited to multigenerational families. The known unit type names include the Elora series. Build quality and specifications are in line with KSL's established track record — the same developer behind KSL City Mall and a range of completed residential projects in Johor Bahru.\n\nConnectivity is a key part of the proposition. The site sits within reach of the Iskandar Coastal Highway, the Second Link Expressway (Tuas), and the Pasir Gudang-Perling Highway — giving residents multiple route options to Singapore and to JB Town. EduCity, with its cluster of international schools and university campuses (including Marlborough College Malaysia), is nearby, making this a natural choice for families who prioritise education infrastructure. Gleneagles Hospital Medini is also within the broader Iskandar Puteri catchment.\n\nAs a new KSL township rather than a resale market, Riveria Garden represents a primary market purchase — progressive payment schedule, developer warranty, and new-launch specifications. The freehold title and riverside positioning place it in a different segment from the established (but higher-priced) Gamuda and Eco World townships further into Iskandar Puteri. For buyers who want a landed home with space, greenery, and a long-term freehold asset at a more accessible entry point, Riveria Garden merits a close look.",
+    unit_types: [
+      { type: 'Terrace (Elora series)', size: '20\' frontage · 2-car porch' },
+    ],
+    features: [
+      'Freehold individual land titles — not strata',
+      '627-acre master-planned township by KSL Holdings Berhad',
+      'Riverfront setting along Sungai Melayu — landscaped promenade',
+      'The Wawari Club: co-working lounge, sports courts, gym, swimming facilities',
+      'Dedicated jogging and cycling tracks throughout the community',
+      'Gated and guarded 24-hour security',
+      '20\' frontage terrace homes with 2-car porch',
+      'Access via Iskandar Coastal Highway, Second Link Expressway, Pasir Gudang-Perling Highway',
+      'Minutes from Tuas Checkpoint · Near EduCity international schools and university campuses',
+      'Within the Iskandar Puteri JS-SEZ growth corridor',
+    ],
+    status: 'New Launch',
+    image_url: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1200&auto=format&fit=crop',
+    published: 'TRUE'
+  },
+  {
     slug: 'forest-city-golf-villa', area: 'Forest City', project_name: 'Forest City Golf Villa',
     tagline: 'Private landed villa on the golf course', price_range: 'RM 1.5M – RM 3.5M',
     tenure: 'Strata', commute_note: '~30 min to Second Link',
