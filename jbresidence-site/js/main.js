@@ -995,22 +995,32 @@ function articleCardHtmlExtended(a) {
     </${tag}>`;
 }
 
-// ---- Mobile nav dropdown toggle ----
+// ---- Nav dropdown — click-based toggle (desktop + mobile) ----
 document.addEventListener('DOMContentLoaded', () => {
-  const toggle = document.querySelector('.nav-toggle');
-  const links = document.querySelector('.nav-links');
-  const dropdownToggle = document.querySelector('.nav-dropdown-toggle');
-  const dropdownMenu = document.querySelector('.nav-dropdown-menu');
-
-  const megaPanel = document.querySelector('.nav-mega-panel');
-  if (dropdownToggle && megaPanel) {
-    dropdownToggle.addEventListener('click', (e) => {
-      if (window.innerWidth <= 860) {
-        e.preventDefault();
-        megaPanel.classList.toggle('mobile-open');
-      }
+  document.querySelectorAll('.nav-dropdown-toggle').forEach(toggle => {
+    toggle.addEventListener('click', e => {
+      e.preventDefault();
+      const parent = toggle.closest('.nav-dropdown');
+      const isOpen = parent.classList.contains('is-open');
+      // Close all open dropdowns first
+      document.querySelectorAll('.nav-dropdown.is-open').forEach(d => d.classList.remove('is-open'));
+      if (!isOpen) parent.classList.add('is-open');
     });
-  }
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.nav-dropdown')) {
+      document.querySelectorAll('.nav-dropdown.is-open').forEach(d => d.classList.remove('is-open'));
+    }
+  });
+
+  // Close dropdown when a link inside it is clicked
+  document.querySelectorAll('.nav-mega-panel a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.querySelectorAll('.nav-dropdown.is-open').forEach(d => d.classList.remove('is-open'));
+    });
+  });
 });
 
 // Updated getProjects to use extended data

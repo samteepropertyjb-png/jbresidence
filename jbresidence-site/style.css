@@ -1107,7 +1107,8 @@ footer {
 .nav-mega-col:last-child  { padding-right: 32px; }
 .nav-mega-col { padding: 28px 20px; }
 
-.nav-dropdown:hover .nav-mega-panel { display: grid; }
+.nav-dropdown:hover .nav-mega-panel,
+.nav-dropdown.is-open .nav-mega-panel { display: grid; }
 
 .nav-mega-col {
   padding: 0 20px;
