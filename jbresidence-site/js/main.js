@@ -929,6 +929,10 @@ async function renderProjects(area, targetSelector, limit) {
   if (!target) return;
   const all = await getProjectsExtended();
   let list = area ? all.filter(p => p.area === area) : all;
+  // If Sheet returned data but nothing for this area, fall back to EXTENDED_PROJECTS for this area
+  if (!list.length && area) {
+    list = EXTENDED_PROJECTS.filter(p => p.area === area);
+  }
   if (limit) list = list.slice(0, limit);
   if (!list.length) {
     target.innerHTML = '<p style="color:var(--ink-muted); padding: 40px 0;">More projects coming soon.</p>';
