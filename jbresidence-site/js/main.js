@@ -263,11 +263,15 @@ async function renderArticles(area, targetSelector) {
   if (!target) return;
   const rows = await fetchSheet(SHEET_CONFIG.articlesCsvUrl);
   let list;
+  const local = (PLACEHOLDER_ARTICLES[area] || []).filter(a => a.body === 'exists' && a.link);
   if (rows) {
     const sheetList = rows.filter(r => r.area === area && r.published === 'TRUE' && r.link && r.link !== '#');
-    list = sheetList.length ? sheetList : PLACEHOLDER_ARTICLES[area] || [];
+    // Merge: local articles first, then Sheet articles not already covered by local
+    const sheetLinks = new Set(sheetList.map(r => r.link));
+    const localOnly = local.filter(a => !sheetLinks.has(a.link));
+    list = sheetList.length ? [...localOnly, ...sheetList] : local;
   } else {
-    list = PLACEHOLDER_ARTICLES[area] || [];
+    list = local;
   }
   target.innerHTML = list.map(articleCardHtml).join('');
   initReveal();
