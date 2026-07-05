@@ -4,8 +4,8 @@
 
 // ---- Config: fill these in once your Google Sheet is published ----
 const SHEET_CONFIG = {
-  articlesCsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTa-aRyJ9WRiO0Y3pOOCSvVuOqerrp2Ul2S-WDb1II6ICJPkuzhufGwPaS2vJ341qumrBR6Fi3cBtyw/pub?gid=995398957&single=true&output=csv',
-  projectsCsvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTa-aRyJ9WRiO0Y3pOOCSvVuOqerrp2Ul2S-WDb1II6ICJPkuzhufGwPaS2vJ341qumrBR6Fi3cBtyw/pub?gid=0&single=true&output=csv'
+  articlesCsvUrl: '',
+  projectsCsvUrl: ''
 };
 
 const WHATSAPP_NUMBER = '601156348518'; // update to your active WhatsApp number, digits only with country code
