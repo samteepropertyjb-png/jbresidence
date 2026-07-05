@@ -968,7 +968,17 @@ async function renderAllArticles(targetSelector, limit) {
   const target = document.querySelector(targetSelector);
   if (!target) return;
   const rows = await fetchSheet(SHEET_CONFIG.articlesCsvUrl);
-  let list = rows && rows.length ? rows.filter(r => r.published === 'TRUE') : ALL_ARTICLES;
+  // Always start with local articles that have real content, then append Sheet-only ones
+  const local = ALL_ARTICLES.filter(a => a.body === 'exists' && a.link && a.link !== '#');
+  let list;
+  if (rows && rows.length) {
+    const sheetList = rows.filter(r => r.published === 'TRUE' && r.link && r.link !== '#');
+    const localLinks = new Set(local.map(a => a.link));
+    const sheetOnly = sheetList.filter(r => !localLinks.has(r.link));
+    list = [...local, ...sheetOnly];
+  } else {
+    list = local;
+  }
   if (limit) list = list.slice(0, limit);
   target.innerHTML = list.map(a => articleCardHtmlExtended(a)).join('');
   initReveal();
