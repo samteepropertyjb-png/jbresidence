@@ -425,7 +425,7 @@ async function renderProjectPage() {
             </div>
             <div class="field">
               <label for="pf-phone">Phone / WhatsApp</label>
-              <input type="tel" id="pf-phone" name="phone" required>
+              <input type="tel" id="pf-phone" name="phone" placeholder="e.g. +65 9173 9915 (include country code)" required>
             </div>
           </div>
           <div class="field">
