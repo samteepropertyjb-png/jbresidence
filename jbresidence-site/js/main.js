@@ -924,8 +924,13 @@ const EXTENDED_PROJECTS = [
 // Merge with PLACEHOLDER_PROJECTS (sheet data takes priority)
 async function getProjectsExtended() {
   const rows = await fetchSheet(SHEET_CONFIG.projectsCsvUrl);
-  const valid = rows ? rows.filter(r => r.published === 'TRUE') : [];
-  return valid.length ? valid : EXTENDED_PROJECTS;
+  if (rows && rows.length) {
+    const sheetList = rows.filter(r => r.published === 'TRUE');
+    const localSlugs = new Set(EXTENDED_PROJECTS.map(p => p.slug).filter(Boolean));
+    const sheetOnly = sheetList.filter(r => !localSlugs.has(r.slug));
+    return [...EXTENDED_PROJECTS, ...sheetOnly];
+  }
+  return EXTENDED_PROJECTS;
 }
 
 // Updated renderProjects to accept optional limit and work for all areas or specific area

@@ -117,7 +117,7 @@
       btn.classList.add('active');
       const filter = btn.dataset.filter;
       document.querySelectorAll('#all-projects .project-card').forEach(card => {
-        card.style.display = (filter === 'all' || card.dataset.area === filter) &mdash; '' : 'none';
+        card.style.display = (filter === 'all' || card.dataset.area === filter) ? '' : 'none';
       });
     });
   });
