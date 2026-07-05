@@ -50,11 +50,8 @@
       <button class="topic-filter-btn" data-filter="forest-city">Forest City</button>
       <button class="topic-filter-btn" data-filter="iskandar-puteri">Iskandar Puteri</button>
       <button class="topic-filter-btn" data-filter="jb-town">JB Town</button>
-      <button class="topic-filter-btn" data-filter="mm2h">MM2H</button>
-      <button class="topic-filter-btn" data-filter="js-sez">JS-SEZ</button>
-      <button class="topic-filter-btn" data-filter="golf">Golf</button>
-      <button class="topic-filter-btn" data-filter="retirement">Retirement</button>
       <button class="topic-filter-btn" data-filter="buying-guide">Buying Guide</button>
+      <button class="topic-filter-btn" data-filter="other">Other</button>
     </div>
   </div>
 </div>
@@ -142,19 +139,24 @@
     });
   });
 
+  const MAIN_TOPICS = ['forest-city', 'iskandar-puteri', 'jb-town', 'buying-guide'];
   function filterArticleCards(filter) {
     const cards = document.querySelectorAll('#all-articles .card');
     let visible = 0;
     cards.forEach(card => {
-      const topics = (card.dataset.topics || '').split(',');
-      if (filter === 'all' || topics.includes(filter)) {
-        card.style.display = '';
-        visible++;
+      const topics = (card.dataset.topics || '').split(',').map(t => t.trim()).filter(Boolean);
+      let show = false;
+      if (filter === 'all') {
+        show = true;
+      } else if (filter === 'other') {
+        show = topics.length > 0 && !topics.some(t => MAIN_TOPICS.includes(t));
       } else {
-        card.style.display = 'none';
+        show = topics.includes(filter);
       }
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
     });
-    document.getElementById('articles-empty').style.display = visible === 0 &mdash; 'block' : 'none';
+    document.getElementById('articles-empty').style.display = visible === 0 ? 'block' : 'none';
   }
 </script>
 </body>
