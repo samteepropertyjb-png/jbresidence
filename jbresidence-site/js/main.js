@@ -755,7 +755,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ---- Extended placeholder articles (all areas) ----
 const ALL_ARTICLES = [
-  // Iskandar Puteri — newest first
+  // Newest first
+  { title: 'MM2H Malaysia 2026: Complete Guide to the Malaysia My Second Home Programme', summary: 'Three tiers (Platinum, Gold, Silver), financial requirements, the 90-day rule, Forest City SFZ track, and who actually qualifies — the complete guide for 2026.', body: 'exists', image_url: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=800&auto=format&fit=crop', link: 'articles/mm2h-malaysia-2026-complete-guide.html', area: 'General', topics: 'mm2h,buying-guide' },
   { title: 'Bandar Wawari: Iskandar Puteri\'s Next 3,000-Acre Township', summary: 'A 3,000-acre joint-development by six major developers is taking shape in Taman Wawari — here\'s the scale, the road access story, and what 13,000+ surrounding units mean for buyers.', body: 'exists', image_url: 'photos/wawari-aerial-map.jpg', link: 'articles/bandar-wawari-future-development-iskandar-puteri.html', area: 'Iskandar Puteri', topics: 'iskandar-puteri,buying-guide' },
   // Forest City
   { title: 'Forest City Ghost Town or Opportunity? The Honest Answer in 2026', summary: 'The ghost town label followed Forest City for years. Here is what the current data actually shows — and what it means for buyers today.', body: 'exists', image_url: 'https://images.unsplash.com/photo-1582719471384-894fbb16e074?q=80&w=800&auto=format&fit=crop', link: 'articles/forest-city-ghost-town-or-opportunity.html', area: 'Forest City', topics: 'forest-city' },
