@@ -211,4 +211,56 @@
     <priority>0.9</priority>
   </url>
 
+  <!-- Sunway City Iskandar Puteri articles -->
+  <url>
+    <loc>https://thejbresidence.com/articles/is-sunway-city-iskandar-puteri-worth-buying-2026.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/sunway-city-vs-horizon-hills-vs-eco-botanic.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/schools-sunway-city-iskandar-puteri-families.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/sunway-international-school-iskandar-puteri.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/sunway-city-iskandar-puteri-township-explained.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/sunway-city-iskandar-puteri-greenest-township.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/sunway-city-iskandar-puteri-retirees-guide.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/signature-home-sunway-city-iskandar-puteri.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/sunway-city-iskandar-puteri-js-sez-investors.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/second-link-sunway-city-vs-forest-city.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
 </urlset>
