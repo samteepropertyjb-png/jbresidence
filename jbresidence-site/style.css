@@ -72,7 +72,7 @@ h1, h2, h3, h4 {
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--sky-500);
+  color: var(--sky-700);
 }
 
 .section-title {
@@ -347,7 +347,7 @@ section { padding: 96px 0; }
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--sky-500);
+  color: var(--sky-700);
   margin-bottom: 10px;
 }
 
@@ -1155,7 +1155,7 @@ footer {
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--sky-200);
+  color: rgba(255,255,255,0.92);
   margin-bottom: 16px;
 }
 
