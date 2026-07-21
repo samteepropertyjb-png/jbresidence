@@ -1579,6 +1579,31 @@ footer {
   .nav-dropdown-toggle::after { content: ''; }
 }
 
+/* ---- About Sam — light background variant ---- */
+.about-sam-light .about-sam-name { color: var(--navy-900); }
+.about-sam-light .about-sam-role { color: var(--ink-muted); }
+.about-sam-light .about-sam-desc { color: var(--ink-muted); }
+.about-sam-light .about-sam-stats .stat-num { color: var(--navy-900); }
+.about-sam-light .about-sam-stats .stat-label { color: var(--ink-muted); }
+.about-sam-light .social-link { color: var(--ink-muted); }
+.about-sam-light .social-link:hover { color: var(--gold-500); }
+.about-sam-light .btn-outline {
+  border-color: var(--navy-800);
+  color: var(--navy-900);
+}
+.about-sam-light .btn-outline:hover {
+  background: var(--navy-900);
+  color: var(--white);
+}
+
+/* ---- Card lift shadows (on off-white backgrounds) ---- */
+.card {
+  box-shadow: 0 2px 10px rgba(10,27,46,0.07);
+}
+.guide-cluster {
+  box-shadow: 0 2px 10px rgba(10,27,46,0.06);
+}
+
 /* ---- Project gallery grid ---- */
 .project-gallery {
   display: grid;
