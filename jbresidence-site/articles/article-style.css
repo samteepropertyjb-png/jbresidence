@@ -14,10 +14,12 @@
   --ink-light: #555555;
   --ink-faint: #888888;
   --gold: #C9933A;
+  --sky: #3498DB;
+  --sky-dark: #1A5F8A;
   --navy: #0A1B2E;
-  --border: #E0E0E0;
-  --bg: #F7F5F1;
-  --bg-off: #F7F7F7;
+  --border: #B5D9ED;
+  --bg: #EBF6FC;
+  --bg-off: #D6EAF8;
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'Jost', -apple-system, sans-serif;
   --max-prose: 720px;
@@ -53,7 +55,7 @@ body {
   border-bottom: 1px solid transparent;
   transition: color 0.2s, border-color 0.2s;
 }
-.nav-links a:hover, .nav-links a.active { color: var(--gold); border-bottom-color: var(--gold); }
+.nav-links a:hover, .nav-links a.active { color: #AED6F1; border-bottom-color: #AED6F1; }
 .nav-toggle { display: none; background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; }
 
 /* ---- Hero ---- */
@@ -110,7 +112,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--sky);
   margin-bottom: 14px;
 }
 
@@ -136,7 +138,7 @@ body {
   border-radius: 50%;
   object-fit: cover;
   object-position: top;
-  border: 2px solid var(--gold);
+  border: 2px solid var(--sky);
 }
 
 .art-meta-text {
@@ -174,7 +176,7 @@ body {
   font-size: 1.25rem;
   color: var(--ink-mid);
   line-height: 1.65;
-  border-left: 3px solid var(--gold);
+  border-left: 3px solid var(--sky);
   padding-left: 20px;
   margin-bottom: 36px;
   font-style: italic;
@@ -229,7 +231,7 @@ body {
 .art-wrap ul li::before {
   content: '—';
   position: absolute; left: 0;
-  color: var(--gold);
+  color: var(--sky);
   font-weight: 700;
 }
 
@@ -238,7 +240,7 @@ body {
 .art-wrap ol li::before {
   content: counter(ol-counter) '.';
   position: absolute; left: 0;
-  color: var(--gold);
+  color: var(--sky);
   font-weight: 700;
   font-size: 14px;
 }
@@ -246,7 +248,7 @@ body {
 /* Pull quote / highlight box */
 .art-pullquote {
   background: var(--bg-off);
-  border-left: 4px solid var(--gold);
+  border-left: 4px solid var(--sky);
   padding: 24px 28px;
   margin: 36px 0;
   border-radius: 0 2px 2px 0;
@@ -321,8 +323,8 @@ body {
   content: counter(steps);
   position: absolute; left: 14px; top: 18px;
   width: 26px; height: 26px;
-  background: var(--gold);
-  color: var(--navy);
+  background: var(--sky);
+  color: var(--white, #fff);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   font-weight: 700; font-size: 12px; font-family: var(--font-body);
@@ -379,7 +381,7 @@ footer {
 .f-cols { display: flex; gap: 48px; }
 .f-col h4 { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #fff; margin-bottom: 14px; }
 .f-col a, .f-col p { display: block; font-size: 13px; color: rgba(255,255,255,0.6); text-decoration: none; margin-bottom: 9px; transition: color 0.2s; }
-.f-col a:hover { color: var(--gold); }
+.f-col a:hover { color: #AED6F1; }
 .f-bottom { padding-top: 24px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: 12px; }
 
 /* WhatsApp float */
