@@ -104,7 +104,7 @@ body {
   letter-spacing: 0.03em;
 }
 .art-breadcrumb a { color: rgba(255,255,255,0.8); text-decoration: none; }
-.art-breadcrumb a:hover { color: var(--gold); }
+.art-breadcrumb a:hover { color: var(--sky-200, #AED6F1); }
 
 .art-category {
   display: inline-block;
