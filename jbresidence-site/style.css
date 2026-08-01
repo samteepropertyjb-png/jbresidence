@@ -583,6 +583,41 @@ section { padding: 96px 0; }
 .area-card-link::after { content: '→'; transition: transform 0.2s ease; }
 .area-card:hover .area-card-link::after { transform: translateX(4px); }
 
+/* ---------- Area card collage ---------- */
+.area-card-collage {
+  background: none;
+}
+.area-collage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.area-collage-img {
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.5s ease;
+}
+.area-card-collage:hover .area-collage-img:first-child {
+  transform: scale(1.06) translateX(-2px);
+}
+.area-card-collage:hover .area-collage-img:last-child {
+  transform: scale(1.06) translateX(2px);
+}
+.area-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10,27,46,0.08) 0%, rgba(10,27,46,0.92) 100%);
+  transition: background 0.3s ease;
+  z-index: 1;
+}
+.area-card-collage:hover .area-card-overlay {
+  background: linear-gradient(180deg, rgba(10,27,46,0.18) 0%, rgba(10,27,46,0.97) 100%);
+}
+.area-card-collage .area-card-body { z-index: 2; }
+.area-card-collage::before { display: none; }
+
 /* ---------- Divider ---------- */
 
 .divider {
