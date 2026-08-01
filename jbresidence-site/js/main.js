@@ -939,7 +939,7 @@ const EXTENDED_PROJECTS = [
       'Partial furnish package included: aircon, water heater, kitchen cabinet, digital door lock',
     ],
     status: 'New Launch',
-    image_url: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?q=80&w=1200&auto=format&fit=crop',
+    image_url: 'photos/jb-town/jbseaview.jpg',
     images: [],
     published: 'TRUE'
   },
