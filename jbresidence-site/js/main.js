@@ -976,6 +976,17 @@ async function renderProjects(area, targetSelector, limit) {
   initReveal();
 }
 
+// Render specific projects by slug array (for homepage featured section)
+async function renderFeaturedProjects(slugs, targetSelector) {
+  const target = document.querySelector(targetSelector);
+  if (!target) return;
+  const all = await getProjectsExtended();
+  const list = slugs.map(s => all.find(p => p.slug === s)).filter(Boolean);
+  if (!list.length) return;
+  target.innerHTML = list.map(p => projectCardHtmlExtended(p)).join('');
+  initReveal();
+}
+
 function projectCardHtmlExtended(p) {
   const bg = p.image_url ? `background-image:url('${p.image_url}')` : '';
   const slug = p.slug || slugify(p.project_name);
