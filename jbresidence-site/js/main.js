@@ -172,7 +172,7 @@ const PLACEHOLDER_PROJECTS = [
       'Unit finishes: timber main door, aluminium glazed windows, full-height tiles, glass balcony railings',
       "Malaysia's most-viewed condo rental listing — proven cross-border commuter demand",
     ],
-    status: 'Launch 2025',
+    status: 'Now Selling',
     image_url: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?q=80&w=1200&auto=format&fit=crop',
     published: 'TRUE'
   },
@@ -199,7 +199,7 @@ const PLACEHOLDER_PROJECTS = [
       '90% loan margin, 4.2% interest, 35-year tenure — low entry capital required',
       'Partial furnish package included: aircon, water heater, kitchen cabinet, digital door lock',
     ],
-    status: 'New Launch',
+    status: 'Now Selling',
     image_url: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?q=80&w=1200&auto=format&fit=crop',
     published: 'TRUE'
   },
@@ -816,33 +816,6 @@ const ALL_ARTICLES = [
 // ---- Extended placeholder projects with data-area for filtering ----
 const EXTENDED_PROJECTS = [
   {
-    slug: 'horizon-hills', area: 'Iskandar Puteri', project_name: 'Horizon Hills',
-    tagline: 'Gated golf community, mature landscaping', price_range: 'RM 2.5M – RM 6M',
-    tenure: 'Freehold', commute_note: '~15 min to Second Link',
-    description: "Horizon Hills is one of Iskandar Puteri's most established landed townships, built around an 18-hole golf course with 24-hour guarded security across its precincts.\n\n[Sam to add: specific precinct recommendations, comparable resale transactions, and any current promotions.]",
-    status: 'Now selling',
-    image_url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1200&auto=format&fit=crop',
-    published: 'TRUE'
-  },
-  {
-    slug: 'eco-botanic', area: 'Iskandar Puteri', project_name: 'Eco Botanic',
-    tagline: 'Eco-themed township, strong family amenities', price_range: 'RM 1.8M – RM 4.5M',
-    tenure: 'Freehold', commute_note: '~20 min to Second Link',
-    description: "Eco Botanic is a nature-themed township with extensive parks, lakes, and family-oriented amenities. It draws buyers looking for a balance between greenery and connectivity.\n\n[Sam to add: specific precinct recommendations, schools nearby, and current promotions.]",
-    status: 'Now selling',
-    image_url: 'https://images.unsplash.com/photo-1592595896551-12b371d546d5?q=80&w=1200&auto=format&fit=crop',
-    published: 'TRUE'
-  },
-  {
-    slug: 'east-ledang', area: 'Iskandar Puteri', project_name: 'East Ledang',
-    tagline: 'Premium gated enclave, larger plot sizes', price_range: 'RM 2M – RM 5M',
-    tenure: 'Freehold', commute_note: '~25 min to Second Link',
-    description: "East Ledang is a premium gated enclave known for larger plot sizes and a quieter, more exclusive feel than neighbouring townships.\n\n[Sam to add: specific precinct recommendations and current promotions.]",
-    status: 'Now selling',
-    image_url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop',
-    published: 'TRUE'
-  },
-  {
     slug: 'riveria-garden-wawari', area: 'Iskandar Puteri', project_name: 'Riveria Garden @ Wawari',
     tagline: 'KSL freehold riverside township — 627 acres along Sungai Melayu, minutes from EduCity',
     price_range: 'From RM 900K (Terrace) · From RM 1.32M net (Cluster)',
@@ -867,7 +840,7 @@ const EXTENDED_PROJECTS = [
       'Minutes from Tuas Checkpoint · Near EduCity international schools and university campuses',
       'Within the Iskandar Puteri JS-SEZ growth corridor',
     ],
-    status: 'New Launch',
+    status: 'Now Selling',
     image_url: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1200&auto=format&fit=crop',
     published: 'TRUE'
   },
@@ -914,7 +887,7 @@ const EXTENDED_PROJECTS = [
       'Unit finishes: timber main door, aluminium glazed windows, full-height tiles, glass balcony railings',
       "Malaysia's most-viewed condo rental listing — proven cross-border commuter demand",
     ],
-    status: 'Launch 2025',
+    status: 'Now Selling',
     image_url: 'https://rfmalaysia.com/wp-content/uploads/2026/01/3.jpg',
     images: [
       { url: 'https://rfmalaysia.com/wp-content/uploads/2025/11/project03_02_img01.jpg', caption: 'New Casa Suites exterior' },
@@ -949,7 +922,7 @@ const EXTENDED_PROJECTS = [
       '90% loan margin, 4.2% interest, 35-year tenure — low entry capital required',
       'Partial furnish package included: aircon, water heater, kitchen cabinet, digital door lock',
     ],
-    status: 'New Launch',
+    status: 'Now Selling',
     image_url: 'photos/jb-town/summersuites.jpg',
     images: [],
     published: 'TRUE'
