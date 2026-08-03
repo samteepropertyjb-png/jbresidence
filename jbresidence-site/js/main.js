@@ -125,7 +125,7 @@ const PLACEHOLDER_PROJECTS = [
     tagline: 'Gated golf community, mature landscaping', price_range: 'RM 2.5M – RM 6M',
     tenure: 'Freehold', commute_note: '~15 min to Second Link',
     description: "Horizon Hills is one of Iskandar Puteri's most established landed townships, built around an 18-hole golf course with 24-hour guarded security across its precincts. It's a common shortlist entry for families relocating from Singapore and for retirees prioritising lifestyle infrastructure over proximity to the city centre.\n\n[Placeholder — Sam to add: specific precinct recommendations, comparable resale transactions, and any current promotions or new-launch phases worth flagging.]",
-    status: 'Now selling',
+    status: 'Now Selling',
     image_url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1200&auto=format&fit=crop',
     published: 'TRUE'
   },
@@ -134,7 +134,7 @@ const PLACEHOLDER_PROJECTS = [
     tagline: 'Eco-themed township, strong family amenities', price_range: 'RM 1.8M – RM 4.5M',
     tenure: 'Freehold', commute_note: '~20 min to Second Link',
     description: "Eco Botanic is a nature-themed township with extensive parks, lakes, and family-oriented amenities. It draws buyers looking for a balance between greenery and connectivity, with schools and retail options developing steadily around it.\n\n[Placeholder — Sam to add: specific precinct recommendations, schools nearby, and current promotions.]",
-    status: 'Now selling',
+    status: 'Now Selling',
     image_url: 'https://images.unsplash.com/photo-1592595896551-12b371d546d5?q=80&w=1200&auto=format&fit=crop',
     published: 'TRUE'
   },
@@ -143,7 +143,7 @@ const PLACEHOLDER_PROJECTS = [
     tagline: 'Premium gated enclave, larger plot sizes', price_range: 'RM 2M – RM 5M',
     tenure: 'Freehold', commute_note: '~25 min to Second Link',
     description: "East Ledang is a premium gated enclave known for larger plot sizes and a quieter, more exclusive feel than some of its neighbouring townships. Popular with upgrading families wanting more space without moving further from the city.\n\n[Placeholder — Sam to add: specific precinct recommendations and current promotions.]",
-    status: 'Now selling',
+    status: 'Now Selling',
     image_url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop',
     published: 'TRUE'
   },
@@ -209,7 +209,7 @@ const PLACEHOLDER_PROJECTS = [
     price_range: 'RM 299,000 – RM 659,000',
     tenure: 'Leasehold', commute_note: '~9km to Second Link (Tuas)',
     description: "Bodaiju Residences is an 802-unit twin-tower serviced apartment in Medini, Iskandar Puteri, developed by Creed Group Japan. It is one of the few new launches in Medini with no minimum purchase price for foreign buyers, GreenRE green certification, and a Japanese-quality fit-out. Tower A is now selling with 2-bedroom, 3-bedroom, and dual-key units available from RM 299,000. The 1-bedroom units are fully sold.",
-    status: 'Now selling',
+    status: 'Now Selling',
     image_url: 'photos/bodaiju/Aerial view 1.jpeg',
     project_url: 'projects/bodaiju-residences.html',
     published: 'TRUE'
@@ -849,7 +849,7 @@ const EXTENDED_PROJECTS = [
     tagline: 'Private landed villa on the golf course', price_range: 'RM 1.5M – RM 3.5M',
     tenure: 'Strata', commute_note: '~30 min to Second Link',
     description: "The Forest City Golf Villa (V120) is a two-storey landed strata property set directly on the golf course — with private garden, rooftop terrace, and a 5-year golf membership included.\n\n[Sam to add: current availability, pricing updates, and comparison with high-rise options.]",
-    status: 'Now selling',
+    status: 'Now Selling',
     image_url: 'photos/villa-garden-exterior.jpg',
     published: 'TRUE'
   },
@@ -858,7 +858,7 @@ const EXTENDED_PROJECTS = [
     tagline: 'Sea-view apartments, resort facilities', price_range: 'RM 400K – RM 1.5M',
     tenure: 'Strata', commute_note: '~30 min to Second Link',
     description: "Forest City's high-rise apartments offer sea views, resort-style pools, and island living at price points that are hard to match this close to Singapore.\n\n[Sam to add: specific towers, floor comparison, and current promotions.]",
-    status: 'Now selling',
+    status: 'Now Selling',
     image_url: 'fc-pool.jpg',
     published: 'TRUE'
   },
@@ -933,7 +933,7 @@ const EXTENDED_PROJECTS = [
     price_range: 'RM 299,000 – RM 659,000',
     tenure: 'Leasehold', commute_note: '~9km to Second Link (Tuas)',
     description: "Bodaiju Residences is an 802-unit twin-tower serviced apartment in Medini, Iskandar Puteri, developed by Creed Group Japan. It is one of the few new launches in Medini with no minimum purchase price for foreign buyers, GreenRE green certification, and a Japanese-quality fit-out. Tower A is now selling with 2-bedroom, 3-bedroom, and dual-key units available from RM 299,000. The 1-bedroom units are fully sold.",
-    status: 'Now selling',
+    status: 'Now Selling',
     image_url: 'photos/bodaiju/Aerial%20view%201.jpeg',
     project_url: 'projects/bodaiju-residences.html',
     published: 'TRUE'
