@@ -961,7 +961,7 @@ const EXTENDED_PROJECTS = [
     tenure: 'Leasehold', commute_note: '~9km to Second Link (Tuas)',
     description: "Bodaiju Residences is an 802-unit twin-tower serviced apartment in Medini, Iskandar Puteri, developed by Creed Group Japan. It is one of the few new launches in Medini with no minimum purchase price for foreign buyers, GreenRE green certification, and a Japanese-quality fit-out. Tower A is now selling with 2-bedroom, 3-bedroom, and dual-key units available from RM 299,000. The 1-bedroom units are fully sold.",
     status: 'Now selling',
-    image_url: 'photos/bodaiju/Aerial view 1.jpeg',
+    image_url: 'photos/bodaiju/Aerial%20view%201.jpeg',
     project_url: 'projects/bodaiju-residences.html',
     published: 'TRUE'
   },
