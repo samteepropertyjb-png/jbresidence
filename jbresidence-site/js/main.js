@@ -572,6 +572,29 @@ const TRANSLATIONS = {
     'footer-tagline': 'The independent property knowledge base for Johor Bahru — Forest City, Iskandar Puteri, MM2H, JS-SEZ, and beyond.',
     'footer-districts': 'Districts',
     'footer-contact': 'Contact',
+
+    // Buyer's Knowledge Hub (index.html)
+    'hub-eyebrow': "BUYER'S KNOWLEDGE HUB",
+    'hub-headline': 'Understand the market before you buy.',
+    'hub-sub': "Essential guides from Sam's advisory desk — covering JS-SEZ, MM2H, area comparisons, schools, and buying process. Every guide is written for buyers, not sellers.",
+    'hub-banner': 'ESSENTIAL READING · Guides updated for 2026 — researched and written by Sam Tee',
+    'hub-view-all': 'View all buyer guides →',
+    'hub-jssez': 'JS-SEZ Complete Guide: What It Means for Johor Buyers',
+    'hub-mm2h': 'MM2H 2026 Complete Guide: Eligibility, Costs & How to Apply',
+    'hub-fc': 'Is Forest City Worth Buying in 2026?',
+    'hub-sunway': 'Is Sunway City Iskandar Puteri Worth Buying in 2026?',
+    'hub-schools': 'International Schools in Iskandar Puteri 2026: Full Guide',
+    'hub-compare': 'Horizon Hills vs Eco Botanic vs East Ledang: Which to Buy?',
+    'hub-sfz': "Forest City SFZ & MM2H: The Complete Buyer's Guide",
+    'hub-retire': 'Retiring in Iskandar Puteri: Golf, Healthcare & What to Expect',
+    'hub-landed': 'Who Should Buy Landed Property in Iskandar Puteri?',
+    'hub-2ndlink': 'Buying Near the Second Link: Sunway City vs Forest City',
+
+    // Articles hub CTA
+    'articles-cta-eyebrow': "Can't find your answer?",
+    'articles-cta-headline': 'Ask Sam directly.',
+    'articles-cta-sub': 'A short WhatsApp message is faster than reading everything. Tell me your purpose, budget, and timeline — I\'ll point you in the right direction.',
+    'articles-cta-btn': 'Chat with Sam on WhatsApp',
   },
 
   zh: {
@@ -713,6 +736,29 @@ const TRANSLATIONS = {
     'footer-tagline': '柔佛新山房产独立知识库——森林城市、依斯干达、MM2H、JS-SEZ及更多专题。',
     'footer-districts': '片区',
     'footer-contact': '联系方式',
+
+    // Buyer's Knowledge Hub (index.html)
+    'hub-eyebrow': '买家知识中心',
+    'hub-headline': '买前先读懂市场。',
+    'hub-sub': '来自Sam顾问台的权威指南——涵盖JS-SEZ、MM2H、片区对比、学校及置业流程。每篇指南均站在买家立场撰写，非推销。',
+    'hub-banner': '必读精选 · 2026年更新指南 — 由Sam Tee研究撰写',
+    'hub-view-all': '查看全部置业指南 →',
+    'hub-jssez': 'JS-SEZ完整指南：对柔佛买家意味着什么',
+    'hub-mm2h': 'MM2H 2026完整指南：申请资格、费用与流程',
+    'hub-fc': '2026年森林城市值得购买吗？',
+    'hub-sunway': '2026年依斯干达公主城阳光城是否值得购买？',
+    'hub-schools': '依斯干达公主城国际学校2026：完整指南',
+    'hub-compare': 'Horizon Hills vs Eco Botanic vs East Ledang：该选哪个？',
+    'hub-sfz': '森林城市SFZ与MM2H：完整置业指南',
+    'hub-retire': '在依斯干达公主城退休：高尔夫、医疗及注意事项',
+    'hub-landed': '谁该在依斯干达公主城购买有地房产？',
+    'hub-2ndlink': '第二通道附近置业：阳光城vs森林城市',
+
+    // Articles hub CTA
+    'articles-cta-eyebrow': '找不到答案？',
+    'articles-cta-headline': '直接咨询Sam。',
+    'articles-cta-sub': '一条简短的WhatsApp消息比通读所有内容更快。告诉我您的用途、预算和时间线——我会为您指引正确方向。',
+    'articles-cta-btn': '与Sam在WhatsApp上交流',
   }
 };
 
@@ -785,7 +831,7 @@ function applyLanguage(lang) {
     { sel: '#articles-iskandar-puteri', fn: () => renderArticles('Iskandar Puteri', '#articles-iskandar-puteri') },
     { sel: '#articles-forest-city', fn: () => renderArticles('Forest City', '#articles-forest-city') },
     { sel: '#articles-jb-town', fn: () => renderArticles('JB Town', '#articles-jb-town') },
-    { sel: '#articles-homepage', fn: () => renderAllArticles('#articles-homepage', 3) },
+    { sel: '#home-articles', fn: () => renderAllArticles('#home-articles', 3) },
   ];
   articleGrids.forEach(({ sel, fn }) => { if (document.querySelector(sel)) fn(); });
 }
