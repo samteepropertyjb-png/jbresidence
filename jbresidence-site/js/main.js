@@ -561,6 +561,7 @@ const TRANSLATIONS = {
     'about-eyebrow': 'About Sam Tee',
     'footer-areas': 'Areas',
     'footer-guides': 'Guides',
+    'nav-about': 'About Sam',
 
     // Footer
     'footer-tagline': 'The independent property knowledge base for Johor Bahru — Forest City, Iskandar Puteri, MM2H, JS-SEZ, and beyond.',
@@ -701,6 +702,7 @@ const TRANSLATIONS = {
     'about-eyebrow': '关于Sam Tee',
     'footer-areas': '片区',
     'footer-guides': '指南',
+    'nav-about': '关于 Sam',
 
     // Footer
     'footer-tagline': '柔佛新山房产独立知识库——森林城市、依斯干达、MM2H、JS-SEZ及更多专题。',
@@ -723,6 +725,39 @@ function applyLanguage(lang) {
         el.textContent = t[key];
       }
     }
+  });
+
+  // Translate nav links by href (works on all pages without data-i18n in HTML)
+  const navLinkMap = [
+    { hrefs: ['index.html', '../index.html'], key: 'nav-home' },
+    { hrefs: ['projects.html', '../projects.html'], key: 'nav-projects' },
+    { hrefs: ['articles.html', '../articles.html'], key: 'nav-guides' },
+    { hrefs: ['about-sam-tee.html', '../about-sam-tee.html'], key: 'nav-about' },
+    { hrefs: ['jb-town.html', '../jb-town.html'], key: 'nav-jbt' },
+    { hrefs: ['iskandar-puteri.html', '../iskandar-puteri.html'], key: 'nav-ip' },
+    { hrefs: ['forest-city.html', '../forest-city.html'], key: 'nav-fc' },
+  ];
+  navLinkMap.forEach(({ hrefs, key }) => {
+    if (t[key] === undefined) return;
+    hrefs.forEach(href => {
+      document.querySelectorAll(`.nav-links a[href="${href}"]:not([data-i18n]), .nav-mega-panel a[href="${href}"]:not([data-i18n])`).forEach(el => {
+        el.textContent = t[key];
+      });
+    });
+  });
+
+  // Translate footer col headings (save EN original in data-en for reversibility)
+  const footerHeadMap = { 'Areas': 'footer-areas', 'Districts': 'footer-districts', 'Guides': 'footer-guides', 'Contact': 'footer-contact' };
+  document.querySelectorAll('.footer-col h4, .footer-col-head').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent.trim();
+    const key = footerHeadMap[el.dataset.en];
+    if (key && t[key] !== undefined) el.textContent = t[key];
+  });
+
+  // Translate footer tagline on pages without data-i18n
+  document.querySelectorAll('.footer-tagline:not([data-i18n])').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent.trim();
+    if (t['footer-tagline'] !== undefined) el.textContent = t['footer-tagline'];
   });
 
   // Update toggle button appearance
