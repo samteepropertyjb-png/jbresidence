@@ -46,6 +46,11 @@
 
   <!-- Articles -->
   <url>
+    <loc>https://thejbresidence.com/articles/foreign-buyer-costs-johor-property-2026.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://thejbresidence.com/articles/mm2h-malaysia-2026-complete-guide.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>

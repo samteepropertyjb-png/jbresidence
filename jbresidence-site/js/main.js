@@ -1,1192 +1,132 @@
-// ============================================
-// SAM TEE PROPERTY â€” shared site behavior
-// ============================================
-
-// ---- Config: fill these in once your Google Sheet is published ----
-const SHEET_CONFIG = {
-  articlesCsvUrl: '',
-  projectsCsvUrl: ''
-};
-
-const WHATSAPP_NUMBER = '601156348518'; // update to your active WhatsApp number, digits only with country code
-
-// ---- Nav scroll state ----
-function initNav() {
-  const nav = document.querySelector('.nav');
-  if (!nav) return;
-  const onScroll = () => {
-    if (window.scrollY > 40) nav.classList.add('scrolled');
-    else nav.classList.remove('scrolled');
-  };
-  window.addEventListener('scroll', onScroll);
-  onScroll();
-
-  const toggle = document.querySelector('.nav-toggle');
-  const links = document.querySelector('.nav-links');
-  if (toggle && links) {
-    toggle.addEventListener('click', () => {
-      links.classList.toggle('open');
-      toggle.textContent = links.classList.contains('open') ? 'âœ•' : 'â˜°';
-    });
-    // Close menu when a link is tapped
-    links.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        links.classList.remove('open');
-        toggle.textContent = 'â˜°';
-      });
-    });
-  }
-}
-
-// ---- Scroll reveal ----
-function initReveal() {
-  const els = document.querySelectorAll('.reveal');
-  if (!els.length) return;
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-  }, { threshold: 0.12 });
-  els.forEach(el => obs.observe(el));
-}
-
-// ---- Minimal CSV parser (handles quoted fields with commas and newlines) ----
-function parseCsv(text) {
-  const rows = [];
-  let row = [], field = '', inQuotes = false;
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i];
-    if (inQuotes) {
-      if (c === '"' && text[i + 1] === '"') { field += '"'; i++; }
-      else if (c === '"') { inQuotes = false; }
-      else { field += c; }
-    } else {
-      if (c === '"') inQuotes = true;
-      else if (c === ',') { row.push(field); field = ''; }
-      else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
-      else if (c === '\r') { /* skip */ }
-      else { field += c; }
-    }
-  }
-  if (field.length || row.length) { row.push(field); rows.push(row); }
-  if (!rows.length) return [];
-  const headers = rows[0].map(h => h.trim());
-  return rows.slice(1).filter(r => r.some(v => v.trim().length)).map(r => {
-    const obj = {};
-    headers.forEach((h, idx) => { obj[h] = (r[idx] || '').trim(); });
-    return obj;
-  });
-}
-
-async function fetchSheet(url) {
-  if (!url) return null;
-  try {
-    const res = await fetch(url, { cache: 'no-store' });
-    if (!res.ok) return null;
-    const text = await res.text();
-    return parseCsv(text);
-  } catch (e) {
-    console.warn('Sheet fetch failed, using placeholders.', e);
-    return null;
-  }
-}
-
-// ---- Placeholder data (shown until the Sheet is connected, or if a fetch fails) ----
-const PLACEHOLDER_ARTICLES = {
-  'JB Town': [
-    { title: '3 things you need to watch out before buying in Johor Bahru Town', summary: '', body: '', image_url: '' },
-    { title: 'Placeholder article 2 â€” Johor Bahru Town', summary: '', body: '', image_url: '' },
-    { title: 'Placeholder article 3 â€” Johor Bahru Town', summary: '', body: '', image_url: '' },
-    { title: 'Placeholder article 4 â€” Johor Bahru Town', summary: '', body: '', image_url: '' },
-    { title: 'Placeholder article 5 â€” Johor Bahru Town', summary: '', body: '', image_url: '' }
-  ],
-  'Iskandar Puteri': [
-    { title: 'Bandar Wawari: Iskandar Puteri\'s Next 3,000-Acre Township', summary: 'A 3,000-acre joint-development by six major developers is taking shape in Taman Wawari â€” here\'s the scale, the road access story, and what 13,000+ surrounding units mean for buyers.', body: 'exists', image_url: 'photos/wawari-aerial-map.jpg', link: 'articles/bandar-wawari-future-development-iskandar-puteri.html' },
-    { title: 'JS-SEZ and Iskandar Puteri: What the Special Economic Zone Actually Means for Property', summary: 'Tax incentives, approved zones, which precincts benefit most â€” and whether the JS-SEZ hype is already priced in.', body: 'exists', image_url: 'photos/horizon-hills/hh-2.jpg', link: 'articles/js-sez-iskandar-puteri-property-impact.html' },
-    { title: 'Kota Iskandar: Johor\'s New Administrative Capital and What It Means for Property', summary: 'Government ministries, the new High Court complex, civil servant population â€” how a purpose-built government hub creates long-term residential demand.', body: 'exists', image_url: 'photos/horizon-hills/img1-1-min.jpg', link: 'articles/kota-iskandar-government-hub-property.html' },
-    { title: 'Second Link Upgrade: What It Changes for Iskandar Puteri Commuters and Property', summary: 'The Tuas checkpoint expansion, expected clearance improvements, and how faster crossings change the commute calculus for Iskandar Puteri buyers.', body: 'exists', image_url: 'photos/sunway-iskandar/sunway-second-link.jpg', link: 'articles/second-link-upgrade-iskandar-puteri.html' },
-    { title: 'Medini Iskandar in 2026: What Happened and What Is Still Coming', summary: 'Gleneagles and Legoland are there. The office towers are not. A clear-eyed look at what was built, what stalled, and what the JS-SEZ means for Medini\'s second act.', body: 'exists', image_url: 'photos/iskandar-puteri/legoland.jpg', link: 'articles/medini-iskandar-2026.html' },
-    { title: 'Iskandar Puteri Rental Market 2026: Who Rents Here and What Yields Look Like', summary: 'Expat families, corporate relocations, medical professionals â€” the five tenant segments in Iskandar Puteri and what gross yields actually look like for landed homes.', body: 'exists', image_url: 'photos/eco-botanic/eco1.jpg', link: 'articles/iskandar-puteri-rental-market-2026.html' },
-    { title: 'New Property Launches in Iskandar Puteri 2026: What the Major Developers Are Bringing to Market', summary: 'What Gamuda Land, Eco World, and UEM Sunrise are releasing â€” new phase pricing, what has changed since 2022, and new launch vs. subsale compared.', body: 'exists', image_url: 'photos/horizon-hills/hh-4.jpg', link: 'articles/iskandar-puteri-new-launches-2026.html' },
-    { title: 'From Nusajaya to Iskandar Puteri: How the Area Reinvented Itself', summary: 'The full arc â€” palm oil estates, the Iskandar Malaysia master plan, the hype cycle, the trough, and the JS-SEZ revival. What buyers in 2026 are actually inheriting.', body: 'exists', image_url: 'photos/horizon-hills/hh-5.jpg', link: 'articles/nusajaya-to-iskandar-puteri-history.html' }
-  ],
-  'Forest City': [
-    { title: 'Forest City Ghost Town or Opportunity? The Honest Answer in 2026', summary: 'The ghost town label followed Forest City for years. Here is what the current data actually shows â€” and what it means for buyers today.', body: 'exists', image_url: 'photos/forest-city/fc-island.png', link: 'articles/forest-city-ghost-town-or-opportunity.html' },
-    { title: 'Is Forest City Worth Buying in 2026? An Advisor\'s Honest Assessment', summary: 'Who Forest City suits, who it does not, and the honest case for and against buying there right now.', body: 'exists', image_url: 'photos/forest-city/forest-city-site-3.jpg', link: 'articles/is-forest-city-worth-buying-2026.html' },
-    { title: 'Can Forest City Qualify for MM2H? The SFZ Programme Explained', summary: 'Forest City is the only project in Malaysia with its own MM2H category â€” lower deposit, no minimum price. Here is exactly how it works.', body: 'exists', image_url: 'photos/forest-city/golf-2.png', link: 'articles/forest-city-mm2h-sfz-guide.html' },
-    { title: 'Forest City Golf Villa: What It Is, What You Get, and Who It Suits', summary: 'An inside look at the V120 Golf Villa â€” private garden, rooftop terrace, golf course view, and 5-year free membership. Real photos from an actual unit visit.', body: 'exists', image_url: 'photos/villa-garden-exterior.jpg', link: 'articles/forest-city-golf-villa-guide.html' },
-    { title: 'Living in a Forest City Highrise: What to Expect in 2026', summary: 'Sea views, resort facilities, island air, and how the living environment compares to mainland Johor â€” an honest walkthrough for buyers considering a Forest City apartment.', body: 'exists', image_url: 'photos/forest-city/forest-city-site-1.jpg', link: 'articles/forest-city-highrise-living-2026.html' },
-    { title: 'Why Buyers Choose Forest City: The Island Lifestyle Nobody Talks About', summary: 'The mangrove corridor, two world-ranked golf courses, five-star resort facilities, beach access, and duty-free island living â€” the lifestyle case for Forest City, without the investment argument.', body: 'exists', image_url: 'photos/forest-city/forest-city-site-2.jpg', link: 'articles/forest-city-island-lifestyle.html' }
-  ]
-};
-
-// Each project row carries everything needed for both the card AND its own detail page.
-const PLACEHOLDER_PROJECTS = [
-  {
-    slug: 'horizon-hills', area: 'Iskandar Puteri', project_name: 'Horizon Hills',
-    tagline: 'Gated golf community, mature landscaping', price_range: 'RM 2.5M â€“ RM 6M',
-    tenure: 'Freehold', commute_note: '~15 min to Second Link',
-    description: "Horizon Hills is one of Iskandar Puteri's most established landed townships, built around an 18-hole golf course with 24-hour guarded security across its precincts. It's a common shortlist entry for families relocating from Singapore and for retirees prioritising lifestyle infrastructure over proximity to the city centre.\n\n[Placeholder â€” Sam to add: specific precinct recommendations, comparable resale transactions, and any current promotions or new-launch phases worth flagging.]",
-    status: 'Now Selling',
-    image_url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1200&auto=format&fit=crop',
-    published: 'TRUE'
-  },
-  {
-    slug: 'eco-botanic', area: 'Iskandar Puteri', project_name: 'Eco Botanic',
-    tagline: 'Eco-themed township, strong family amenities', price_range: 'RM 1.8M â€“ RM 4.5M',
-    tenure: 'Freehold', commute_note: '~20 min to Second Link',
-    description: "Eco Botanic is a nature-themed township with extensive parks, lakes, and family-oriented amenities. It draws buyers looking for a balance between greenery and connectivity, with schools and retail options developing steadily around it.\n\n[Placeholder â€” Sam to add: specific precinct recommendations, schools nearby, and current promotions.]",
-    status: 'Now Selling',
-    image_url: 'https://images.unsplash.com/photo-1592595896551-12b371d546d5?q=80&w=1200&auto=format&fit=crop',
-    published: 'TRUE'
-  },
-  {
-    slug: 'east-ledang', area: 'Iskandar Puteri', project_name: 'East Ledang',
-    tagline: 'Premium gated enclave, larger plot sizes', price_range: 'RM 2M â€“ RM 5M',
-    tenure: 'Freehold', commute_note: '~25 min to Second Link',
-    description: "East Ledang is a premium gated enclave known for larger plot sizes and a quieter, more exclusive feel than some of its neighbouring townships. Popular with upgrading families wanting more space without moving further from the city.\n\n[Placeholder â€” Sam to add: specific precinct recommendations and current promotions.]",
-    status: 'Now Selling',
-    image_url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop',
-    published: 'TRUE'
-  },
-  {
-    slug: 'rf-princess-cove', area: 'JB Town', project_name: 'R&F Princess Cove â€“ Phase 3',
-    tagline: 'Border-adjacent high-rise with direct RTS Link connectivity to Singapore',
-    price_range: 'Enquire for pricing',
-    tenure: 'Freehold',
-    commute_note: '650m sheltered walk to JB CIQ Â· RTS Link (Bukit Chagar) to Woodlands North MRT',
-    description: "R&F Princess Cove is Johor Bahru's highest-profile residential landmark â€” a mixed-use masterplan built immediately adjacent to the JB Customs, Immigration and Quarantine (CIQ) complex, the busiest land border crossing in the world with 350,000 travellers daily. Phase 3, known as New Casa Suites @ Mercu 3, is the latest tower in this development, carrying forward the same connectivity-first proposition with upgraded facilities and direct RTS access.\n\nThe single most important fact about this address is the 650-metre sheltered walkway connecting the development directly to JB CIQ. You walk from your lobby, covered, to immigration in under ten minutes â€” no vehicle needed. With the RTS Link (Rapid Transit System) â€” Bukit Chagar station, the Johor Bahru terminus â€” now operational, that walk continues on rail into Woodlands North MRT station in Singapore, where it connects to the Thomson-East Coast Line and the rest of the Singapore MRT network. The commute from lobby to Orchard Road is shorter from this address than from any other Malaysian property.\n\nPhase 3's Urban Sky Park occupies Level 6 â€” a full active floor with swimming pool, jacuzzi, kids' pool, covered BBQ lawn, leisure lawn, tennis court, basketball court, outdoor gym, gym room, yoga room, leisure track, sauna, childcare centre, and multipurpose room. Level 4 adds indoor badminton hall, snooker room, and table tennis room â€” plus the covered link bridge that connects directly into R&F Mall, with over 450 retail outlets within the same complex. The 450-metre Sky Lounge Jogging Track on Level 6 is the only elevated jogging track of its kind in Johor Bahru.\n\nThe wider R&F Princess Cove masterplan includes Johor Bahru's first opera house â€” the R&F Performing Arts Centre â€” a private marina yacht club on the International Marina Boulevard, and waterfront promenade access along the Strait of Johor. These are not future plans: they are operating today.\n\nThe investment case is direct: border-adjacent, RTS-connected, linked to a 450-outlet mall, with demonstrable rental demand driven by cross-border commuters who need a JB base within walking distance of Singapore. R&F Princess Cove has consistently ranked as Malaysia's most-viewed condominium rental listing across major property portals â€” a metric reflecting actual tenant interest, not developer marketing. Phase 3 offers a new-launch entry point into that established rental market.",
-    unit_types: [
-      { type: 'Studio', size: '313 sq ft' },
-      { type: '1-Bedroom', size: '555 â€“ 593 sq ft' },
-      { type: '2-Bedroom', size: '781 â€“ 894 sq ft' },
-      { type: '3-Bedroom', size: '894 â€“ 1,156 sq ft' },
-      { type: '4-Bedroom', size: '1,555 sq ft' },
-    ],
-    features: [
-      'Freehold title â€” rare for high-rise in JB Town',
-      '650m sheltered walkway direct to JB CIQ â€” no car needed',
-      'RTS Link (Bukit Chagar) to Woodlands North MRT â€” Singapore rail access',
-      'Urban Sky Park (Level 6): pool, jacuzzi, kids pool, tennis, basketball, gym, yoga room, sauna, 450m jogging track',
-      'Level 4: indoor badminton, snooker, table tennis + covered link bridge to R&F Mall (450+ outlets)',
-      'R&F Performing Arts Centre & private marina yacht club within the masterplan',
-      'Waterfront promenade along the Strait of Johor',
-      'Unit finishes: timber main door, aluminium glazed windows, full-height tiles, glass balcony railings',
-      "Malaysia's most-viewed condo rental listing â€” proven cross-border commuter demand",
-    ],
-    status: 'Now Selling',
-    image_url: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?q=80&w=1200&auto=format&fit=crop',
-    published: 'TRUE'
-  },
-  {
-    slug: 'summer-suites', area: 'JB Town', project_name: 'Summer Suites',
-    tagline: 'Freehold dual-key suites in the heart of JB Town â€” priced below market at 15-year-old land cost',
-    price_range: 'From RM 580K',
-    tenure: 'Freehold',
-    commute_note: 'Minutes to JB CIQ Â· 10 min to JB Sentral Â· Walking distance to City Square & KSL City',
-    description: "Summer Suites sits at Jalan Tenteram, Johor Bahru Town â€” the original city centre, where everything is walkable and nothing is further than ten minutes away. The project is developed by Connoisseur Properties Sdn Bhd, whose track record includes the completed Ledang Heights township in Nusajaya.\n\nWhat makes this project different from other JB Town launches is its price point. The developer acquired this land 15 years ago, long before Johor Bahru's property market reacted to the RTS Link announcement and the JS-SEZ framework. As a result, Summer Suites is priced at RM 968â€“1,095 per square foot â€” at a time when comparable completed condominiums in the same corridor are transacting at RM 1,100â€“1,300 psf. You are buying into the city centre at a discount to the existing resale market, backed by a freehold title.\n\nAll three unit types are designed around the Dual Key concept â€” two lockable, self-contained spaces within a single unit, each with its own entrance where applicable. This gives buyers the flexibility to live in one key and rent the other, or lease both keys separately to different tenants. The projected room-rental yields range from 6.5% to 8% depending on unit type, significantly ahead of traditional single-let configurations in the same area.\n\nThe JB Town location means your tenants have immediate access to everything that drives rental demand in this corridor: Johor Bahru Customs, Immigration and Quarantine (CIQ) is minutes away, placing this address directly in the cross-border commuter catchment. City Square mall, KSL City Mall, Hospital Sultanah Aminah, and JB Sentral (the intercity rail terminal) are all within a short drive or walk. The RTS Link Bukit Chagar station, connecting Johor Bahru directly to Singapore's Thomson-East Coast MRT line, sits in the same urban cluster. For tenants commuting to Singapore without a car, this postcode has no substitute in Johor Bahru.\n\nThe project comes with a partial furnish package â€” aircon, water heater, kitchen cabinet, and digital door lock â€” reducing the fit-out cost and time before a unit can be rented out. A 90% loan margin is available, with progressive interest payments during construction keeping holding costs low in the early stages.",
-    unit_types: [
-      { type: 'Type A â€” Dual Key (3 bed / 3 bath)', size: '912 sq ft' },
-      { type: 'Type B â€” 2+1 bed / 2 bath', size: '808 sq ft' },
-      { type: 'Type C â€” Dual Key (Studio + 1 bed / 2 bath)', size: '599 sq ft' },
-    ],
-    features: [
-      'Freehold title in the heart of JB Town',
-      'Priced at RM 968â€“1,095 psf â€” below the resale market (RM 1,100â€“1,300 psf) thanks to land acquired 15 years ago',
-      'Dual Key layout across all types â€” live in one, rent the other, or maximise room-rental yield',
-      'Room-rental ROI projected at 6.5%â€“8% depending on unit type',
-      'Minutes to JB CIQ â€” within the cross-border commuter rental catchment',
-      'Walking distance to City Square, KSL City Mall, Hospital Sultanah Aminah, and JB Sentral',
-      'RTS Link Bukit Chagar station in the same urban corridor â€” Singapore rail access for tenants',
-      '90% loan margin, 4.2% interest, 35-year tenure â€” low entry capital required',
-      'Partial furnish package included: aircon, water heater, kitchen cabinet, digital door lock',
-    ],
-    status: 'Now Selling',
-    image_url: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?q=80&w=1200&auto=format&fit=crop',
-    published: 'TRUE'
-  },
-  {
-    slug: 'bodaiju-residences', area: 'Iskandar Puteri', project_name: 'Bodaiju Residences',
-    tagline: 'Japanese developer Â· Medini Â· No foreign buyer restrictions',
-    price_range: 'RM 299,000 â€“ RM 659,000',
-    tenure: 'Leasehold', commute_note: '~9km to Second Link (Tuas)',
-    description: "Bodaiju Residences is an 802-unit twin-tower serviced apartment in Medini, Iskandar Puteri, developed by Creed Group Japan. It is one of the few new launches in Medini with no minimum purchase price for foreign buyers, GreenRE green certification, and a Japanese-quality fit-out. Tower A is now selling with 2-bedroom, 3-bedroom, and dual-key units available from RM 299,000. The 1-bedroom units are fully sold.",
-    status: 'Now Selling',
-    image_url: 'photos/bodaiju/Aerial view 1.jpeg',
-    project_url: 'projects/bodaiju-residences.html',
-    published: 'TRUE'
-  },
-  {
-    slug: '', area: 'Forest City', project_name: 'Project placeholder â€” Forest City',
-    tagline: '', price_range: 'RM â€”', tenure: '', commute_note: '',
-    description: '', status: 'Coming soon', image_url: '', published: 'TRUE'
-  }
-];
-
-function whatsappLink(message) {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-}
-
-function slugify(text) {
-  return (text || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-}
-
-function articleCardHtml(a) {
-  const hasContent = a.body && a.body.trim().length > 0;
-  const isZh = _currentLang === 'zh';
-  const title = (isZh && a.title_zh) ? a.title_zh : a.title;
-  const summary = (isZh && a.summary_zh) ? a.summary_zh : (a.summary || '');
-  const img = a.image_url ? `<img class="card-img" src="${a.image_url}" alt="${title}" style="object-fit:cover;">` : `<div class="card-img"></div>`;
-  const href = a.link ? a.link : '#';
-  const tag = href !== '#' ? 'a' : 'div';
-  const linkAttr = href !== '#' ? `href="${href}"` : '';
-  return `
-    <${tag} ${linkAttr} class="card reveal ${hasContent ? '' : 'card-placeholder'}" style="text-decoration:none;">
-      ${img}
-      <div class="card-body">
-        <div class="card-eyebrow">${isZh ? 'å¸‚åœºæ´å¯Ÿ' : 'Market insight'}</div>
-        <h3 class="card-title">${title}</h3>
-        <p class="card-excerpt">${summary}</p>
-        <span class="card-link">${hasContent ? (isZh ? 'é˜…è¯»æ›´å¤š' : 'Read more') : (isZh ? 'å³å°†æ¨å‡º' : 'Coming soon')}</span>
-      </div>
-    </${tag}>`;
-}
-
-function projectCardHtml(p) {
-  const bg = p.image_url ? `background-image:url('${p.image_url}')` : '';
-  const slug = p.slug || slugify(p.project_name);
-  const href = slug ? `project.html?slug=${encodeURIComponent(slug)}` : '#';
-  return `
-    <a href="${href}" class="project-card reveal" style="${bg}">
-      <span class="project-status">${p.status || 'Enquire'}</span>
-      <div class="project-body">
-        <div class="project-name">${p.project_name}</div>
-        <div class="project-price">${p.price_range || ''}</div>
-        <div class="project-desc">${p.tagline || p.description || ''}</div>
-        <span class="project-cta">View project</span>
-      </div>
-    </a>`;
-}
-
-async function getProjects() {
-  const rows = await fetchSheet(SHEET_CONFIG.projectsCsvUrl);
-  const valid = rows ? rows.filter(r => r.published === 'TRUE') : [];
-  return valid.length ? valid : PLACEHOLDER_PROJECTS;
-}
-
-async function renderArticles(area, targetSelector) {
-  const target = document.querySelector(targetSelector);
-  if (!target) return;
-  const rows = await fetchSheet(SHEET_CONFIG.articlesCsvUrl);
-  let list;
-  const local = (PLACEHOLDER_ARTICLES[area] || []).filter(a => a.body === 'exists' && a.link);
-  if (rows) {
-    const sheetList = rows.filter(r => r.area === area && r.published === 'TRUE' && r.link && r.link !== '#');
-    // Merge: local articles first, then Sheet articles not already covered by local
-    const sheetLinks = new Set(sheetList.map(r => r.link));
-    const localOnly = local.filter(a => !sheetLinks.has(a.link));
-    list = sheetList.length ? [...localOnly, ...sheetList] : local;
-  } else {
-    list = local;
-  }
-  target.innerHTML = list.map(articleCardHtml).join('');
-  initReveal();
-}
-
-async function renderProjects(area, targetSelector) {
-  const target = document.querySelector(targetSelector);
-  if (!target) return;
-  const all = await getProjects();
-  const list = all.filter(p => p.area === area);
-  target.innerHTML = list.length
-    ? list.map(p => projectCardHtml(p)).join('')
-    : '<p style="color: var(--ink-muted);">More projects coming soon for this area.</p>';
-  initReveal();
-}
-
-// ---- Dynamic project detail page (project.html?slug=...) ----
-async function renderProjectPage() {
-  const params = new URLSearchParams(window.location.search);
-  const slug = params.get('slug');
-  const root = document.querySelector('#project-root');
-  if (!root) return;
-
-  const all = await getProjects();
-  const p = all.find(row => (row.slug || slugify(row.project_name)) === slug);
-
-  if (!p) {
-    root.innerHTML = `
-      <section class="on-white" style="padding: 140px 0 100px; text-align:center;">
-        <div class="wrap">
-          <div class="eyebrow" style="justify-content:center; display:flex;">Project not found</div>
-          <h1 class="section-title" style="margin-top:8px;">We couldn't find that listing</h1>
-          <p class="section-sub" style="margin: 14px auto 28px; text-align:center;">It may have been removed or the link is out of date.</p>
-          <a href="index.html" class="btn btn-outline-dark">Back to home</a>
-        </div>
-      </section>`;
-    return;
-  }
-
-  document.title = `${p.project_name}, ${p.area} â€” Price Guide | Sam Tee, Property Advisor`;
-  const metaDesc = document.querySelector('meta[name="description"]');
-  if (metaDesc) metaDesc.setAttribute('content', `${p.project_name}, ${p.area}: ${p.tagline || ''} ${p.price_range || ''} price guide and enquiry â€” Sam Tee, Property Advisor.`);
-
-  const areaSlugMap = { 'Iskandar Puteri': 'iskandar-puteri.html', 'JB Town': 'jb-town.html', 'Forest City': 'forest-city.html' };
-  const areaHref = areaSlugMap[p.area] || 'index.html';
-  const descParagraphs = (p.description || '').split('\n\n').filter(Boolean).map(t => `<p style="color: var(--ink-muted); margin-bottom: 16px;">${t}</p>`).join('');
-  const waMsg = encodeURIComponent(`Hi Sam, I'm interested in ${p.project_name}.`);
-
-  root.innerHTML = `
-    <header class="project-hero" style="background-image: url('${p.image_url || ''}');">
-      <div class="project-hero-content">
-        <div class="breadcrumb">
-          <a href="index.html">Home</a> &nbsp;/&nbsp; <a href="${areaHref}">${p.area}</a> &nbsp;/&nbsp; ${p.project_name}
-        </div>
-        <div class="hero-tags">
-          ${p.tagline ? `<span class="tag">${p.tagline}</span>` : ''}
-        </div>
-        <h1 class="project-hero-title">${p.project_name}</h1>
-        <div class="project-hero-price">${p.price_range || ''}${p.status ? ' Â· ' + p.status : ''}</div>
-      </div>
-    </header>
-
-    <section class="on-white">
-      <div class="wrap">
-        <div class="intro-grid">
-          <div class="reveal">
-            <div class="eyebrow">About this project</div>
-            <h2 class="section-title" style="font-size: 28px; margin-top: 8px;">${p.tagline || ''}</h2>
-            <div class="divider"></div>
-            ${descParagraphs || '<p style="color: var(--ink-muted);">Details coming soon.</p>'}
-          </div>
-          <div class="reveal">
-            <div class="fact-card">
-              <h4>Price guide</h4>
-              <div class="fact-row"><span>Range</span><span>${p.price_range || 'â€”'}</span></div>
-              <div class="fact-row"><span>Tenure</span><span>${p.tenure || 'â€”'}</span></div>
-              <div class="fact-row"><span>Commute</span><span>${p.commute_note || 'â€”'}</span></div>
-              <div class="fact-row"><span>Status</span><span>${p.status || 'â€”'}</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    ${(p.unit_types && p.unit_types.length) || (p.features && p.features.length) ? `
-    <section class="on-offwhite" style="padding: 60px 0;">
-      <div class="wrap">
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;">
-          ${p.unit_types && p.unit_types.length ? `
-          <div class="reveal">
-            <div class="eyebrow" style="margin-bottom:12px;">Unit Types</div>
-            <table style="width:100%; border-collapse:collapse; font-family:var(--font-body); font-size:15px;">
-              <thead>
-                <tr style="border-bottom:2px solid var(--gold-500);">
-                  <th style="text-align:left; padding:8px 0; color:var(--ink); font-weight:600;">Type</th>
-                  <th style="text-align:right; padding:8px 0; color:var(--ink); font-weight:600;">Built-up</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${p.unit_types.map(u => `
-                <tr style="border-bottom:1px solid #e8e6e0;">
-                  <td style="padding:10px 0; color:var(--ink);">${u.type}</td>
-                  <td style="padding:10px 0; color:var(--ink-muted); text-align:right;">${u.size}</td>
-                </tr>`).join('')}
-              </tbody>
-            </table>
-          </div>` : ''}
-          ${p.features && p.features.length ? `
-          <div class="reveal">
-            <div class="eyebrow" style="margin-bottom:12px;">Key Features</div>
-            <ul style="list-style:none; padding:0; margin:0;">
-              ${p.features.map(f => `
-              <li style="display:flex; gap:10px; padding:9px 0; border-bottom:1px solid #e8e6e0; font-family:var(--font-body); font-size:15px; color:var(--ink-muted); line-height:1.5;">
-                <span style="color:var(--gold-500); flex-shrink:0; margin-top:2px;">âœ“</span>
-                <span>${f}</span>
-              </li>`).join('')}
-            </ul>
-          </div>` : ''}
-        </div>
-      </div>
-    </section>` : ''}
-
-    ${p.images && p.images.length ? `
-    <section class="on-navy" style="padding: 60px 0;">
-      <div class="wrap">
-        <div class="eyebrow reveal" style="justify-content:center; display:flex; margin-bottom:8px; color: var(--gold-400);">Project Photos</div>
-        <h2 class="section-title reveal" style="text-align:center; margin-bottom:32px; color:#fff;">See the development</h2>
-        <div class="project-gallery reveal">
-          ${p.images.map(img => `
-            <figure class="project-gallery-item">
-              <img src="${img.url}" alt="${img.caption || p.project_name}" loading="lazy">
-              ${img.caption ? `<figcaption>${img.caption}</figcaption>` : ''}
-            </figure>`).join('')}
-        </div>
-      </div>
-    </section>` : ''}
-
-    <section class="on-offwhite">
-      <div class="wrap">
-        <div style="text-align: center; margin-bottom: 40px;">
-          <div class="eyebrow reveal" style="justify-content:center; display:flex;">Interested in ${p.project_name}</div>
-          <h2 class="section-title reveal" style="margin-top: 8px;">Send your details, I'll follow up directly</h2>
-          <p class="section-sub reveal" style="margin: 14px auto 0; text-align: center;">A short note on your budget and timeline helps me bring you the right listings, not just any listings.</p>
-        </div>
-        <form class="enquiry-form reveal" action="https://formspree.io/f/mgojdzww" method="POST">
-          <input type="hidden" name="project" value="${p.project_name}">
-          <div class="form-row">
-            <div class="field">
-              <label for="pf-name">Name</label>
-              <input type="text" id="pf-name" name="name" required>
-            </div>
-            <div class="field">
-              <label for="pf-phone">Phone / WhatsApp <span style="font-weight:400; color:var(--ink-muted); font-size:0.85em;">(include country code)</span></label>
-              <input type="tel" id="pf-phone" name="phone" placeholder="e.g. +601156348518" required>
-            </div>
-          </div>
-          <div class="field">
-            <label for="pf-email">Email</label>
-            <input type="email" id="pf-email" name="email" required>
-          </div>
-          <div class="field">
-            <label for="pf-message">Message</label>
-            <textarea id="pf-message" name="message" placeholder="Tell me about your budget, timeline, and what you're looking for..."></textarea>
-          </div>
-          <button type="submit" class="btn btn-gold form-submit">Send enquiry</button>
-          <p class="form-note">Or skip the form â€” <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${waMsg}" target="_blank" rel="noopener" style="color: var(--navy-900); font-weight: 600;">message me directly on WhatsApp</a>.</p>
-        </form>
-      </div>
-    </section>`;
-
-  initReveal();
-}
-
-// initNav and initReveal called via initLangToggle listener below
-
-// ============================================
-// BILINGUAL TOGGLE â€” EN / ä¸­æ–‡
-// ============================================
-let _currentLang = 'en';
-const AREA_ZH = { 'General': 'ç»¼åˆ', 'JB Town': 'æ–°å±±å¸‚åŒº', 'Iskandar Puteri': 'ä¾æ–¯å¹²è¾¾å…¬ä¸»åŸ', 'Forest City': 'æ£®æ—åŸå¸‚' };
-
-const TRANSLATIONS = {
-  en: {
-    // Nav
-    'nav-home': 'Home',
-    'nav-jbt': 'Johor Bahru Town',
-    'nav-ip': 'Iskandar Puteri',
-    'nav-fc': 'Forest City',
-
-    // Hero
-    'hero-title': 'Your property advisor for Johor, built on local ground truth.',
-    'hero-sub': 'I help families and investors find the right properties across Iskandar Puteri, Johor Bahru Town, and Special Financial Zone, Forest City â€” with the trade-offs explained upfront, not after you\'ve signed.',
-
-    // Profile split
-    'profile-eyebrow': 'Your property advisor',
-    'profile-role': 'Property Advisor Â· REN 80322',
-    'profile-desc': 'Specialising in landed properties across Iskandar Puteri, Johor Bahru Town, and Special Financial Zone, Forest City. I help buyers understand their options before committing to any project.',
-    'profile-btn-wa': 'Chat on WhatsApp',
-    'profile-btn-explore': 'Explore properties',
-
-    // About
-    'about-eyebrow': 'About Sam',
-    'about-headline': 'Understand first. Property later.',
-    'about-p1': 'Most buyers in Johor get sold a project before anyone asks what they actually need. I work the other way â€” understanding your purpose first: family relocation, retirement, or investment, then matching that to the right community and price range.',
-    'about-p2': 'I specialise in <strong>Johor Bahru Town and Iskandar Puteri properties from RM 1M to RM 10M</strong> across established communities, with deep familiarity in local market dynamics and the ownership rules that matter for both Malaysian and international buyers.',
-    'why-eyebrow': 'Why work with me',
-    'why-headline': 'Local ground truth, explained plainly.',
-    'why-p1': 'I also create video content breaking down Johor property strategy â€” so by the time we speak, you\'ve likely already seen how I think about this market.',
-    'why-p2': 'Every recommendation comes with the trade-offs, not just the highlights. If a project isn\'t right for your situation, I\'ll tell you before you waste a viewing trip.',
-    'stat-range': 'Focus range',
-    'stat-districts': 'Core districts',
-
-    // Market snapshot
-    'market-eyebrow': 'Market snapshot',
-    'market-headline': 'Where the Johor market stands today.',
-    'market-sub': 'A quick read on current conditions across the districts I cover â€” updated as the market moves.',
-    'market-jbt-title': 'City-centre projects remain the accessible entry point',
-    'market-jbt-excerpt': 'For buyers working with tighter budgets, select exemption projects in the city centre are still the most accessible way into the market.',
-    'market-ip-title': 'Landed demand holding steady in established townships',
-    'market-ip-excerpt': 'Eco Botanic, Horizon Hills, and East Ledang continue to see consistent interest from families and retirees seeking gated, mature communities.',
-    'market-fc-title': 'Special Financial Zone status reshaping the investment conversation',
-    'market-fc-excerpt': 'Special financial zone status has changed the calculus for investors weighing Forest City against other Iskandar districts.',
-
-    // Explore
-    'explore-eyebrow': 'Explore by district',
-    'explore-headline': 'Three districts, three very different buyer profiles.',
-    'explore-sub': 'Each has its own pricing, character, and lifestyle fit. Pick where your interest sits and I\'ll walk you through it in detail.',
-    'area-jbt-eyebrow': 'Entry point',
-    'area-jbt-title': 'Johor Bahru Town',
-    'area-jbt-desc': 'City-centre living and accessible entry-level projects close to the Causeway.',
-    'area-jbt-link': 'Explore Johor Bahru Town',
-    'area-ip-eyebrow': 'Core focus',
-    'area-ip-title': 'Iskandar Puteri',
-    'area-ip-desc': 'Eco Botanic, Horizon Hills, East Ledang â€” landed family and retirement living.',
-    'area-ip-link': 'Explore Iskandar Puteri',
-    'area-fc-eyebrow': 'Special zone',
-    'area-fc-title': 'Forest City',
-    'area-fc-desc': 'Special Financial Zone with tax incentives and a distinct island lifestyle proposition.',
-    'area-fc-link': 'Explore Forest City',
-
-    // CTA
-    'cta-eyebrow': 'Let\'s talk',
-    'cta-headline': 'Not sure where to start? Send me your situation.',
-    'cta-sub': 'A short WhatsApp message is enough â€” purpose, budget range, and timeline. I\'ll point you to the right district before we talk projects.',
-    'cta-btn': 'Chat with Sam on WhatsApp',
-
-
-    // New Phase 1 keys
-    'hero-eyebrow': 'Independent Property Guide Â· Johor Bahru',
-    'hero-btn-areas': 'Explore Areas',
-    'hero-btn-guides': 'Buying Guides',
-    'nav-areas': 'Areas',
-    'nav-projects': 'Projects',
-    'nav-guides': 'Guides',
-    'projects-eyebrow': 'Featured Projects',
-    'projects-headline': 'Communities worth a look right now.',
-    'projects-sub': 'A shortlist, not a directory â€” the projects I would bring a qualified buyer to today.',
-    'projects-all': 'View all projects',
-    'guides-eyebrow': 'Buying Guides',
-    'guides-headline': 'Everything you need to know before you buy.',
-    'guides-sub': 'Topic clusters covering Forest City, MM2H, JS-SEZ, golf communities, retirement, and more.',
-    'guides-all': 'All guides',
-    'guide-fc': 'Forest City',
-    'guide-fc-desc': 'SFZ status, island living, Golf Villa, MM2H â€” the complete Forest City picture.',
-    'guide-mm2h': 'MM2H Programme',
-    'guide-mm2h-desc': 'Eligibility, deposit requirements, Forest City SFZ track, and how to apply.',
-    'guide-sez': 'JS-SEZ',
-    'guide-sez-desc': 'The Johor-Singapore Special Economic Zone and what it means for property values.',
-    'guide-golf': 'Golf Communities',
-    'guide-golf-desc': 'Horizon Hills, Forest City Golf, Leisure Farm â€” golf-facing properties compared.',
-    'guide-schools': 'International Schools',
-    'guide-schools-desc': 'Which townships sit closest to Johor\'s best international schools.',
-    'guide-retire': 'Retirement in JB',
-    'guide-retire-desc': 'Cost of living, healthcare, lifestyle, and the best communities for retirees.',
-    'articles-eyebrow': 'Latest Articles',
-    'articles-headline': 'Recent guides and market analysis.',
-    'articles-all': 'All articles',
-    'about-eyebrow': 'About Sam Tee',
-    'footer-areas': 'Areas',
-    'footer-guides': 'Guides',
-    'nav-about': 'About Sam',
-
-    // Footer
-    'footer-tagline': 'The independent property knowledge base for Johor Bahru â€” Forest City, Iskandar Puteri, MM2H, JS-SEZ, and beyond.',
-    'footer-districts': 'Districts',
-    'footer-contact': 'Contact',
-
-    // Buyer's Knowledge Hub (index.html)
-    'hub-eyebrow': "BUYER'S KNOWLEDGE HUB",
-    'hub-headline': 'Understand the market before you buy.',
-    'hub-sub': "Essential guides from Sam's advisory desk â€” covering JS-SEZ, MM2H, area comparisons, schools, and buying process. Every guide is written for buyers, not sellers.",
-    'hub-banner': 'ESSENTIAL READING Â· Guides updated for 2026 â€” researched and written by Sam Tee',
-    'hub-view-all': 'View all buyer guides â†’',
-    'hub-jssez': 'JS-SEZ Complete Guide: What It Means for Johor Buyers',
-    'hub-mm2h': 'MM2H 2026 Complete Guide: Eligibility, Costs & How to Apply',
-    'hub-fc': 'Is Forest City Worth Buying in 2026?',
-    'hub-sunway': 'Is Sunway City Iskandar Puteri Worth Buying in 2026?',
-    'hub-schools': 'International Schools in Iskandar Puteri 2026: Full Guide',
-    'hub-compare': 'Horizon Hills vs Eco Botanic vs East Ledang: Which to Buy?',
-    'hub-sfz': "Forest City SFZ & MM2H: The Complete Buyer's Guide",
-    'hub-retire': 'Retiring in Iskandar Puteri: Golf, Healthcare & What to Expect',
-    'hub-landed': 'Who Should Buy Landed Property in Iskandar Puteri?',
-    'hub-2ndlink': 'Buying Near the Second Link: Sunway City vs Forest City',
-
-    // Articles hub CTA
-    'articles-cta-eyebrow': "Can't find your answer?",
-    'articles-cta-headline': 'Ask Sam directly.',
-    'articles-cta-sub': 'A short WhatsApp message is faster than reading everything. Tell me your purpose, budget, and timeline â€” I\'ll point you in the right direction.',
-    'articles-cta-btn': 'Chat with Sam on WhatsApp',
-  },
-
-  zh: {
-    // Nav
-    'nav-home': 'ä¸»é¡µ',
-    'nav-jbt': 'æ–°å±±å¸‚åŒº',
-    'nav-ip': 'ä¾æ–¯å¹²è¾¾å…¬ä¸»åŸ',
-    'nav-fc': 'æ£®æ—åŸå¸‚',
-
-    // Hero
-    'hero-title': 'æ‚¨åœ¨æŸ”ä½›ç½®ä¸šçš„é¡¾é—®ï¼Œæ‰æ ¹æœ¬åœ°ï¼Œæ´æ‚‰å¸‚åœºã€‚',
-    'hero-sub': 'æˆ‘å¸®åŠ©å®¶åº­åŠæŠ•èµ„è€…åœ¨ä¾æ–¯å¹²è¾¾å…¬ä¸»åŸã€æ–°å±±å¸‚åŒºåŠç‰¹åˆ«é‡‘èåŒºæ£®æ—åŸå¸‚æ‰¾åˆ°åˆé€‚çš„æˆ¿äº§â€”â€”è®©æ‚¨åœ¨ç­¾çº¦å‰å°±æ¸…æ¥šäº†è§£æ‰€æœ‰åˆ©å¼Šã€‚',
-
-    // Profile split
-    'profile-eyebrow': 'æ‚¨çš„ç½®ä¸šé¡¾é—®',
-    'profile-role': 'ç½®ä¸šé¡¾é—® Â· REN 80322',
-    'profile-desc': 'ä¸“æ³¨äºä¾æ–¯å¹²è¾¾å…¬ä¸»åŸã€æ–°å±±å¸‚åŒºåŠç‰¹åˆ«é‡‘èåŒºæ£®æ—åŸå¸‚çš„æˆ¿äº§ã€‚æˆ‘å¸®åŠ©ä¹°å®¶åœ¨åšå‡ºå†³å®šä¹‹å‰å……åˆ†äº†è§£æ‰€æœ‰é€‰æ‹©ã€‚',
-    'profile-btn-wa': 'WhatsAppè”ç³»Sam',
-    'profile-btn-explore': 'æµè§ˆæˆ¿äº§',
-
-    // About
-    'about-eyebrow': 'å…³äºSam',
-    'about-headline': 'å…ˆäº†è§£éœ€æ±‚ï¼Œå†è°ˆæˆ¿äº§ã€‚',
-    'about-p1': 'å¤§å¤šæ•°ä¹°å®¶åœ¨æŸ”ä½›è¿˜æ²¡è¯´æ¸…æ¥šè‡ªå·±çš„éœ€æ±‚ï¼Œå°±å·²ç»è¢«æ¨é”€äº†ä¸€ä¸ªé¡¹ç›®ã€‚æˆ‘çš„æ–¹å¼æ°æ°ç›¸åâ€”â€”å…ˆäº†è§£æ‚¨çš„ç›®çš„ï¼šå®¶åº­æ¬è¿ã€é€€ä¼‘å…»è€è¿˜æ˜¯æŠ•èµ„å¢å€¼ï¼Œå†ä¸ºæ‚¨åŒ¹é…åˆé€‚çš„ç¤¾åŒºå’Œä»·æ ¼èŒƒå›´ã€‚',
-    'about-p2': 'æˆ‘ä¸“æ³¨äºæ–°å±±å¸‚åŒºåŠä¾æ–¯å¹²è¾¾å…¬ä¸»åŸ <strong>RM100ä¸‡è‡³RM1000ä¸‡</strong> çš„æˆ¿äº§ï¼Œæ·±å…¥äº†è§£æœ¬åœ°å¸‚åœºåŠ¨æ€ï¼Œä»¥åŠå¯¹é©¬æ¥è¥¿äºšæœ¬åœ°åŠæµ·å¤–ä¹°å®¶å‡é€‚ç”¨çš„ç½®ä¸šè§„åˆ™ã€‚',
-    'why-eyebrow': 'ä¸ºä»€ä¹ˆé€‰æ‹©æˆ‘',
-    'why-headline': 'æœ¬åœ°å®å†µï¼Œæ¸…æ™°å‘ˆç°ã€‚',
-    'why-p1': 'æˆ‘ä¹Ÿåˆ¶ä½œè§†é¢‘å†…å®¹ï¼Œæ·±å…¥è§£ææŸ”ä½›æˆ¿äº§ç­–ç•¥â€”â€”æ‰€ä»¥å½“æˆ‘ä»¬äº¤æµæ—¶ï¼Œæ‚¨å¾ˆå¯èƒ½å·²ç»äº†è§£æˆ‘å¯¹è¿™ä¸ªå¸‚åœºçš„çœ‹æ³•ã€‚',
-    'why-p2': 'æ¯ä¸€ä¸ªæ¨èéƒ½é™„å¸¦åˆ©å¼Šåˆ†æï¼Œè€Œä¸ä»…ä»…æ˜¯äº®ç‚¹ã€‚å¦‚æœæŸä¸ªé¡¹ç›®ä¸é€‚åˆæ‚¨çš„æƒ…å†µï¼Œæˆ‘ä¼šåœ¨æ‚¨æµªè´¹ä¸€æ¬¡çœ‹æˆ¿è¡Œç¨‹ä¹‹å‰å‘Šè¯‰æ‚¨ã€‚',
-    'stat-range': 'ä¸“æ³¨ä»·æ ¼åŒºé—´',
-    'stat-districts': 'æ ¸å¿ƒç‰‡åŒº',
-
-    // Market snapshot
-    'market-eyebrow': 'å¸‚åœºå¿«è®¯',
-    'market-headline': 'æŸ”ä½›å¸‚åœºç°å†µä¸€è§ˆã€‚',
-    'market-sub': 'æ¶µç›–æˆ‘æ‰€æœåŠ¡ç‰‡åŒºçš„æœ€æ–°å¸‚åœºåŠ¨æ€â€”â€”éšå¸‚åœºå˜åŒ–æŒç»­æ›´æ–°ã€‚',
-    'market-jbt-title': 'å¸‚ä¸­å¿ƒé¡¹ç›®ä»æ˜¯æœ€æ˜“å…¥åœºçš„é€‰æ‹©',
-    'market-jbt-excerpt': 'å¯¹äºé¢„ç®—è¾ƒç´§çš„ä¹°å®¶ï¼Œå¸‚ä¸­å¿ƒéƒ¨åˆ†è±å…é¡¹ç›®ä»æ˜¯è¿›å…¥å¸‚åœºæœ€ä¾¿æ·çš„é€”å¾„ã€‚',
-    'market-ip-title': 'æˆç†Ÿé•‡åŒºæœ‰åœ°æˆ¿äº§éœ€æ±‚ä¿æŒç¨³å®š',
-    'market-ip-excerpt': 'Eco Botanicã€Horizon HillsåŠEast LedangæŒç»­å—åˆ°å¯»æ±‚æˆç†Ÿå›´é—¸ç¤¾åŒºçš„å®¶åº­åŠé€€ä¼‘äººå£«é’çã€‚',
-    'market-fc-title': 'ç‰¹åˆ«é‡‘èåŒºåœ°ä½é‡å¡‘æŠ•èµ„æ ¼å±€',
-    'market-fc-excerpt': 'ç‰¹åˆ«é‡‘èåŒºèº«ä»½æ”¹å˜äº†æŠ•èµ„è€…åœ¨æ£®æ—åŸå¸‚ä¸å…¶ä»–ä¾æ–¯å¹²è¾¾ç‰‡åŒºä¹‹é—´çš„é€‰æ‹©è€ƒé‡ã€‚',
-
-    // Explore
-    'explore-eyebrow': 'æŒ‰ç‰‡åŒºæ¢ç´¢',
-    'explore-headline': 'ä¸‰å¤§ç‰‡åŒºï¼Œä¸‰ç§æˆªç„¶ä¸åŒçš„ä¹°å®¶å®šä½ã€‚',
-    'explore-sub': 'æ¯ä¸ªç‰‡åŒºéƒ½æœ‰å„è‡ªçš„ä»·æ ¼ã€ç‰¹ç‚¹å’Œç”Ÿæ´»æ–¹å¼ã€‚é€‰æ‹©æ‚¨æ„Ÿå…´è¶£çš„ç‰‡åŒºï¼Œæˆ‘å°†ä¸ºæ‚¨è¯¦ç»†è®²è§£ã€‚',
-    'area-jbt-eyebrow': 'å…¥é—¨ä¹‹é€‰',
-    'area-jbt-title': 'æ–°å±±å¸‚åŒº',
-    'area-jbt-desc': 'å¸‚ä¸­å¿ƒç”Ÿæ´»ï¼Œé è¿‘å…³å¡ï¼Œæä¾›æ˜“äºå…¥åœºçš„ä»·æ ¼é€‰æ‹©ã€‚',
-    'area-jbt-link': 'æ¢ç´¢æ–°å±±å¸‚åŒº',
-    'area-ip-eyebrow': 'æ ¸å¿ƒé‡ç‚¹',
-    'area-ip-title': 'ä¾æ–¯å¹²è¾¾å…¬ä¸»åŸ',
-    'area-ip-desc': 'Eco Botanicã€Horizon Hillsã€East Ledangâ€”â€”é€‚åˆå®¶åº­åŠé€€ä¼‘äººå£«çš„æœ‰åœ°æˆ¿äº§ã€‚',
-    'area-ip-link': 'æ¢ç´¢ä¾æ–¯å¹²è¾¾å…¬ä¸»åŸ',
-    'area-fc-eyebrow': 'ç‰¹åˆ«ç»æµåŒº',
-    'area-fc-title': 'æ£®æ—åŸå¸‚',
-    'area-fc-desc': 'ç‰¹åˆ«é‡‘èåŒºï¼Œäº«æœ‰ç¨åŠ¡ä¼˜æƒ ï¼Œåæ‹¥ç‹¬ç‰¹çš„æµ·å²›ç”Ÿæ´»ä½“éªŒã€‚',
-    'area-fc-link': 'æ¢ç´¢æ£®æ—åŸå¸‚',
-
-    // CTA
-    'cta-eyebrow': 'å¼€å§‹å’¨è¯¢',
-    'cta-headline': 'ä¸çŸ¥ä»ä½•å¼€å§‹ï¼ŸæŠŠæ‚¨çš„æƒ…å†µå‘Šè¯‰æˆ‘ã€‚',
-    'cta-sub': 'ä¸€æ¡ç®€çŸ­çš„WhatsAppæ¶ˆæ¯å°±å¤Ÿäº†â€”â€”ç”¨é€”ã€é¢„ç®—èŒƒå›´å’Œæ—¶é—´çº¿ã€‚æˆ‘ä¼šåœ¨æ¨èé¡¹ç›®ä¹‹å‰ä¸ºæ‚¨æŒ‡å¼•æ­£ç¡®çš„ç‰‡åŒºã€‚',
-    'cta-btn': 'ä¸Samåœ¨WhatsAppä¸Šäº¤æµ',
-
-
-    // New Phase 1 keys
-    'hero-eyebrow': 'Independent Property Guide Â· Johor Bahru',
-    'hero-btn-areas': 'Explore Areas',
-    'hero-btn-guides': 'Buying Guides',
-    'nav-areas': 'Areas',
-    'nav-projects': 'Projects',
-    'nav-guides': 'Guides',
-    'projects-eyebrow': 'Featured Projects',
-    'projects-headline': 'Communities worth a look right now.',
-    'projects-sub': 'A shortlist, not a directory â€” the projects I would bring a qualified buyer to today.',
-    'projects-all': 'View all projects',
-    'guides-eyebrow': 'Buying Guides',
-    'guides-headline': 'Everything you need to know before you buy.',
-    'guides-sub': 'Topic clusters covering Forest City, MM2H, JS-SEZ, golf communities, retirement, and more.',
-    'guides-all': 'All guides',
-    'guide-fc': 'Forest City',
-    'guide-fc-desc': 'SFZ status, island living, Golf Villa, MM2H â€” the complete Forest City picture.',
-    'guide-mm2h': 'MM2H Programme',
-    'guide-mm2h-desc': 'Eligibility, deposit requirements, Forest City SFZ track, and how to apply.',
-    'guide-sez': 'JS-SEZ',
-    'guide-sez-desc': 'The Johor-Singapore Special Economic Zone and what it means for property values.',
-    'guide-golf': 'Golf Communities',
-    'guide-golf-desc': 'Horizon Hills, Forest City Golf, Leisure Farm â€” golf-facing properties compared.',
-    'guide-schools': 'International Schools',
-    'guide-schools-desc': 'Which townships sit closest to Johor\'s best international schools.',
-    'guide-retire': 'Retirement in JB',
-    'guide-retire-desc': 'Cost of living, healthcare, lifestyle, and the best communities for retirees.',
-    'articles-eyebrow': 'Latest Articles',
-    'articles-headline': 'Recent guides and market analysis.',
-    'articles-all': 'All articles',
-    'about-eyebrow': 'About Sam Tee',
-    'footer-areas': 'Areas',
-    'footer-guides': 'Guides',
-
-
-    // New Phase 1 keys
-    'hero-eyebrow': 'ç‹¬ç«‹æˆ¿äº§æŒ‡å— Â· æŸ”ä½›æ–°å±±',
-    'hero-btn-areas': 'æ¢ç´¢ç‰‡åŒº',
-    'hero-btn-guides': 'ç½®ä¸šæŒ‡å—',
-    'nav-areas': 'ç‰‡åŒº',
-    'nav-projects': 'é¡¹ç›®',
-    'nav-guides': 'æŒ‡å—',
-    'projects-eyebrow': 'ç²¾é€‰é¡¹ç›®',
-    'projects-headline': 'å€¼å¾—å…³æ³¨çš„æˆ¿äº§ç¤¾åŒºã€‚',
-    'projects-sub': 'ç²¾é€‰æ¨èï¼Œéå…¨é¢ç›®å½•â€”â€”è¿™äº›æ˜¯æˆ‘ç›®å‰ä¼šå¸¦åˆæ ¼ä¹°å®¶å®åœ°è€ƒå¯Ÿçš„é¡¹ç›®ã€‚',
-    'projects-all': 'æŸ¥çœ‹å…¨éƒ¨é¡¹ç›®',
-    'guides-eyebrow': 'ç½®ä¸šæŒ‡å—',
-    'guides-headline': 'è´­ä¹°å‰éœ€äº†è§£çš„ä¸€åˆ‡ã€‚',
-    'guides-sub': 'æ¶µç›–æ£®æ—åŸå¸‚ã€MM2Hã€JS-SEZã€é«˜å°”å¤«ç¤¾åŒºã€é€€ä¼‘å…»è€ç­‰ä¸“é¢˜ã€‚',
-    'guides-all': 'å…¨éƒ¨æŒ‡å—',
-    'guide-fc': 'æ£®æ—åŸå¸‚',
-    'guide-fc-desc': 'SFZåœ°ä½ã€æµ·å²›ç”Ÿæ´»ã€é«˜å°”å¤«åˆ«å¢…ã€MM2Hâ€”â€”å®Œæ•´æ£®æ—åŸå¸‚æŒ‡å—ã€‚',
-    'guide-mm2h': 'MM2Hè®¡åˆ’',
-    'guide-mm2h-desc': 'ç”³è¯·èµ„æ ¼ã€å­˜æ¬¾è¦æ±‚ã€æ£®æ—åŸå¸‚SFZé€šé“åŠç”³è¯·æµç¨‹ã€‚',
-    'guide-sez': 'JS-SEZ',
-    'guide-sez-desc': 'æŸ”æ–°ç‰¹åˆ«ç»æµåŒºåŠå…¶å¯¹æˆ¿äº§ä»·å€¼çš„å½±å“ã€‚',
-    'guide-golf': 'é«˜å°”å¤«ç¤¾åŒº',
-    'guide-golf-desc': 'Horizon Hillsã€æ£®æ—åŸå¸‚é«˜å°”å¤«ã€Leisure Farmâ€”â€”é«˜å°”å¤«æˆ¿äº§æ¨ªå‘å¯¹æ¯”ã€‚',
-    'guide-schools': 'å›½é™…å­¦æ ¡',
-    'guide-schools-desc': 'æŸ”ä½›æœ€ä¼˜ç§€å›½é™…å­¦æ ¡çš„å‘¨è¾¹æˆ¿äº§è´­ä¹°æŒ‡å—ã€‚',
-    'guide-retire': 'æ–°å±±é€€ä¼‘ç”Ÿæ´»',
-    'guide-retire-desc': 'ç”Ÿæ´»æˆæœ¬ã€åŒ»ç–—èµ„æºã€ç”Ÿæ´»æ–¹å¼ï¼Œä»¥åŠæœ€é€‚åˆé€€ä¼‘äººå£«çš„ç¤¾åŒºã€‚',
-    'articles-eyebrow': 'æœ€æ–°æ–‡ç« ',
-    'articles-headline': 'è¿‘æœŸæŒ‡å—ä¸å¸‚åœºåˆ†æã€‚',
-    'articles-all': 'å…¨éƒ¨æ–‡ç« ',
-    'about-eyebrow': 'å…³äºSam Tee',
-    'footer-areas': 'ç‰‡åŒº',
-    'footer-guides': 'æŒ‡å—',
-    'nav-about': 'å…³äº Sam',
-
-    // Footer
-    'footer-tagline': 'æŸ”ä½›æ–°å±±æˆ¿äº§ç‹¬ç«‹çŸ¥è¯†åº“â€”â€”æ£®æ—åŸå¸‚ã€ä¾æ–¯å¹²è¾¾ã€MM2Hã€JS-SEZåŠæ›´å¤šä¸“é¢˜ã€‚',
-    'footer-districts': 'ç‰‡åŒº',
-    'footer-contact': 'è”ç³»æ–¹å¼',
-
-    // Buyer's Knowledge Hub (index.html)
-    'hub-eyebrow': 'ä¹°å®¶çŸ¥è¯†ä¸­å¿ƒ',
-    'hub-headline': 'ä¹°å‰å…ˆè¯»æ‡‚å¸‚åœºã€‚',
-    'hub-sub': 'æ¥è‡ªSamé¡¾é—®å°çš„æƒå¨æŒ‡å—â€”â€”æ¶µç›–JS-SEZã€MM2Hã€ç‰‡åŒºå¯¹æ¯”ã€å­¦æ ¡åŠç½®ä¸šæµç¨‹ã€‚æ¯ç¯‡æŒ‡å—å‡ç«™åœ¨ä¹°å®¶ç«‹åœºæ’°å†™ï¼Œéæ¨é”€ã€‚',
-    'hub-banner': 'å¿…è¯»ç²¾é€‰ Â· 2026å¹´æ›´æ–°æŒ‡å— â€” ç”±Sam Teeç ”ç©¶æ’°å†™',
-    'hub-view-all': 'æŸ¥çœ‹å…¨éƒ¨ç½®ä¸šæŒ‡å— â†’',
-    'hub-jssez': 'JS-SEZå®Œæ•´æŒ‡å—ï¼šå¯¹æŸ”ä½›ä¹°å®¶æ„å‘³ç€ä»€ä¹ˆ',
-    'hub-mm2h': 'MM2H 2026å®Œæ•´æŒ‡å—ï¼šç”³è¯·èµ„æ ¼ã€è´¹ç”¨ä¸æµç¨‹',
-    'hub-fc': '2026å¹´æ£®æ—åŸå¸‚å€¼å¾—è´­ä¹°å—ï¼Ÿ',
-    'hub-sunway': '2026å¹´ä¾æ–¯å¹²è¾¾å…¬ä¸»åŸé˜³å…‰åŸæ˜¯å¦å€¼å¾—è´­ä¹°ï¼Ÿ',
-    'hub-schools': 'ä¾æ–¯å¹²è¾¾å…¬ä¸»åŸå›½é™…å­¦æ ¡2026ï¼šå®Œæ•´æŒ‡å—',
-    'hub-compare': 'Horizon Hills vs Eco Botanic vs East Ledangï¼šè¯¥é€‰å“ªä¸ªï¼Ÿ',
-    'hub-sfz': 'æ£®æ—åŸå¸‚SFZä¸MM2Hï¼šå®Œæ•´ç½®ä¸šæŒ‡å—',
-    'hub-retire': 'åœ¨ä¾æ–¯å¹²è¾¾å…¬ä¸»åŸé€€ä¼‘ï¼šé«˜å°”å¤«ã€åŒ»ç–—åŠæ³¨æ„äº‹é¡¹',
-    'hub-landed': 'è°è¯¥åœ¨ä¾æ–¯å¹²è¾¾å…¬ä¸»åŸè´­ä¹°æœ‰åœ°æˆ¿äº§ï¼Ÿ',
-    'hub-2ndlink': 'ç¬¬äºŒé€šé“é™„è¿‘ç½®ä¸šï¼šé˜³å…‰åŸvsæ£®æ—åŸå¸‚',
-
-    // Articles hub CTA
-    'articles-cta-eyebrow': 'æ‰¾ä¸åˆ°ç­”æ¡ˆï¼Ÿ',
-    'articles-cta-headline': 'ç›´æ¥å’¨è¯¢Samã€‚',
-    'articles-cta-sub': 'ä¸€æ¡ç®€çŸ­çš„WhatsAppæ¶ˆæ¯æ¯”é€šè¯»æ‰€æœ‰å†…å®¹æ›´å¿«ã€‚å‘Šè¯‰æˆ‘æ‚¨çš„ç”¨é€”ã€é¢„ç®—å’Œæ—¶é—´çº¿â€”â€”æˆ‘ä¼šä¸ºæ‚¨æŒ‡å¼•æ­£ç¡®æ–¹å‘ã€‚',
-    'articles-cta-btn': 'ä¸Samåœ¨WhatsAppä¸Šäº¤æµ',
-  }
-};
-
-function applyLanguage(lang) {
-  const t = TRANSLATIONS[lang];
-  if (!t) return;
-
-  // Swap all elements with data-i18n attribute
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (t[key] !== undefined) {
-      if (el.getAttribute('data-i18n-html') === 'true') {
-        el.innerHTML = t[key];
-      } else {
-        el.textContent = t[key];
-      }
-    }
-  });
-
-  // Translate nav links by href (works on all pages without data-i18n in HTML)
-  const navLinkMap = [
-    { hrefs: ['index.html', '../index.html'], key: 'nav-home' },
-    { hrefs: ['projects.html', '../projects.html'], key: 'nav-projects' },
-    { hrefs: ['articles.html', '../articles.html'], key: 'nav-guides' },
-    { hrefs: ['about-sam-tee.html', '../about-sam-tee.html'], key: 'nav-about' },
-    { hrefs: ['jb-town.html', '../jb-town.html'], key: 'nav-jbt' },
-    { hrefs: ['iskandar-puteri.html', '../iskandar-puteri.html'], key: 'nav-ip' },
-    { hrefs: ['forest-city.html', '../forest-city.html'], key: 'nav-fc' },
-  ];
-  navLinkMap.forEach(({ hrefs, key }) => {
-    if (t[key] === undefined) return;
-    hrefs.forEach(href => {
-      document.querySelectorAll(`.nav-links a[href="${href}"]:not([data-i18n]), .nav-mega-panel a[href="${href}"]:not([data-i18n])`).forEach(el => {
-        el.textContent = t[key];
-      });
-    });
-  });
-
-  // Translate footer col headings (save EN original in data-en for reversibility)
-  const footerHeadMap = { 'Areas': 'footer-areas', 'Districts': 'footer-districts', 'Guides': 'footer-guides', 'Contact': 'footer-contact' };
-  document.querySelectorAll('.footer-col h4, .footer-col-head').forEach(el => {
-    if (!el.dataset.en) el.dataset.en = el.textContent.trim();
-    const key = footerHeadMap[el.dataset.en];
-    if (key && t[key] !== undefined) el.textContent = t[key];
-  });
-
-  // Translate footer tagline on pages without data-i18n
-  document.querySelectorAll('.footer-tagline:not([data-i18n])').forEach(el => {
-    if (!el.dataset.en) el.dataset.en = el.textContent.trim();
-    if (t['footer-tagline'] !== undefined) el.textContent = t['footer-tagline'];
-  });
-
-  // Update toggle button appearance
-  const btn = document.querySelector('.lang-toggle');
-  if (btn) {
-    btn.textContent = lang === 'en' ? 'ä¸­æ–‡' : 'EN';
-    btn.setAttribute('data-current-lang', lang);
-  }
-
-  // Set html lang attribute for SEO
-  document.documentElement.lang = lang === 'zh' ? 'zh-Hans' : 'en';
-
-  // Save preference and update global state
-  _currentLang = lang;
-  try { localStorage.setItem('sam-lang', lang); } catch(e) {}
-
-  // Re-render article cards in the new language
-  const articleGrids = [
-    { sel: '#all-articles', fn: () => renderAllArticles('#all-articles') },
-    { sel: '#articles-iskandar-puteri', fn: () => renderArticles('Iskandar Puteri', '#articles-iskandar-puteri') },
-    { sel: '#articles-forest-city', fn: () => renderArticles('Forest City', '#articles-forest-city') },
-    { sel: '#articles-jb-town', fn: () => renderArticles('JB Town', '#articles-jb-town') },
-    { sel: '#home-articles', fn: () => renderAllArticles('#home-articles', 3) },
-  ];
-  articleGrids.forEach(({ sel, fn }) => { if (document.querySelector(sel)) fn(); });
-}
-
-function initLangToggle() {
-  const btn = document.querySelector('.lang-toggle');
-  if (!btn) return;
-
-  // Load saved preference, default to EN
-  let current = 'en';
-  try { current = localStorage.getItem('sam-lang') || 'en'; } catch(e) {}
-  _currentLang = current;
-  applyLanguage(current);
-
-  btn.addEventListener('click', () => {
-    const next = (btn.getAttribute('data-current-lang') || 'en') === 'en' ? 'zh' : 'en';
-    applyLanguage(next);
-  });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  initNav();
-  initReveal();
-  initLangToggle();
-  initArticleTranslateBtn();
-});
-
-function initArticleTranslateBtn() {
-  const artWrap = document.querySelector('.art-wrap');
-  if (!artWrap) return;
-  const bar = document.createElement('div');
-  bar.className = 'translate-bar';
-  bar.innerHTML = `
-    <span class="translate-bar-label">æœ¬æ–‡ä¸ºè‹±æ–‡ç‰ˆ</span>
-    <a class="translate-bar-btn" href="#" onclick="window.open('https://translate.google.com/translate?sl=en&tl=zh-CN&u='+encodeURIComponent(location.href));return false;">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-      ç”¨ Google ç¿»è¯‘æ­¤é¡µ
-    </a>`;
-  artWrap.insertBefore(bar, artWrap.firstChild);
-}
-
-// ============================================
-// PHASE 1 ADDITIONS
-// ============================================
-
-// ---- Extended placeholder articles (all areas) ----
-const ALL_ARTICLES = [
-  // Newest first
-  { title: 'MM2H Malaysia 2026: Complete Guide to the Malaysia My Second Home Programme', title_zh: 'MM2Hé©¬æ¥è¥¿äºš2026ï¼šé©¬æ¥è¥¿äºšç¬¬äºŒå®¶å›­è®¡åˆ’å®Œæ•´æŒ‡å—', summary: 'Three tiers (Platinum, Gold, Silver), financial requirements, the 90-day rule, Forest City SFZ track, and who actually qualifies â€” the complete guide for 2026.', summary_zh: 'ä¸‰ä¸ªç­‰çº§ï¼ˆç™½é‡‘ã€é»„é‡‘ã€ç™½é“¶ï¼‰ã€è´¢åŠ¡è¦æ±‚ã€90å¤©è§„å®šã€æ£®æ—åŸå¸‚SFZé€šé“ï¼Œä»¥åŠè°çœŸæ­£ç¬¦åˆèµ„æ ¼â€”â€”2026å¹´å®Œæ•´æŒ‡å—ã€‚', body: 'exists', image_url: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=800&auto=format&fit=crop', link: 'articles/mm2h-malaysia-2026-complete-guide.html', area: 'General', topics: 'mm2h,buying-guide' },
-  { title: 'JS-SEZ: What the Johor-Singapore Special Economic Zone Actually Means for Property Buyers', title_zh: 'JS-SEZï¼šæŸ”æ–°ç‰¹åˆ«ç»æµåŒºå¯¹æˆ¿äº§ä¹°å®¶æ„å‘³ç€ä»€ä¹ˆ', summary: 'Which zones are included, the 15% flat income tax for knowledge workers, which Johor areas benefit most from corporate relocations, and whether the opportunity is already priced in.', summary_zh: 'æ¶µç›–åŒºåŸŸã€çŸ¥è¯†å·¥ä½œè€…15%ç»Ÿä¸€æ‰€å¾—ç¨ã€å“ªäº›æŸ”ä½›åœ°åŒºä»ä¼ä¸šè¿å…¥ä¸­å—ç›Šæœ€å¤šï¼Œä»¥åŠæœºä¼šæ˜¯å¦å·²è¢«å¸‚åœºå®šä»·ã€‚', body: 'exists', image_url: 'https://images.unsplash.com/photo-1518563172008-e56c5dfbaef6?q=80&w=800&auto=format&fit=crop', link: 'articles/js-sez-johor-singapore-special-economic-zone-property-guide.html', area: 'General', topics: 'js-sez,buying-guide' },
-  // New buyer-profile & project articles
-  { title: 'R&F Princess Cove Phase 3: Who Should Buy and Who Should Not', title_zh: 'R&Fç¢§æ¡‚å›­å…¬ä¸»æ¹¾ç¬¬3æœŸï¼šè°è¯¥ä¹°ï¼Œè°ä¸è¯¥ä¹°', summary: 'An honest breakdown of who JB Town\'s most recognisable waterfront high-rise suits â€” commuters, RTS investors, freehold seekers â€” and who should look elsewhere.', summary_zh: 'è¯šå®è§£ææ–°å±±å¸‚åŒºæœ€çŸ¥åæ»¨æ°´é«˜å±‚é€‚åˆå“ªç±»ä¹°å®¶â€”â€”é€šå‹¤æ—ã€RTSæŠ•èµ„è€…ã€æ°¸ä¹…åœ°å¥‘ä¹°å®¶â€”â€”ä»¥åŠè°åº”å¦ä½œè€ƒè™‘ã€‚', body: 'exists', image_url: 'photos/jb-town/jb-rnf-night.jpg', link: 'articles/rf-princess-cove-phase-3-good-buy.html', area: 'JB Town', topics: 'jb-town,buying-guide' },
-  { title: 'Summer Suites JB: Is a Dual-Key Unit the Right Investment?', title_zh: 'Summer Suitesæ–°å±±ï¼šåŒé’¥åŒ™å•ä½æ˜¯å¦æ˜¯æ­£ç¡®çš„æŠ•èµ„ï¼Ÿ', summary: 'Freehold dual-key suites in JB Town priced at 15-year-old land cost â€” who the dual-key format suits, the rental strategy behind it, and what to verify before buying.', summary_zh: 'æ–°å±±å¸‚åŒºä»¥15å¹´å‰åœ°ä»·å‡ºå”®çš„æ°¸ä¹…åœ°å¥‘åŒé’¥åŒ™å¥—æˆ¿â€”â€”åŒé’¥åŒ™æ ¼å±€é€‚åˆè°ã€èƒŒåçš„ç§Ÿé‡‘ç­–ç•¥ï¼Œä»¥åŠè´­ä¹°å‰é¡»æ ¸å®çš„äº‹é¡¹ã€‚', body: 'exists', image_url: 'photos/jb-town/jb-bay.jpg', link: 'articles/summer-suites-jb-dual-key-investment.html', area: 'JB Town', topics: 'jb-town,buying-guide' },
-  { title: 'You Should Only Buy Landed in Iskandar Puteri If You Are One of These 4 Types of Buyer', title_zh: 'åªæœ‰è¿™4ç±»ä¹°å®¶æ‰é€‚åˆåœ¨ä¾æ–¯å¹²è¾¾å…¬ä¸»åŸè´­ä¹°æœ‰åœ°æˆ¿äº§', summary: 'The four buyer profiles that genuinely benefit from landed in Iskandar Puteri â€” and the red flags that suggest a high-rise or different area makes more sense.', summary_zh: 'çœŸæ­£èƒ½ä»ä¾æ–¯å¹²è¾¾å…¬ä¸»åŸæœ‰åœ°æˆ¿äº§ä¸­å—ç›Šçš„å››ç±»ä¹°å®¶ï¼Œä»¥åŠå»ºè®®é€‰æ‹©é«˜å±‚æˆ–å…¶ä»–åœ°åŒºçš„é¢„è­¦ä¿¡å·ã€‚', body: 'exists', image_url: 'photos/eco-botanic/eco1.jpg', link: 'articles/who-should-buy-landed-iskandar-puteri.html', area: 'Iskandar Puteri', topics: 'iskandar-puteri,buying-guide' },
-  { title: 'Riveria Garden Wawari: Is KSL\'s New Township Worth Buying Early?', title_zh: 'Riveria Garden Wawariï¼šKSLæ–°é•‡æ˜¯å¦å€¼å¾—æ—©æœŸå…¥æ‰‹ï¼Ÿ', summary: 'An honest look at whether buying early in Bandar Wawari makes sense, what KSL\'s track record suggests, and who this project is actually for.', summary_zh: 'è¯šå®è¯„ä¼°åœ¨Bandar Wawariæ—©æœŸä¹°å…¥æ˜¯å¦åˆç†ã€KSLè¿‡å¾€è®°å½•è¯´æ˜äº†ä»€ä¹ˆï¼Œä»¥åŠè¯¥é¡¹ç›®çœŸæ­£é€‚åˆå“ªç±»ä¹°å®¶ã€‚', body: 'exists', image_url: 'photos/eco-botanic/educity.jpg', link: 'articles/riveria-garden-wawari-ksl-worth-buying.html', area: 'Iskandar Puteri', topics: 'iskandar-puteri,buying-guide' },
-  { title: 'Horizon Hills Resale vs New Launch 2026: Which Makes More Sense?', title_zh: 'Horizon HillsäºŒæ‰‹æˆ¿ä¸æ–°ç›˜2026ï¼šå“ªä¸ªæ›´åˆ’ç®—ï¼Ÿ', summary: 'Comparing resale homes in Horizon Hills against new launches in Iskandar Puteri â€” pricing, condition, timeline, and which buyer profile suits each option.', summary_zh: 'å¯¹æ¯”Horizon HillsäºŒæ‰‹æˆ¿ä¸ä¾æ–¯å¹²è¾¾å…¬ä¸»åŸæ–°ç›˜â€”â€”ä»·æ ¼ã€çŠ¶å†µã€æ—¶é—´çº¿ï¼Œä»¥åŠå“ªç±»ä¹°å®¶é€‚åˆå“ªç§é€‰æ‹©ã€‚', body: 'exists', image_url: 'photos/horizon-hills/hh-club.jpg', link: 'articles/horizon-hills-resale-vs-new-launch-2026.html', area: 'Iskandar Puteri', topics: 'iskandar-puteri,buying-guide' },
-  { title: 'Singaporean Buying Property in Johor Bahru: Complete Guide 2026', title_zh: 'æ–°åŠ å¡äººåœ¨æŸ”ä½›æ–°å±±ç½®ä¸šï¼š2026å¹´å®Œæ•´æŒ‡å—', summary: 'Ownership rules, ABSD implications, loan eligibility, best areas, and which buyer profiles buying in JB genuinely suits for Singaporeans in 2026.', summary_zh: 'ç½®ä¸šè§„åˆ™ã€ABSDå½±å“ã€è´·æ¬¾èµ„æ ¼ã€æœ€ä½³åœ°åŒºï¼Œä»¥åŠæ–°åŠ å¡äººåœ¨æ–°å±±ç½®ä¸šçœŸæ­£é€‚åˆå“ªç±»ä¹°å®¶ã€‚', body: 'exists', image_url: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?q=80&w=800&auto=format&fit=crop', link: 'articles/singaporean-buying-property-jb-guide.html', area: 'General', topics: 'buying-guide' },
-  { title: 'Malaysian Working in Singapore: Should You Buy in JB Town or Iskandar Puteri?', title_zh: 'åœ¨æ–°åŠ å¡å·¥ä½œçš„é©¬æ¥è¥¿äºšäººï¼šè¯¥ä¹°æ–°å±±å¸‚åŒºè¿˜æ˜¯ä¾æ–¯å¹²è¾¾å…¬ä¸»åŸï¼Ÿ', summary: 'A clear decision framework for Malaysians earning in SGD â€” commuter needs, family lifestyle, investment purpose, and how your work pattern determines the right area.', summary_zh: 'ä¸ºèµšå–æ–°å¸çš„é©¬æ¥è¥¿äºšäººæä¾›æ¸…æ™°å†³ç­–æ¡†æ¶â€”â€”é€šå‹¤éœ€æ±‚ã€å®¶åº­ç”Ÿæ´»ã€æŠ•èµ„ç›®çš„ï¼Œä»¥åŠå·¥ä½œæ¨¡å¼å¦‚ä½•å†³å®šæ­£ç¡®çš„ç½®ä¸šåœ°åŒºã€‚', body: 'exists', image_url: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?q=80&w=800&auto=format&fit=crop', link: 'articles/malaysian-working-singapore-buy-jb-town-or-iskandar-puteri.html', area: 'General', topics: 'buying-guide' },
-  { title: 'Retiree\'s Checklist for Buying Property in Johor Bahru 2026', title_zh: '2026å¹´é€€ä¼‘äººå£«åœ¨æŸ”ä½›æ–°å±±ç½®ä¸šæ¸…å•', summary: 'Visa options, healthcare access, area selection, landed vs high-rise, and the financial structure retirees need to get right before buying in JB.', summary_zh: 'ç­¾è¯é€‰é¡¹ã€åŒ»ç–—æ¡ä»¶ã€åœ°åŒºé€‰æ‹©ã€æœ‰åœ°ä¸é«˜å±‚å¯¹æ¯”ï¼Œä»¥åŠé€€ä¼‘äººå£«åœ¨æ–°å±±ç½®ä¸šå‰é¡»ç†æ¸…çš„è´¢åŠ¡æ¶æ„ã€‚', body: 'exists', image_url: 'https://images.unsplash.com/photo-1559329007-40df8a9345d8?q=80&w=800&auto=format&fit=crop', link: 'articles/retiree-checklist-buying-johor-property.html', area: 'General', topics: 'retirement,buying-guide,mm2h' },
-  { title: 'JB Condo vs Landed: Which Is the Better Investment in 2026?', title_zh: 'æ–°å±±å…¬å¯“vsæœ‰åœ°æˆ¿äº§ï¼š2026å¹´å“ªä¸ªæ˜¯æ›´å¥½çš„æŠ•èµ„ï¼Ÿ', summary: 'An honest comparison of yield, capital appreciation, liquidity, tenant profiles, and which investment structure suits which buyer in the JB market.', summary_zh: 'è¯šå®å¯¹æ¯”æ”¶ç›Šç‡ã€èµ„æœ¬å¢å€¼ã€æµåŠ¨æ€§ã€ç§Ÿæˆ·ç±»å‹ï¼Œä»¥åŠå“ªç§æŠ•èµ„ç»“æ„é€‚åˆæ–°å±±å¸‚åœºçš„å“ªç±»ä¹°å®¶ã€‚', body: 'exists', image_url: 'https://images.unsplash.com/photo-1560185007-cde436f6a4d0?q=80&w=800&auto=format&fit=crop', link: 'articles/jb-condo-vs-landed-investment-2026.html', area: 'General', topics: 'buying-guide' },
-  { title: 'Foreign Buyer\'s Guide to Johor Property: Rules, Restrictions and Best Areas 2026', title_zh: 'å¤–å›½äººæŸ”ä½›ç½®ä¸šæŒ‡å—ï¼šè§„å®šã€é™åˆ¶ä¸æœ€ä½³åœ°åŒº2026', summary: 'Everything a foreign buyer needs to know â€” minimum price thresholds, landed restrictions, loan structure, RPGT, and the best areas for different buyer nationalities.', summary_zh: 'å¤–å›½ä¹°å®¶é¡»çŸ¥â€”â€”æœ€ä½ä»·æ ¼é—¨æ§›ã€æœ‰åœ°æˆ¿äº§é™åˆ¶ã€è´·æ¬¾ç»“æ„ã€RPGTï¼Œä»¥åŠé€‚åˆä¸åŒå›½ç±ä¹°å®¶çš„æœ€ä½³åœ°åŒºã€‚', body: 'exists', image_url: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?q=80&w=800&auto=format&fit=crop', link: 'articles/foreign-buyer-guide-johor-property.html', area: 'General', topics: 'buying-guide' },
-  { title: 'Bandar Wawari: Iskandar Puteri\'s Next 3,000-Acre Township', title_zh: 'Bandar Wawariï¼šä¾æ–¯å¹²è¾¾å…¬ä¸»åŸä¸‹ä¸€ä¸ª3000è‹±äº©æ–°é•‡', summary: 'A 3,000-acre joint-development by six major developers is taking shape in Taman Wawari â€” here\'s the scale, the road access story, and what 13,000+ surrounding units mean for buyers.', summary_zh: 'å…­å¤§å‘å±•å•†è”åˆå¼€å‘çš„3000è‹±äº©æ–°é•‡æ­£åœ¨Taman Wawariæˆå½¢â€”â€”è§„æ¨¡ã€é“è·¯é…å¥—ï¼Œä»¥åŠå‘¨è¾¹13000+å•ä½å¯¹ä¹°å®¶æ„å‘³ç€ä»€ä¹ˆã€‚', body: 'exists', image_url: 'photos/wawari-aerial-map.jpg', link: 'articles/bandar-wawari-future-development-iskandar-puteri.html', area: 'Iskandar Puteri', topics: 'iskandar-puteri,buying-guide' },
-  // Sunway City Iskandar Puteri
-  { title: 'Is Sunway City Iskandar Puteri Worth Buying in 2026?', title_zh: '2026å¹´ä¾æ–¯å¹²è¾¾å…¬ä¸»åŸé˜³å…‰åŸæ˜¯å¦å€¼å¾—è´­ä¹°ï¼Ÿ', summary: 'An honest buyer\'s guide to Sunway City â€” 2,000 acres, RM30B GDV, Build-Own-Operate model, Second Link access, and who this township genuinely suits.', summary_zh: 'é˜³å…‰åŸè¯šå®ä¹°å®¶æŒ‡å—â€”â€”2000è‹±äº©ã€RM300äº¿GDVã€Build-Own-Operateæ¨¡å¼ã€ç¬¬äºŒé€šé“å…¥å£ï¼Œä»¥åŠè¯¥é•‡åŒºçœŸæ­£é€‚åˆå“ªç±»ä¹°å®¶ã€‚', body: 'exists', image_url: 'photos/sunway-iskandar/sunway-iskandar-drone.jpg', link: 'articles/is-sunway-city-iskandar-puteri-worth-buying-2026.html', area: 'Iskandar Puteri', topics: 'iskandar-puteri,buying-guide' },
-  { title: 'Sunway City vs Horizon Hills vs Eco Botanic: Which Should You Buy?', title_zh: 'é˜³å…‰åŸvs Horizon Hills vs Eco Botanicï¼šè¯¥é€‰å“ªä¸ªï¼Ÿ', summary: 'Direct comparison of three major Iskandar Puteri townships â€” tenure, schools, developer model, maturity, and which buyer profile fits each.', summary_zh: 'ç›´æ¥å¯¹æ¯”ä¾æ–¯å¹²è¾¾å…¬ä¸»åŸä¸‰å¤§ä¸»è¦é•‡åŒºâ€”â€”åœ°å¥‘ã€å­¦æ ¡ã€å‘å±•å•†æ¨¡å¼ã€æˆç†Ÿåº¦ï¼Œä»¥åŠå“ªç±»ä¹°å®¶é€‚åˆå“ªä¸ªã€‚', body: 'exists', image_url: 'photos/sunway-iskandar/sunway-town.jpg', link: 'articles/sunway-city-vs-horizon-hills-vs-eco-botanic.html', area: 'Iskandar Puteri', topics: 'iskandar-puteri,buying-guide' },
-  { title: 'Schools in Sunway City Iskandar Puteri: Full Guide for Families 2026', title_zh: 'ä¾æ–¯å¹²è¾¾å…¬ä¸»åŸé˜³å…‰åŸå­¦æ ¡ï¼š2026å¹´å®¶åº­å®Œæ•´æŒ‡å—', summary: 'Every school inside Sunway City â€” Sunway International School, SJK(C) Cheah Fah, Treehouse Playschool, 42 coding school, swim school, equestrian and more.', summary_zh: 'é˜³å…‰åŸå†…æ¯ä¸€æ‰€å­¦æ ¡â€”â€”Sunwayå›½é™…å­¦æ ¡ã€SJK(C) Cheah Fahã€Treehouseå¹¼å„¿å›­ã€42ç¼–ç¨‹å­¦æ ¡ã€æ¸¸æ³³å­¦æ ¡ã€é©¬æœ¯ç­‰ã€‚', body: 'exists', image_url: 'photos/eco-botanic/educity.jpg', link: 'articles/schools-sunway-city-iskandar-puteri-families.html', area: 'Iskandar Puteri', topics: 'iskandar-puteri,buying-guide' },
-  { title: 'Sunway City Iskandar Puteri: The 2,000-Acre Township Explained', title_zh: 'ä¾æ–¯å¹²è¾¾å…¬ä¸»åŸé˜³å…‰åŸï¼š2000è‹±äº©é•‡åŒºå…¨è§£æ', summary: 'The factual overview of Sunway City â€” size, GDV, five pillars, BOO model, security setup, and what it means to buy within an integrated township.', summary_zh: 'é˜³å…‰åŸäº‹å®æ¦‚è§ˆâ€”â€”è§„æ¨¡ã€GDVã€äº”å¤§æ”¯æŸ±ã€BOOæ¨¡å¼ã€ä¿å®‰é…ç½®ï¼Œä»¥åŠåœ¨ç»¼åˆé•‡åŒºç½®ä¸šçš„æ„ä¹‰ã€‚', body: 'exists', image_url: 'photos/sunway-iskandar/sunway-iskandar-aerial.jpg', link: 'articles/sunway-city-iskandar-puteri-township-explained.html', area: 'Iskandar Puteri', topics: 'iskandar-puteri' },
-  { title: 'Why Sunway City Iskandar Puteri Is One of Malaysia\'s Greenest Townships', title_zh: 'ä¸ºä½•é˜³å…‰åŸæ˜¯é©¬æ¥è¥¿äºšæœ€ç»¿è‰²çš„é•‡åŒºä¹‹ä¸€', summary: 'Net zero by 2050, 4,998 MWh solar, 534,000 trees, 104,000 mangroves, GreenRE Platinum school â€” the real sustainability data behind Sunway City.', summary_zh: '2050å¹´å‡€é›¶ç›®æ ‡ã€4998MWhå¤ªé˜³èƒ½ã€53.4ä¸‡æ£µæ ‘ã€10.4ä¸‡æ£µçº¢æ ‘æ—ã€GreenREç™½é‡‘å­¦æ ¡â€”â€”é˜³å…‰åŸçš„çœŸå®å¯æŒç»­å‘å±•æ•°æ®ã€‚', body: 'exists', image_url: 'photos/sunway-iskandar/sunway-iskandar-waterfront.jpg', link: 'articles/sunway-city-iskandar-puteri-greenest-township.html', area: 'Iskandar Puteri', topics: 'iskandar-puteri' },
-  { title: 'Sunway City Iskandar Puteri for Retirees: Lifestyle, Wellness and MM2H', title_zh: 'é€€ä¼‘äººå£«çš„é˜³å…‰åŸï¼šç”Ÿæ´»æ–¹å¼ã€å¥åº·ä¸MM2H', summary: 'Security, walkability, wellness, natural environment, and healthcare access honestly assessed for retirees evaluating Sunway City as a retirement destination.', summary_zh: 'è¯šå®è¯„ä¼°é€€ä¼‘äººå£«çš„å®‰ä¿ã€æ­¥è¡Œç¯å¢ƒã€å¥åº·è®¾æ–½ã€è‡ªç„¶ç¯å¢ƒåŠåŒ»ç–—æ¡ä»¶â€”â€”æ˜¯å¦é€‚åˆä½œä¸ºé€€ä¼‘ç›®çš„åœ°ã€‚', body: 'exists', image_url: 'photos/sunway-iskandar/sunway-iskandar-waterfront.jpg', link: 'articles/sunway-city-iskandar-puteri-retirees-guide.html', area: 'Iskandar Puteri', topics: 'iskandar-puteri,retirement,mm2h' },
-  { title: 'Signature Home at Sunway City Iskandar Puteri: What Buyers Need to Know', title_zh: 'é˜³å…‰åŸSignature Homeï¼šä¹°å®¶é¡»çŸ¥', summary: 'What Signature Home is, what the Signature Home Rewards promotion means, and the key questions to ask before committing to a purchase.', summary_zh: 'Signature Homeæ˜¯ä»€ä¹ˆã€Signature Home Rewardsä¼˜æƒ æ„å‘³ç€ä»€ä¹ˆï¼Œä»¥åŠæ‰¿è¯ºè´­ä¹°å‰é¡»é—®çš„å…³é”®é—®é¢˜ã€‚', body: 'exists', image_url: 'photos/sunway-iskandar/sunway-big-box-office.jpg', link: 'articles/signature-home-sunway-city-iskandar-puteri.html', area: 'Iskandar Puteri', topics: 'iskandar-puteri,buying-guide' },
-  { title: 'Sunway City Iskandar Puteri and the JS-SEZ: What Investors Need to Know', title_zh: 'é˜³å…‰åŸä¸JS-SEZï¼šæŠ•èµ„è€…é¡»çŸ¥', summary: 'How the Johor-Singapore Special Economic Zone affects Sunway City â€” commercial demand, residential spillover, and the honest long-term investment case.', summary_zh: 'æŸ”æ–°ç‰¹åˆ«ç»æµåŒºå¦‚ä½•å½±å“é˜³å…‰åŸâ€”â€”å•†ä¸šéœ€æ±‚ã€ä½å®…æº¢å‡ºæ•ˆåº”ï¼Œä»¥åŠè¯šå®çš„é•¿æœŸæŠ•èµ„å‰æ™¯ã€‚', body: 'exists', image_url: 'photos/sunway-iskandar/sunway-iskandar-aerial.jpg', link: 'articles/sunway-city-iskandar-puteri-js-sez-investors.html', area: 'Iskandar Puteri', topics: 'iskandar-puteri,js-sez' },
-  { title: 'Buying Near the Second Link: Sunway City vs Forest City', title_zh: 'ç¬¬äºŒé€šé“é™„è¿‘ç½®ä¸šï¼šé˜³å…‰åŸvsæ£®æ—åŸå¸‚', summary: 'Two major developments near Tuas compared directly â€” lifestyle, tenure, schools, SFZ designation, community maturity and which buyer profile fits each.', summary_zh: 'é è¿‘Tuasçš„ä¸¤å¤§å‘å±•ç›´æ¥å¯¹æ¯”â€”â€”ç”Ÿæ´»æ–¹å¼ã€åœ°å¥‘ã€å­¦æ ¡ã€SFZèµ„æ ¼ã€ç¤¾åŒºæˆç†Ÿåº¦ï¼Œä»¥åŠå“ªç±»ä¹°å®¶é€‚åˆå“ªä¸ªã€‚', body: 'exists', image_url: 'photos/sunway-iskandar/sunway-second-link.jpg', link: 'articles/second-link-sunway-city-vs-forest-city.html', area: 'Iskandar Puteri', topics: 'iskandar-puteri,forest-city,buying-guide' },
-  { title: 'Sunway International School Iskandar Puteri: Is It Worth Living Nearby?', title_zh: 'ä¾æ–¯å¹²è¾¾å…¬ä¸»åŸSunwayå›½é™…å­¦æ ¡ï¼šå€¼å¾—åœ¨é™„è¿‘ç½®ä¸šå—ï¼Ÿ', summary: 'Canadian/IB curriculum from Kâ€“Grade 12 â€” a property buyer\'s guide to living near or within Sunway City for school access, who it suits, and what to consider.', summary_zh: 'åŠ æ‹¿å¤§/IBè¯¾ç¨‹ï¼Œå¹¼å„¿å›­è‡³12å¹´çº§â€”â€”åœ¨é˜³å…‰åŸå†…æˆ–é™„è¿‘ç½®ä¸šçš„æˆ¿äº§ä¹°å®¶æŒ‡å—ï¼Œé€‚åˆè°ï¼Œä»¥åŠéœ€è¦è€ƒé‡çš„äº‹é¡¹ã€‚', body: 'exists', image_url: 'photos/eco-botanic/educity.jpg', link: 'articles/sunway-international-school-iskandar-puteri.html', area: 'Iskandar Puteri', topics: 'iskandar-puteri,buying-guide' },
-  // Forest City
-  { title: 'Forest City Ghost Town or Opportunity? The Honest Answer in 2026', title_zh: 'æ£®æ—åŸå¸‚é¬¼åŸè¿˜æ˜¯æœºé‡ï¼Ÿ2026å¹´çš„è¯šå®è§£ç­”', summary: 'The ghost town label followed Forest City for years. Here is what the current data actually shows â€” and what it means for buyers today.', summary_zh: 'é¬¼åŸæ ‡ç­¾å›°æ‰°æ£®æ—åŸå¸‚å¤šå¹´ã€‚å½“å‰æ•°æ®å®é™…æ˜¾ç¤ºä»€ä¹ˆâ€”â€”ä»¥åŠå¯¹ä»Šæ—¥ä¹°å®¶æ„å‘³ç€ä»€ä¹ˆã€‚', body: 'exists', image_url: 'photos/forest-city/fc-island.png', link: 'articles/forest-city-ghost-town-or-opportunity.html', area: 'Forest City', topics: 'forest-city' },
-  { title: 'Is Forest City Worth Buying in 2026? An Advisor\'s Honest Assessment', title_zh: '2026å¹´æ£®æ—åŸå¸‚å€¼å¾—è´­ä¹°å—ï¼Ÿé¡¾é—®çš„è¯šå®è¯„ä¼°', summary: 'Who Forest City suits, who it does not, and the honest case for and against buying there right now.', summary_zh: 'æ£®æ—åŸå¸‚é€‚åˆè°ã€ä¸é€‚åˆè°ï¼Œä»¥åŠå½“å‰ä¹°å…¥æˆ–ä¸ä¹°å…¥çš„è¯šå®ç†ç”±ã€‚', body: 'exists', image_url: 'photos/forest-city/forest-city-site-3.jpg', link: 'articles/is-forest-city-worth-buying-2026.html', area: 'Forest City', topics: 'forest-city' },
-  { title: 'Can Forest City Qualify for MM2H? The SFZ Programme Explained', title_zh: 'æ£®æ—åŸå¸‚èƒ½ç”³è¯·MM2Hå—ï¼ŸSFZè®¡åˆ’è¯¦è§£', summary: 'Forest City is the only project in Malaysia with its own MM2H category â€” lower deposit, no minimum price. Here is exactly how it works.', summary_zh: 'æ£®æ—åŸå¸‚æ˜¯é©¬æ¥è¥¿äºšå”¯ä¸€æ‹¥æœ‰ä¸“å±MM2Hç±»åˆ«çš„é¡¹ç›®â€”â€”æ›´ä½å­˜æ¬¾ï¼Œæ— æœ€ä½ä»·æ ¼è¦æ±‚ã€‚ä»¥ä¸‹æ˜¯å…·ä½“è¿ä½œæ–¹å¼ã€‚', body: 'exists', image_url: 'photos/forest-city/golf-2.png', link: 'articles/forest-city-mm2h-sfz-guide.html', area: 'Forest City', topics: 'forest-city,mm2h' },
-  { title: 'Forest City Golf Villa: What It Is, What You Get, and Who It Suits', title_zh: 'æ£®æ—åŸå¸‚é«˜å°”å¤«åˆ«å¢…ï¼šæ˜¯ä»€ä¹ˆã€å¾—åˆ°ä»€ä¹ˆã€é€‚åˆè°', summary: 'An inside look at the V120 Golf Villa â€” private garden, rooftop terrace, golf course view, and 5-year free membership. Real photos from an actual unit visit.', summary_zh: 'V120é«˜å°”å¤«åˆ«å¢…æ·±åº¦è§£æâ€”â€”ç§äººèŠ±å›­ã€å±‹é¡¶éœ²å°ã€é«˜å°”å¤«çƒåœºæ™¯è§‚åŠ5å¹´å…è´¹ä¼šç±ã€‚å®é™…å•ä½å‚è§‚å®æ‹ã€‚', body: 'exists', image_url: 'photos/villa-garden-exterior.jpg', link: 'articles/forest-city-golf-villa-guide.html', area: 'Forest City', topics: 'forest-city,golf' },
-  { title: 'Living in a Forest City Highrise: What to Expect in 2026', title_zh: 'ä½åœ¨æ£®æ—åŸå¸‚é«˜å±‚ï¼š2026å¹´çš„çœŸå®ä½“éªŒ', summary: 'Sea views, resort facilities, island air, and how the living environment compares to mainland Johor â€” an honest walkthrough for buyers considering a Forest City apartment.', summary_zh: 'æµ·æ™¯ã€åº¦å‡å¼è®¾æ–½ã€æµ·å²›ç©ºæ°”ï¼Œä»¥åŠä¸æ–°å±±å†…é™†ç›¸æ¯”çš„å±…ä½ç¯å¢ƒâ€”â€”ä¸ºè€ƒè™‘æ£®æ—åŸå¸‚å…¬å¯“çš„ä¹°å®¶æä¾›çš„è¯šå®è§£æã€‚', body: 'exists', image_url: 'photos/forest-city/forest-city-site-1.jpg', link: 'articles/forest-city-highrise-living-2026.html', area: 'Forest City', topics: 'forest-city' },
-  { title: 'Why Buyers Choose Forest City: The Island Lifestyle Nobody Talks About', title_zh: 'ä¹°å®¶é€‰æ‹©æ£®æ—åŸå¸‚çš„åŸå› ï¼šæ— äººæåŠçš„æµ·å²›ç”Ÿæ´»æ–¹å¼', summary: 'The mangrove corridor, two world-ranked golf courses, five-star resort facilities, beach access, and duty-free island living â€” the lifestyle case for Forest City.', summary_zh: 'çº¢æ ‘æ—èµ°å»Šã€ä¸¤ä¸ªä¸–ç•Œæ’åé«˜å°”å¤«çƒåœºã€äº”æ˜Ÿçº§åº¦å‡è®¾æ–½ã€æµ·æ»©å…¥å£åŠå…ç¨æµ·å²›ç”Ÿæ´»â€”â€”æ£®æ—åŸå¸‚çš„ç”Ÿæ´»æ–¹å¼æ¡ˆä¾‹ã€‚', body: 'exists', image_url: 'photos/forest-city/forest-city-site-2.jpg', link: 'articles/forest-city-island-lifestyle.html', area: 'Forest City', topics: 'forest-city,retirement' },
-  // Iskandar Puteri
-  { title: 'Iskandar Puteri Landed Property: Buyer\'s Guide 2026', title_zh: 'ä¾æ–¯å¹²è¾¾å…¬ä¸»åŸæœ‰åœ°æˆ¿äº§ï¼š2026å¹´ä¹°å®¶æŒ‡å—', summary: 'What to know before buying a gated landed home in Eco Botanic, Horizon Hills, or East Ledang â€” for both Malaysians and foreigners considering Iskandar Puteri in 2026.', summary_zh: 'åœ¨Eco Botanicã€Horizon Hillsæˆ–East Ledangè´­ä¹°å›´é—¸æœ‰åœ°æˆ¿äº§å‰é¡»äº†è§£çš„äº‹â€”â€”é€‚åˆé©¬æ¥è¥¿äºšæœ¬åœ°åŠå¤–å›½ä¹°å®¶ã€‚', body: 'exists', image_url: 'photos/horizon-hills/hh-2.jpg', link: 'articles/iskandar-puteri-landed-property-guide-2026.html', area: 'Iskandar Puteri', topics: 'iskandar-puteri,buying-guide' },
-  { title: 'Horizon Hills vs Eco Botanic vs East Ledang: Which Should You Buy?', title_zh: 'Horizon Hills vs Eco Botanic vs East Ledangï¼šè¯¥é€‰å“ªä¸ªï¼Ÿ', summary: 'A side-by-side comparison of the three most popular landed townships in Iskandar Puteri for families and retirees â€” with a decision framework for local and foreign buyers.', summary_zh: 'ä¾æ–¯å¹²è¾¾å…¬ä¸»åŸä¸‰å¤§æœ€çƒ­é—¨æœ‰åœ°é•‡åŒºçš„æ¨ªå‘å¯¹æ¯”ï¼Œé¢å‘å®¶åº­åŠé€€ä¼‘äººå£«â€”â€”é™„æœ¬åœ°åŠå¤–å›½ä¹°å®¶å†³ç­–æ¡†æ¶ã€‚', body: 'exists', image_url: 'photos/horizon-hills/hh-3.png', link: 'articles/horizon-hills-vs-eco-botanic-vs-east-ledang.html', area: 'Iskandar Puteri', topics: 'iskandar-puteri,buying-guide' },
-  { title: 'International Schools Near Iskandar Puteri: 2026 Guide', title_zh: 'ä¾æ–¯å¹²è¾¾å…¬ä¸»åŸé™„è¿‘çš„å›½é™…å­¦æ ¡ï¼š2026å¹´æŒ‡å—', summary: 'Which established townships sit closest to Johor\'s best international schools â€” and how to plan your property purchase around school zones.', summary_zh: 'å“ªäº›æˆç†Ÿé•‡åŒºæœ€é è¿‘æŸ”ä½›æœ€å¥½çš„å›½é™…å­¦æ ¡â€”â€”ä»¥åŠå¦‚ä½•å›´ç»•å­¦åŒºè§„åˆ’ç½®ä¸šã€‚', body: 'exists', image_url: 'photos/eco-botanic/educity.jpg', link: 'articles/international-schools-iskandar-puteri-2026.html', area: 'Iskandar Puteri', topics: 'iskandar-puteri,schools' },
-  { title: 'Retiring in Iskandar Puteri: Golf, Healthcare, and Cost of Living', title_zh: 'åœ¨ä¾æ–¯å¹²è¾¾å…¬ä¸»åŸé€€ä¼‘ï¼šé«˜å°”å¤«ã€åŒ»ç–—ä¸ç”Ÿæ´»æˆæœ¬', summary: 'Why retirees â€” both Malaysian and foreign â€” keep choosing Iskandar Puteri. Golf courses, private hospitals, cost of living, and what you actually need to plan for.', summary_zh: 'ä¸ºä½•é€€ä¼‘äººå£«æŒç»­é€‰æ‹©ä¾æ–¯å¹²è¾¾å…¬ä¸»åŸã€‚é«˜å°”å¤«çƒåœºã€ç§ç«‹åŒ»é™¢ã€ç”Ÿæ´»æˆæœ¬ï¼Œä»¥åŠçœŸæ­£éœ€è¦è§„åˆ’çš„äº‹é¡¹ã€‚', body: 'exists', image_url: 'photos/horizon-hills/hh-club.jpg', link: 'articles/retiring-iskandar-puteri-golf-healthcare.html', area: 'Iskandar Puteri', topics: 'iskandar-puteri,retirement,golf' },
-  // JB Town
-  { title: 'Will There Be Enough Population to Support Johor Bahru Town Rental Market?', title_zh: 'æŸ”ä½›æ–°å±±å¸‚åŒºç§Ÿèµå¸‚åœºæ˜¯å¦æœ‰è¶³å¤Ÿäººå£æ”¯æ’‘ï¼Ÿ', summary: '1.13 million Malaysians live in Singapore. 350,000 cross daily. RTS opens in 2027. A data-driven look at who the tenants are, how many could move, and what the numbers actually say.', summary_zh: '113ä¸‡é©¬æ¥è¥¿äºšäººå±…ä½åœ¨æ–°åŠ å¡ã€‚æ¯æ—¥35ä¸‡äººè¿‡å¢ƒã€‚RTSå°†äº2027å¹´å¼€é€šã€‚æ•°æ®é©±åŠ¨åˆ†æï¼šç§Ÿæˆ·æ˜¯è°ã€å¯èƒ½è¿ç§»å¤šå°‘ï¼Œä»¥åŠæ•°å­—å®é™…è¯´æ˜äº†ä»€ä¹ˆã€‚', body: 'exists', image_url: 'photos/jb-town/RTS1.jpg', link: 'articles/jb-town-rental-market-population.html', area: 'JB Town', topics: 'jb-town,buying-guide' },
-  { title: '3 Things to Watch Before Buying in Johor Bahru Town', title_zh: 'åœ¨æ–°å±±å¸‚åŒºä¹°æˆ¿å‰é¡»æ³¨æ„çš„3ä»¶äº‹', summary: 'Leasehold traps, RTS pricing distortions, and building management issues most buyers miss. Here\'s what to check before you sign.', summary_zh: 'å¤§å¤šæ•°ä¹°å®¶å¿½è§†çš„ç§Ÿçº¦é™·é˜±ã€RTSå®šä»·æ‰­æ›²åŠæ¥¼å®‡ç®¡ç†é—®é¢˜ã€‚ç­¾çº¦å‰é¡»æ ¸æŸ¥çš„äº‹é¡¹ã€‚', body: 'exists', image_url: 'photos/jb-town/jb-city-square.png', link: 'articles/3-things-before-buying-jb-town.html', area: 'JB Town', topics: 'jb-town,buying-guide' },
-  // MM2H
-  { title: 'MM2H Malaysia 2026: Full Application Guide', title_zh: 'MM2Hé©¬æ¥è¥¿äºš2026ï¼šå®Œæ•´ç”³è¯·æŒ‡å—', summary: 'Eligibility, deposit amounts, income requirements, and the step-by-step application process explained.', summary_zh: 'ç”³è¯·èµ„æ ¼ã€å­˜æ¬¾é‡‘é¢ã€æ”¶å…¥è¦æ±‚åŠé€æ­¥ç”³è¯·æµç¨‹è¯¦è§£ã€‚', body: '', image_url: 'https://images.unsplash.com/photo-1555400038-63f5ba517a47?q=80&w=800&auto=format&fit=crop', link: '#', area: 'General', topics: 'mm2h,buying-guide' },
-  // JS-SEZ
-  { title: 'JS-SEZ Explained: What the Johor-Singapore Special Economic Zone Means for Property', title_zh: 'JS-SEZè¯¦è§£ï¼šæŸ”æ–°ç‰¹åˆ«ç»æµåŒºå¯¹æˆ¿äº§æ„å‘³ç€ä»€ä¹ˆ', summary: 'How the JS-SEZ framework changes the investment case for Iskandar properties close to the checkpoints.', summary_zh: 'JS-SEZæ¡†æ¶å¦‚ä½•æ”¹å˜é è¿‘å…³å¡çš„ä¾æ–¯å¹²è¾¾æˆ¿äº§æŠ•èµ„æ ¼å±€ã€‚', body: '', image_url: 'https://images.unsplash.com/photo-1518563172008-e56c5dfbaef6?q=80&w=800&auto=format&fit=crop', link: '#', area: 'General', topics: 'js-sez,buying-guide' },
-];
-
-// ---- Extended placeholder projects with data-area for filtering ----
-const EXTENDED_PROJECTS = [
-  {
-    slug: 'riveria-garden-wawari', area: 'Iskandar Puteri', project_name: 'Riveria Garden @ Wawari',
-    tagline: 'KSL freehold riverside township â€” 627 acres along Sungai Melayu, minutes from EduCity',
-    price_range: 'From RM 900K (Terrace) Â· From RM 1.32M net (Cluster)',
-    tenure: 'Freehold',
-    commute_note: 'Minutes to Tuas Checkpoint via Second Link Expressway',
-    description: "Riveria Garden @ Wawari is KSL Holdings' flagship township project in Iskandar Puteri â€” a 627-acre freehold master-planned community built along the scenic Sungai Melayu riverfront. It is one of the largest freehold landed developments to launch in Iskandar Puteri in recent years, positioned at the quieter, greener end of the district near EduCity and the Tuas Checkpoint corridor.\n\nTwo product types are available. The Double Storey Terrace offers 20' x 70' land and a massive 2,219 sq ft built-up, priced from RM 900K â€” making it one of the most generously sized terrace entries in this price band in Iskandar Puteri. The Elora Double Storey Cluster House steps up to a wider 32' x 70' land and 2,592 sq ft built-up, at a net price from approximately RM 1.32M (north-facing intermediate) to RM 1.34M (south-facing intermediate). Both types carry freehold individual land titles.\n\nThe township is built around three core ideas. First, individual freehold land titles on every unit â€” not strata, not leasehold. Second, a riverside setting: the development faces Sungai Melayu, with landscaped riverfront promenades designed as the centrepiece of daily community life. Third, a scaled amenities programme anchored by The Wawari Club â€” a full-facility club with co-working lounges, sports courts, gymnasium, and swimming facilities, plus dedicated jogging and cycling tracks throughout the community.\n\nConnectivity is a key part of the proposition. The site sits within reach of the Iskandar Coastal Highway, the Second Link Expressway (Tuas), and the Pasir Gudang-Perling Highway â€” giving residents multiple route options to Singapore and JB Town. EduCity, with its cluster of international schools and university campuses, is nearby, making this a natural choice for families who prioritise education infrastructure. Gleneagles Hospital Medini is also within the broader Iskandar Puteri catchment.\n\nAs a new KSL township, Riveria Garden represents a primary market purchase â€” progressive payment schedule, developer warranty, and new-launch specifications. The freehold title, generous built-up sizes, and riverside positioning place it in a compelling segment for buyers who want more space than a typical JB Town high-rise at a more accessible price than the established Horizon Hills or Eco Botanic resale market.",
-    unit_types: [
-      { type: 'Double Storey Terrace', size: '20\' x 70\' land Â· 2,219 sq ft built-up Â· From RM 900K' },
-      { type: 'Elora Double Storey Cluster (North)', size: '32\' x 70\' land Â· 2,592 sq ft Â· Net from RM 1,318,408' },
-      { type: 'Elora Double Storey Cluster (South)', size: '32\' x 70\' land Â· 2,592 sq ft Â· Net from RM 1,338,428' },
-    ],
-    features: [
-      'Freehold individual land titles â€” not strata, not leasehold',
-      '627-acre master-planned township by KSL Holdings Berhad',
-      'Riverfront setting along Sungai Melayu â€” landscaped promenade',
-      'Terrace: 20\' x 70\' land, 2,219 sq ft built-up, from RM 900K',
-      'Elora Cluster: 32\' x 70\' land, 2,592 sq ft built-up, net from RM 1.32M',
-      'The Wawari Club: co-working lounge, sports courts, gym, swimming facilities',
-      'Dedicated jogging and cycling tracks throughout the community',
-      'Gated and guarded 24-hour security',
-      'Access via Iskandar Coastal Highway, Second Link Expressway, Pasir Gudang-Perling Highway',
-      'Minutes from Tuas Checkpoint Â· Near EduCity international schools and university campuses',
-      'Within the Iskandar Puteri JS-SEZ growth corridor',
-    ],
-    status: 'Now Selling',
-    image_url: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1200&auto=format&fit=crop',
-    published: 'TRUE'
-  },
-  {
-    slug: 'forest-city-golf-villa', area: 'Forest City', project_name: 'Forest City Golf Villa',
-    tagline: 'Private landed villa on the golf course', price_range: 'RM 1.5M â€“ RM 3.5M',
-    tenure: 'Strata', commute_note: '~30 min to Second Link',
-    description: "The Forest City Golf Villa (V120) is a two-storey landed strata property set directly on the golf course â€” with private garden, rooftop terrace, and a 5-year golf membership included.\n\n[Sam to add: current availability, pricing updates, and comparison with high-rise options.]",
-    status: 'Now Selling',
-    image_url: 'photos/villa-garden-exterior.jpg',
-    published: 'TRUE'
-  },
-  {
-    slug: 'forest-city-high-rise', area: 'Forest City', project_name: 'Forest City High Rise',
-    tagline: 'Sea-view apartments, resort facilities', price_range: 'RM 400K â€“ RM 1.5M',
-    tenure: 'Strata', commute_note: '~30 min to Second Link',
-    description: "Forest City's high-rise apartments offer sea views, resort-style pools, and island living at price points that are hard to match this close to Singapore.\n\n[Sam to add: specific towers, floor comparison, and current promotions.]",
-    status: 'Now Selling',
-    image_url: 'fc-pool.jpg',
-    published: 'TRUE'
-  },
-  {
-    slug: 'rf-princess-cove', area: 'JB Town', project_name: 'R&F Princess Cove â€“ Phase 3',
-    tagline: 'Border-adjacent high-rise with direct RTS Link connectivity to Singapore',
-    price_range: 'Enquire for pricing',
-    tenure: 'Freehold',
-    commute_note: '650m sheltered walk to JB CIQ Â· RTS Link (Bukit Chagar) to Woodlands North MRT',
-    description: "R&F Princess Cove is Johor Bahru's highest-profile residential landmark â€” a mixed-use masterplan built immediately adjacent to the JB Customs, Immigration and Quarantine (CIQ) complex, the busiest land border crossing in the world with 350,000 travellers daily. Phase 3, known as New Casa Suites @ Mercu 3, is the latest tower in this development, carrying forward the same connectivity-first proposition with upgraded facilities and direct RTS access.\n\nThe single most important fact about this address is the 650-metre sheltered walkway connecting the development directly to JB CIQ. You walk from your lobby, covered, to immigration in under ten minutes â€” no vehicle needed. With the RTS Link (Rapid Transit System) â€” Bukit Chagar station, the Johor Bahru terminus â€” now operational, that walk continues on rail into Woodlands North MRT station in Singapore, where it connects to the Thomson-East Coast Line and the rest of the Singapore MRT network. The commute from lobby to Orchard Road is shorter from this address than from any other Malaysian property.\n\nPhase 3's Urban Sky Park occupies Level 6 â€” a full active floor with swimming pool, jacuzzi, kids' pool, covered BBQ lawn, leisure lawn, tennis court, basketball court, outdoor gym, gym room, yoga room, leisure track, sauna, childcare centre, and multipurpose room. Level 4 adds indoor badminton hall, snooker room, and table tennis room â€” plus the covered link bridge that connects directly into R&F Mall, with over 450 retail outlets within the same complex. The 450-metre Sky Lounge Jogging Track on Level 6 is the only elevated jogging track of its kind in Johor Bahru.\n\nThe wider R&F Princess Cove masterplan includes Johor Bahru's first opera house â€” the R&F Performing Arts Centre â€” a private marina yacht club on the International Marina Boulevard, and waterfront promenade access along the Strait of Johor. These are not future plans: they are operating today.\n\nThe investment case is direct: border-adjacent, RTS-connected, linked to a 450-outlet mall, with demonstrable rental demand driven by cross-border commuters who need a JB base within walking distance of Singapore. R&F Princess Cove has consistently ranked as Malaysia's most-viewed condominium rental listing across major property portals â€” a metric reflecting actual tenant interest. Phase 3 offers a new-launch entry point into that established rental market.",
-    unit_types: [
-      { type: 'Studio', size: '313 sq ft' },
-      { type: '1-Bedroom', size: '555 â€“ 593 sq ft' },
-      { type: '2-Bedroom', size: '781 â€“ 894 sq ft' },
-      { type: '3-Bedroom', size: '894 â€“ 1,156 sq ft' },
-      { type: '4-Bedroom', size: '1,555 sq ft' },
-    ],
-    features: [
-      'Freehold title â€” rare for high-rise in JB Town',
-      '650m sheltered walkway direct to JB CIQ â€” no car needed',
-      'RTS Link (Bukit Chagar) to Woodlands North MRT â€” Singapore rail access',
-      'Urban Sky Park (Level 6): pool, jacuzzi, kids pool, tennis, basketball, gym, yoga room, sauna, 450m jogging track',
-      'Level 4: indoor badminton, snooker, table tennis + covered link bridge to R&F Mall (450+ outlets)',
-      'R&F Performing Arts Centre & private marina yacht club within the masterplan',
-      'Waterfront promenade along the Strait of Johor',
-      'Unit finishes: timber main door, aluminium glazed windows, full-height tiles, glass balcony railings',
-      "Malaysia's most-viewed condo rental listing â€” proven cross-border commuter demand",
-    ],
-    status: 'Now Selling',
-    image_url: 'https://rfmalaysia.com/wp-content/uploads/2026/01/3.jpg',
-    images: [
-      { url: 'https://rfmalaysia.com/wp-content/uploads/2025/11/project03_02_img01.jpg', caption: 'New Casa Suites exterior' },
-      { url: 'https://rfmalaysia.com/wp-content/uploads/2025/11/project03_02_img02.jpg', caption: 'Waterfront and city view' },
-      { url: 'https://rfmalaysia.com/wp-content/uploads/2025/11/project03_02_img03.jpg', caption: 'Development overview' },
-      { url: 'https://rfmalaysia.com/wp-content/uploads/2025/11/project03_03_img01-1-1024x755.png', caption: 'RTS Link connectivity' },
-      { url: 'https://rfmalaysia.com/wp-content/uploads/2025/11/project03_04_img01.jpg', caption: 'Urban Sky Leisure Park â€” swimming pool' },
-      { url: 'https://rfmalaysia.com/wp-content/uploads/2025/11/project03_04_img02.jpg', caption: 'Gym and fitness facilities' },
-    ],
-    published: 'TRUE'
-  },
-  {
-    slug: 'summer-suites', area: 'JB Town', project_name: 'Summer Suites',
-    tagline: 'Freehold dual-key suites in the heart of JB Town â€” priced below market at 15-year-old land cost',
-    price_range: 'From RM 580K',
-    tenure: 'Freehold',
-    commute_note: 'Minutes to JB CIQ Â· 10 min to JB Sentral Â· Walking distance to City Square & KSL City',
-    description: "Summer Suites sits at Jalan Tenteram, Johor Bahru Town â€” the original city centre, where everything is walkable and nothing is further than ten minutes away. The project is developed by Connoisseur Properties Sdn Bhd, whose track record includes the completed Ledang Heights township in Nusajaya.\n\nWhat makes this project different from other JB Town launches is its price point. The developer acquired this land 15 years ago, long before Johor Bahru's property market reacted to the RTS Link announcement and the JS-SEZ framework. As a result, Summer Suites is priced at RM 968â€“1,095 per square foot â€” at a time when comparable completed condominiums in the same corridor are transacting at RM 1,100â€“1,300 psf. You are buying into the city centre at a discount to the existing resale market, backed by a freehold title.\n\nAll three unit types are designed around the Dual Key concept â€” two lockable, self-contained spaces within a single unit, each with its own entrance where applicable. This gives buyers the flexibility to live in one key and rent the other, or lease both keys separately to different tenants. The projected room-rental yields range from 6.5% to 8% depending on unit type, significantly ahead of traditional single-let configurations in the same area.\n\nThe JB Town location means your tenants have immediate access to everything that drives rental demand in this corridor: Johor Bahru Customs, Immigration and Quarantine (CIQ) is minutes away, placing this address directly in the cross-border commuter catchment. City Square mall, KSL City Mall, Hospital Sultanah Aminah, and JB Sentral (the intercity rail terminal) are all within a short drive or walk. The RTS Link Bukit Chagar station, connecting Johor Bahru directly to Singapore's Thomson-East Coast MRT line, sits in the same urban cluster. For tenants commuting to Singapore without a car, this postcode has no substitute in Johor Bahru.\n\nThe project comes with a partial furnish package â€” aircon, water heater, kitchen cabinet, and digital door lock â€” reducing the fit-out cost and time before a unit can be rented out. A 90% loan margin is available, with progressive interest payments during construction keeping holding costs low in the early stages.",
-    unit_types: [
-      { type: 'Type A â€” Dual Key (3 bed / 3 bath)', size: '912 sq ft' },
-      { type: 'Type B â€” 2+1 bed / 2 bath', size: '808 sq ft' },
-      { type: 'Type C â€” Dual Key (Studio + 1 bed / 2 bath)', size: '599 sq ft' },
-    ],
-    features: [
-      'Freehold title in the heart of JB Town',
-      'Priced at RM 968â€“1,095 psf â€” below the resale market (RM 1,100â€“1,300 psf) thanks to land acquired 15 years ago',
-      'Dual Key layout across all types â€” live in one, rent the other, or maximise room-rental yield',
-      'Room-rental ROI projected at 6.5%â€“8% depending on unit type',
-      'Minutes to JB CIQ â€” within the cross-border commuter rental catchment',
-      'Walking distance to City Square, KSL City Mall, Hospital Sultanah Aminah, and JB Sentral',
-      'RTS Link Bukit Chagar station in the same urban corridor â€” Singapore rail access for tenants',
-      '90% loan margin, 4.2% interest, 35-year tenure â€” low entry capital required',
-      'Partial furnish package included: aircon, water heater, kitchen cabinet, digital door lock',
-    ],
-    status: 'Now Selling',
-    image_url: 'photos/jb-town/summersuites.jpg',
-    images: [],
-    published: 'TRUE'
-  },
-  {
-    slug: 'bodaiju-residences', area: 'Iskandar Puteri', project_name: 'Bodaiju Residences',
-    tagline: 'Japanese developer Â· Medini Â· No foreign buyer restrictions',
-    price_range: 'RM 299,000 â€“ RM 659,000',
-    tenure: 'Leasehold', commute_note: '~9km to Second Link (Tuas)',
-    description: "Bodaiju Residences is an 802-unit twin-tower serviced apartment in Medini, Iskandar Puteri, developed by Creed Group Japan. It is one of the few new launches in Medini with no minimum purchase price for foreign buyers, GreenRE green certification, and a Japanese-quality fit-out. Tower A is now selling with 2-bedroom, 3-bedroom, and dual-key units available from RM 299,000. The 1-bedroom units are fully sold.",
-    status: 'Now Selling',
-    image_url: 'photos/bodaiju/Aerial%20view%201.jpeg',
-    project_url: 'projects/bodaiju-residences.html',
-    published: 'TRUE'
-  },
-];
-
-// Merge with PLACEHOLDER_PROJECTS (sheet data takes priority)
-async function getProjectsExtended() {
-  const rows = await fetchSheet(SHEET_CONFIG.projectsCsvUrl);
-  if (rows && rows.length) {
-    const sheetList = rows.filter(r => r.published === 'TRUE');
-    const localSlugs = new Set(EXTENDED_PROJECTS.map(p => p.slug).filter(Boolean));
-    const sheetOnly = sheetList.filter(r => !localSlugs.has(r.slug));
-    return [...EXTENDED_PROJECTS, ...sheetOnly];
-  }
-  return EXTENDED_PROJECTS;
-}
-
-// Updated renderProjects to accept optional limit and work for all areas or specific area
-async function renderProjects(area, targetSelector, limit) {
-  const target = document.querySelector(targetSelector);
-  if (!target) return;
-  const all = await getProjectsExtended();
-  let list = area ? all.filter(p => p.area === area) : all;
-  // If Sheet returned data but nothing for this area, fall back to EXTENDED_PROJECTS for this area
-  if (!list.length && area) {
-    list = EXTENDED_PROJECTS.filter(p => p.area === area);
-  }
-  if (limit) list = list.slice(0, limit);
-  if (!list.length) {
-    target.innerHTML = '<p style="color:var(--ink-muted); padding: 40px 0;">More projects coming soon.</p>';
-    return;
-  }
-  target.innerHTML = list.map(p => projectCardHtmlExtended(p)).join('');
-  initReveal();
-}
-
-// Render specific projects by slug array (for homepage featured section)
-async function renderFeaturedProjects(slugs, targetSelector) {
-  const target = document.querySelector(targetSelector);
-  if (!target) return;
-  const all = await getProjectsExtended();
-  const list = slugs.map(s => all.find(p => p.slug === s)).filter(Boolean);
-  if (!list.length) return;
-  target.innerHTML = list.map(p => projectCardHtmlExtended(p)).join('');
-  initReveal();
-}
-
-function projectCardHtmlExtended(p) {
-  const bg = p.image_url ? `background-image:url('${p.image_url}')` : '';
-  const slug = p.slug || slugify(p.project_name);
-  const href = p.project_url ? p.project_url : (slug ? `project.html?slug=${encodeURIComponent(slug)}` : '#');
-  return `
-    <a href="${href}" class="project-card reveal" style="${bg}" data-area="${p.area || ''}">
-      <span class="project-status">${p.status || 'Enquire'}</span>
-      <div class="project-body">
-        <div class="project-name">${p.project_name}</div>
-        <div class="project-price">${p.price_range || ''}</div>
-        <div class="project-desc">${p.tagline || ''}</div>
-        <span class="project-cta">View project</span>
-      </div>
-    </a>`;
-}
-
-// Render all articles across all areas
-async function renderAllArticles(targetSelector, limit) {
-  const target = document.querySelector(targetSelector);
-  if (!target) return;
-  const rows = await fetchSheet(SHEET_CONFIG.articlesCsvUrl);
-  // Always start with local articles that have real content, then append Sheet-only ones
-  const local = ALL_ARTICLES.filter(a => a.body === 'exists' && a.link && a.link !== '#');
-  let list;
-  if (rows && rows.length) {
-    const sheetList = rows.filter(r => r.published === 'TRUE' && r.link && r.link !== '#');
-    const localLinks = new Set(local.map(a => a.link));
-    const sheetOnly = sheetList.filter(r => !localLinks.has(r.link));
-    list = [...local, ...sheetOnly];
-  } else {
-    list = local;
-  }
-  if (limit) list = list.slice(0, limit);
-  target.innerHTML = list.map(a => articleCardHtmlExtended(a)).join('');
-  initReveal();
-}
-
-function articleCardHtmlExtended(a) {
-  const hasContent = a.body && a.body.trim().length > 0;
-  const isZh = _currentLang === 'zh';
-  const title = (isZh && a.title_zh) ? a.title_zh : a.title;
-  const summary = (isZh && a.summary_zh) ? a.summary_zh : (a.summary || '');
-  const areaLabel = isZh ? (AREA_ZH[a.area] || a.area || 'å¸‚åœºæ´å¯Ÿ') : (a.area || 'Market insight');
-  const img = a.image_url
-    ? `<div class="card-img" style="background-image:url('${a.image_url}'); background-size:cover;"></div>`
-    : `<div class="card-img"></div>`;
-  const href = a.link && a.link !== '#' ? a.link : '#';
-  const tag = href !== '#' ? 'a' : 'div';
-  const linkAttr = href !== '#' ? `href="${href}"` : '';
-  const topics = a.topics || '';
-  return `
-    <${tag} ${linkAttr} class="card reveal ${hasContent ? '' : 'card-placeholder'}" style="text-decoration:none;" data-topics="${topics}" data-area="${a.area || ''}">
-      ${img}
-      <div class="card-body">
-        <div class="card-eyebrow">${areaLabel}</div>
-        <h3 class="card-title">${title}</h3>
-        <p class="card-excerpt">${summary}</p>
-        <span class="card-link">${hasContent ? (isZh ? 'é˜…è¯»æ›´å¤š' : 'Read more') : (isZh ? 'å³å°†æ¨å‡º' : 'Coming soon')}</span>
-      </div>
-    </${tag}>`;
-}
-
-// ---- Nav dropdown â€” click-based toggle (desktop + mobile) ----
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.nav-dropdown-toggle').forEach(toggle => {
-    toggle.addEventListener('click', e => {
-      e.preventDefault();
-      const parent = toggle.closest('.nav-dropdown');
-      const isOpen = parent.classList.contains('is-open');
-      // Close all open dropdowns first
-      document.querySelectorAll('.nav-dropdown.is-open').forEach(d => d.classList.remove('is-open'));
-      if (!isOpen) parent.classList.add('is-open');
-    });
-  });
-
-  // Close dropdown when clicking outside
-  document.addEventListener('click', e => {
-    if (!e.target.closest('.nav-dropdown')) {
-      document.querySelectorAll('.nav-dropdown.is-open').forEach(d => d.classList.remove('is-open'));
-    }
-  });
-
-  // Close dropdown when a link inside it is clicked
-  document.querySelectorAll('.nav-mega-panel a').forEach(link => {
-    link.addEventListener('click', () => {
-      document.querySelectorAll('.nav-dropdown.is-open').forEach(d => d.classList.remove('is-open'));
-    });
-  });
-});
-
-// Updated getProjects to use extended data
-const _originalGetProjects = getProjects;
-async function getProjects() {
-  return getProjectsExtended();
-}
+YªçŠx-®éÜj×¢ëiºÚ+Š§j[h‘éÜ¢éíß7Õ:-jZ.¶›­–)Ş³RòòÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓĞ¢òò4ÒDTR$õU%E’(	B6†&VB6—FR&V†f–÷ ¢òòÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓĞ ¢òòÒÒÒÒ6öæf–s¢f–ÆÂF†W6R–âöæ6R–÷W"vöövÆR6†VWB—2V&Æ—6†VBÒÒÒĞ¦6öç7B4„TUEô4ôäd”rÒ°¢'F–6ÆW477eW&Ã¢rrÀ¢&ö¦V7G477eW&Ã¢rp§Ó° ¦6öç7Bt„E4ôåTÔ$U"ÒscSc3CƒS‚s²òòWFFRFò–÷W"7F—fRv†G4çVÖ&W"ÂF–v—G2öæÇ’v—F‚6÷VçG'’6öFP ¢òòÒÒÒÒæb67&öÆÂ7FFRÒÒÒĞ¦gVæ7F–öâ–æ—Dæb‚’°¢6öç7BæbÒFö7VÖVçBçVW'•6VÆV7F÷"‚rææbr“°¢–b‚æb’&WGW&ã°¢6öç7Böå67&öÆÂÒ‚’Óâ°¢–b‡v–æF÷rç67&öÆÅ’âC’æbæ6Æ74Æ—7BæFB‚w67&öÆÆVBr“°¢VÇ6Ræbæ6Æ74Æ—7Bç&VÖ÷fR‚w67&öÆÆVBr“°¢Ó°¢v–æF÷ræFDWfVçDÆ—7FVæW"‚w67&öÆÂrÂöå67&öÆÂ“°¢öå67&öÆÂ‚“° ¢6öç7BFövvÆRÒFö7VÖVçBçVW'•6VÆV7F÷"‚rææb×FövvÆRr“°¢6öç7BÆ–æ·2ÒFö7VÖVçBçVW'•6VÆV7F÷"‚rææbÖÆ–æ·2r“°¢–b‡FövvÆRbbÆ–æ·2’°¢FövvÆRæFDWfVçDÆ—7FVæW"‚v6Æ–6²rÂ‚’Óâ°¢Æ–æ·2æ6Æ74Æ—7BçFövvÆR‚v÷Vâr“°¢FövvÆRçFW‡D6öçFVçBÒÆ–æ·2æ6Æ74Æ—7Bæ6öçF–ç2‚v÷Vâr’ò~)ÉRr¢~)‹s°¢Ò“°¢òò6Æ÷6RÖVçRv†VâÆ–æ²—2FV@¢Æ–æ·2çVW'•6VÆV7F÷$ÆÂ‚vr’æf÷$V6‚†Óâ°¢æFDWfVçDÆ—7FVæW"‚v6Æ–6²rÂ‚’Óâ°¢Æ–æ·2æ6Æ74Æ—7Bç&VÖ÷fR‚v÷Vâr“°¢FövvÆRçFW‡D6öçFVçBÒ~)‹s°¢Ò“°¢Ò“°¢Ğ§Ğ ¢òòÒÒÒÒ67&öÆÂ&WfVÂÒÒÒĞ¦gVæ7F–öâ–æ—E&WfVÂ‚’°¢6öç7BVÇ2ÒFö7VÖVçBçVW'•6VÆV7F÷$ÆÂ‚rç&WfVÂr“°¢–b‚VÇ2æÆVæwF‚’&WGW&ã°¢6öç7Bö'2ÒæWr–çFW'6V7F–öäö'6W'fW"‚†VçG&–W2’Óâ°¢VçG&–W2æf÷$V6‚†RÓâ²–b†Ræ—4–çFW'6V7F–ær’RçF&vWBæ6Æ74Æ—7BæFB‚v–âr“²Ò“°¢ÒÂ²F‡&W6†öÆC¢ã"Ò“°¢VÇ2æf÷$V6‚†VÂÓâö'2æö'6W'fR†VÂ’“°§Ğ ¢òòÒÒÒÒÖ–æ–ÖÂ55b'6W"††æFÆW2V÷FVBf–VÆG2v—F‚6öÖÖ2æBæWvÆ–æW2’ÒÒÒĞ¦gVæ7F–öâ'6T77b‡FW‡B’°¢6öç7B&÷w2ÒµÓ°¢ÆWB&÷rÒµÒÂf–VÆBÒrrÂ–åV÷FW2ÒfÇ6S°¢f÷"†ÆWB’Ò²’ÂFW‡BæÆVæwFƒ²’²²’°¢6öç7B2ÒFW‡E¶•Ó°¢–b†–åV÷FW2’°¢–b†2ÓÓÒr"rbbFW‡E¶’²ÒÓÓÒr"r’²f–VÆB³Òr"s²’²³²Ğ¢VÇ6R–b†2ÓÓÒr"r’²–åV÷FW2ÒfÇ6S²Ğ¢VÇ6R²f–VÆB³Ò3²Ğ¢ÒVÇ6R°¢–b†2ÓÓÒr"r’–åV÷FW2ÒG'VS°¢VÇ6R–b†2ÓÓÒrÂr’²&÷rçW6‚†f–VÆB“²f–VÆBÒrs²Ğ¢VÇ6R–b†2ÓÓÒuÆâr’²&÷rçW6‚†f–VÆB“²&÷w2çW6‚‡&÷r“²&÷rÒµÓ²f–VÆBÒrs²Ğ¢VÇ6R–b†2ÓÓÒuÇ"r’²ò¢6¶—¢òĞ¢VÇ6R²f–VÆB³Ò3²Ğ¢Ğ¢Ğ¢–b†f–VÆBæÆVæwF‚ÇÂ&÷ræÆVæwF‚’²&÷rçW6‚†f–VÆB“²&÷w2çW6‚‡&÷r“²Ğ¢–b‚&÷w2æÆVæwF‚’&WGW&âµÓ°¢6öç7B†VFW'2Ò&÷w5³ÒæÖ†‚Óâ‚çG&–Ò‚’“°¢&WGW&â&÷w2ç6Æ–6Rƒ’æf–ÇFW"‡"Óâ"ç6öÖR‡bÓâbçG&–Ò‚’æÆVæwF‚’’æÖ‡"Óâ°¢6öç7Bö&¢Ò·Ó°¢†VFW'2æf÷$V6‚‚†‚Â–G‚’Óâ²ö&¥¶…ÒÒ‡%¶–G…ÒÇÂrr’çG&–Ò‚“²Ò“°¢&WGW&âö&£°¢Ò“°§Ğ ¦7–æ2gVæ7F–öâfWF6…6†VWB‡W&Â’°¢–b‚W&Â’&WGW&âçVÆÃ°¢G'’°¢6öç7B&W2Òv—BfWF6‚‡W&ÂÂ²66†S¢væò×7F÷&RrÒ“°¢–b‚&W2æö²’&WGW&âçVÆÃ°¢6öç7BFW‡BÒv—B&W2çFW‡B‚“°¢&WGW&â'6T77b‡FW‡B“°¢Ò6F6‚†R’°¢6öç6öÆRçv&â‚u6†VWBfWF6‚f–ÆVBÂW6–ærÆ6V†öÆFW'2ârÂR“°¢&WGW&âçVÆÃ°¢Ğ§Ğ ¢òòÒÒÒÒÆ6V†öÆFW"FF‡6†÷vâVçF–ÂF†R6†VWB—26öææV7FVBÂ÷"–bfWF6‚f–Ç2’ÒÒÒĞ¦6öç7BÄ4T„ôÄDU%ô%D”4ÄU2Ò°¢t¤"F÷vâs¢°¢²F—FÆS¢s2F†–æw2–÷RæVVBFòvF6‚÷WB&Vf÷&R'W––ær–â¦ö†÷"&‡'RF÷vârÂ7VÖÖ'“¢rrÂ&öG“¢rrÂ–ÖvU÷W&Ã¢rrÒÀ¢²F—FÆS¢uÆ6V†öÆFW"'F–6ÆR"(	B¦ö†÷"&‡'RF÷vârÂ7VÖÖ'“¢rrÂ&öG“¢rrÂ–ÖvU÷W&Ã¢rrÒÀ¢²F—FÆS¢uÆ6V†öÆFW"'F–6ÆR2(	B¦ö†÷"&‡'RF÷vârÂ7VÖÖ'“¢rrÂ&öG“¢rrÂ–ÖvU÷W&Ã¢rrÒÀ¢²F—FÆS¢uÆ6V†öÆFW"'F–6ÆRB(	B¦ö†÷"&‡'RF÷vârÂ7VÖÖ'“¢rrÂ&öG“¢rrÂ–ÖvU÷W&Ã¢rrÒÀ¢²F—FÆS¢uÆ6V†öÆFW"'F–6ÆRR(	B¦ö†÷"&‡'RF÷vârÂ7VÖÖ'“¢rrÂ&öG“¢rrÂ–ÖvU÷W&Ã¢rrĞ¢ÒÀ¢t—6¶æF"WFW&’s¢°¢²F—FÆS¢t&æF"vv&“¢—6¶æF"WFW&•Âw2æW‡B2ÃÔ7&RF÷vç6†—rÂ7VÖÖ'“¢t2ÃÖ7&R¦ö–çBÖFWfVÆ÷ÖVçB'’6—‚Ö¦÷"FWfVÆ÷W'2—2F¶–ær6†R–âFÖâvv&’(	B†W&UÂw2F†R66ÆRÂF†R&öB66W727F÷'’ÂæBv†B2Ã²7W'&÷VæF–ærVæ—G2ÖVâf÷"'W–W'2ârÂ&öG“¢vW†—7G2rÂ–ÖvU÷W&Ã¢w†÷F÷2÷vv&’ÖW&–ÂÖÖæ§rrÂÆ–æ³¢v'F–6ÆW2ö&æF"×vv&’ÖgWGW&RÖFWfVÆ÷ÖVçBÖ—6¶æF"×WFW&’æ‡FÖÂrÒÀ¢²F—FÆS¢t¥2Õ4U¢æB—6¶æF"WFW&“¢v†BF†R7V6–ÂV6öæöÖ–2¦öæR7GVÆÇ’ÖVç2f÷"&÷W'G’rÂ7VÖÖ'“¢uF‚–æ6VçF—fW2Â&÷fVB¦öæW2Âv†–6‚&V6–æ7G2&VæVf—BÖ÷7B(	BæBv†WF†W"F†R¥2Õ4U¢‡—R—2Ç&VG’&–6VB–âârÂ&öG“¢vW†—7G2rÂ–ÖvU÷W&Ã¢w†÷F÷2ö†÷&—¦öâÖ†–ÆÇ2ö†‚Ó"æ§rrÂÆ–æ³¢v'F–6ÆW2ö§2×6W¢Ö—6¶æF"×WFW&’×&÷W'G’Ö–×7Bæ‡FÖÂrÒÀ¢²F—FÆS¢t¶÷F—6¶æF#¢¦ö†÷%Âw2æWrFÖ–æ—7G&F—fR6—FÂæBv†B—BÖVç2f÷"&÷W'G’rÂ7VÖÖ'“¢tv÷fW&æÖVçBÖ–æ—7G&–W2ÂF†RæWr†–v‚6÷W'B6ö×ÆW‚Â6—f–Â6W'fçB÷VÆF–öâ(	B†÷rW'÷6RÖ'V–ÇBv÷fW&æÖVçB‡V"7&VFW2Æöær×FW&Ò&W6–FVçF–ÂFVÖæBârÂ&öG“¢vW†—7G2rÂ–ÖvU÷W&Ã¢w†÷F÷2ö†÷&—¦öâÖ†–ÆÇ2ö–ÖsÓÖÖ–âæ§rrÂÆ–æ³¢v'F–6ÆW2ö¶÷FÖ—6¶æF"Öv÷fW&æÖVçBÖ‡V"×&÷W'G’æ‡FÖÂrÒÀ¢²F—FÆS¢u6V6öæBÆ–æ²Ww&FS¢v†B—B6†ævW2f÷"—6¶æF"WFW&’6öÖ×WFW'2æB&÷W'G’rÂ7VÖÖ'“¢uF†RGV26†V6·ö–çBW‡ç6–öâÂW‡V7FVB6ÆV&æ6R–×&÷fVÖVçG2ÂæB†÷rf7FW"7&÷76–æw26†ævRF†R6öÖ×WFR6Æ7VÇW2f÷"—6¶æF"WFW&’'W–W'2ârÂ&öG“¢vW†—7G2rÂ–ÖvU÷W&Ã¢w†÷F÷2÷7Vçv’Ö—6¶æF"÷7Vçv’×6V6öæBÖÆ–æ²æ§rrÂÆ–æ³¢v'F–6ÆW2÷6V6öæBÖÆ–æ²×Ww&FRÖ—6¶æF"×WFW&’æ‡FÖÂrÒÀ¢²F—FÆS¢tÖVF–æ’—6¶æF"–â##c¢v†B†VæVBæBv†B—27F–ÆÂ6öÖ–ærrÂ7VÖÖ'“¢tvÆVæVvÆW2æBÆVvöÆæB&RF†W&RâF†Röff–6RF÷vW'2&Ræ÷Bâ6ÆV"ÖW–VBÆöö²Bv†Bv2'V–ÇBÂv†B7FÆÆVBÂæBv†BF†R¥2Õ4U¢ÖVç2f÷"ÖVF–æ•Âw26V6öæB7BârÂ&öG“¢vW†—7G2rÂ–ÖvU÷W&Ã¢w†÷F÷2ö—6¶æF"×WFW&’öÆVvöÆæBæ§rrÂÆ–æ³¢v'F–6ÆW2öÖVF–æ’Ö—6¶æF"Ó##bæ‡FÖÂrÒÀ¢²F—FÆS¢t—6¶æF"WFW&’&VçFÂÖ&¶WB##c¢v†ò&VçG2†W&RæBv†B––VÆG2Æöö²Æ–¶RrÂ7VÖÖ'“¢tW‡BfÖ–Æ–W2Â6÷'÷&FR&VÆö6F–öç2ÂÖVF–6Â&öfW76–öæÇ2(	BF†Rf—fRFVæçB6VvÖVçG2–â—6¶æF"WFW&’æBv†Bw&÷72––VÆG27GVÆÇ’Æöö²Æ–¶Rf÷"ÆæFVB†öÖW2ârÂ&öG“¢vW†—7G2rÂ–ÖvU÷W&Ã¢w†÷F÷2öV6òÖ&÷Fæ–2öV6óæ§rrÂÆ–æ³¢v'F–6ÆW2ö—6¶æF"×WFW&’×&VçFÂÖÖ&¶WBÓ##bæ‡FÖÂrÒÀ¢²F—FÆS¢tæWr&÷W'G’ÆVæ6†W2–â—6¶æF"WFW&’##c¢v†BF†RÖ¦÷"FWfVÆ÷W'2&R'&–æv–ærFòÖ&¶WBrÂ7VÖÖ'“¢uv†Bv×VFÆæBÂV6òv÷&ÆBÂæBTTÒ7Vç&—6R&R&VÆV6–ær(	BæWr†6R&–6–ærÂv†B†26†ævVB6–æ6R##"ÂæBæWrÆVæ6‚g2â7V'6ÆR6ö×&VBârÂ&öG“¢vW†—7G2rÂ–ÖvU÷W&Ã¢w†÷F÷2ö†÷&—¦öâÖ†–ÆÇ2ö†‚ÓBæ§rrÂÆ–æ³¢v'F–6ÆW2ö—6¶æF"×WFW&’ÖæWrÖÆVæ6†W2Ó##bæ‡FÖÂrÒÀ¢²F—FÆS¢tg&öÒçW6¦–Fò—6¶æF"WFW&“¢†÷rF†R&V&V–çfVçFVB—G6VÆbrÂ7VÖÖ'“¢uF†RgVÆÂ&2(	BÆÒö–ÂW7FFW2ÂF†R—6¶æF"ÖÆ—6–Ö7FW"ÆâÂF†R‡—R7–6ÆRÂF†RG&÷Vv‚ÂæBF†R¥2Õ4U¢&Wf—fÂâv†B'W–W'2–â##b&R7GVÆÇ’–æ†W&—F–ærârÂ&öG“¢vW†—7G2rÂ–ÖvU÷W&Ã¢w†÷F÷2ö†÷&—¦öâÖ†–ÆÇ2ö†‚ÓRæ§rrÂÆ–æ³¢v'F–6ÆW2öçW6¦–×FòÖ—6¶æF"×WFW&’Ö†—7F÷'’æ‡FÖÂrĞ¢ÒÀ¢tf÷&W7B6—G’s¢°¢²F—FÆS¢tf÷&W7B6—G’v†÷7BF÷vâ÷"÷÷'GVæ—G“òF†R†öæW7Bç7vW"–â##brÂ7VÖÖ'“¢uF†Rv†÷7BF÷vâÆ&VÂföÆÆ÷vVBf÷&W7B6—G’f÷"–V'2â†W&R—2v†BF†R7W'&VçBFF7GVÆÇ’6†÷w2(	BæBv†B—BÖVç2f÷"'W–W'2FöF’ârÂ&öG“¢vW†—7G2rÂ–ÖvU÷W&Ã¢w†÷F÷2öf÷&W7BÖ6—G’öf2Ö—6ÆæBçærrÂÆ–æ³¢v'F–6ÆW2öf÷&W7BÖ6—G’Öv†÷7B×F÷vâÖ÷"Ö÷÷'GVæ—G’æ‡FÖÂrÒÀ¢²F—FÆS¢t—2f÷&W7B6—G’v÷'F‚'W––ær–â##còâGf—6÷%Âw2†öæW7B76W76ÖVçBrÂ7VÖÖ'“¢uv†òf÷&W7B6—G’7V—G2Âv†ò—BFöW2æ÷BÂæBF†R†öæW7B66Rf÷"æBv–ç7B'W––ærF†W&R&–v‡Bæ÷rârÂ&öG“¢vW†—7G2rÂ–ÖvU÷W&Ã¢w†÷F÷2öf÷&W7BÖ6—G’öf÷&W7BÖ6—G’×6—FRÓ2æ§rrÂÆ–æ³¢v'F–6ÆW2ö—2Öf÷&W7BÖ6—G’×v÷'F‚Ö'W––ærÓ##bæ‡FÖÂrÒÀ¢²F—FÆS¢t6âf÷&W7B6—G’VÆ–g’f÷"ÔÓ$ƒòF†R4e¢&öw&ÖÖRW‡Æ–æVBrÂ7VÖÖ'“¢tf÷&W7B6—G’—2F†RöæÇ’&ö¦V7B–âÖÆ—6–v—F‚—G2÷vâÔÓ$‚6FVv÷'’(	BÆ÷vW"FW÷6—BÂæòÖ–æ–×VÒ&–6Râ†W&R—2W†7FÇ’†÷r—Bv÷&·2ârÂ&öG“¢vW†—7G2rÂ–ÖvU÷W&Ã¢w†÷F÷2öf÷&W7BÖ6—G’övöÆbÓ"çærrÂÆ–æ³¢v'F–6ÆW2öf÷&W7BÖ6—G’ÖÖÓ&‚×6g¢ÖwV–FRæ‡FÖÂrÒÀ¢²F—FÆS¢tf÷&W7B6—G’vöÆbf–ÆÆ¢v†B—B—2Âv†B–÷RvWBÂæBv†ò—B7V—G2rÂ7VÖÖ'“¢tâ–ç6–FRÆöö²BF†Rc#vöÆbf–ÆÆ(	B&—fFRv&FVâÂ&öögF÷FW'&6RÂvöÆb6÷W'6Rf–WrÂæBR×–V"g&VRÖVÖ&W'6†—â&VÂ†÷F÷2g&öÒâ7GVÂVæ—Bf—6—BârÂ&öG“¢vW†—7G2rÂ–ÖvU÷W&Ã¢w†÷F÷2÷f–ÆÆÖv&FVâÖW‡FW&–÷"æ§rrÂÆ–æ³¢v'F–6ÆW2öf÷&W7BÖ6—G’ÖvöÆb×f–ÆÆÖwV–FRæ‡FÖÂrÒÀ¢²F—FÆS¢tÆ—f–ær–âf÷&W7B6—G’†–v‡&—6S¢v†BFòW‡V7B–â##brÂ7VÖÖ'“¢u6Vf–Ww2Â&W6÷'Bf6–Æ—F–W2Â—6ÆæB—"ÂæB†÷rF†RÆ—f–ærVçf—&öæÖVçB6ö×&W2FòÖ–æÆæB¦ö†÷"(	Bâ†öæW7BvÆ·F‡&÷Vv‚f÷"'W–W'26öç6–FW&–ærf÷&W7B6—G’'FÖVçBârÂ&öG“¢vW†—7G2rÂ–ÖvU÷W&Ã¢w†÷F÷2öf÷&W7BÖ6—G’öf÷&W7BÖ6—G’×6—FRÓæ§rrÂÆ–æ³¢v'F–6ÆW2öf÷&W7BÖ6—G’Ö†–v‡&—6RÖÆ—f–ærÓ##bæ‡FÖÂrÒÀ¢²F—FÆS¢uv‡’'W–W'26†ö÷6Rf÷&W7B6—G“¢F†R—6ÆæBÆ–fW7G–ÆRæö&öG’FÆ·2&÷WBrÂ7VÖÖ'“¢uF†RÖæw&÷fR6÷'&–F÷"ÂGvòv÷&ÆB×&æ¶VBvöÆb6÷W'6W2Âf—fR×7F"&W6÷'Bf6–Æ—F–W2Â&V6‚66W72ÂæBGWG’Ög&VR—6ÆæBÆ—f–ær(	BF†RÆ–fW7G–ÆR66Rf÷"f÷&W7B6—G’Âv—F†÷WBF†R–çfW7FÖVçB&wVÖVçBârÂ&öG“¢vW†—7G2rÂ–ÖvU÷W&Ã¢w†÷F÷2öf÷&W7BÖ6—G’öf÷&W7BÖ6—G’×6—FRÓ"æ§rrÂÆ–æ³¢v'F–6ÆW2öf÷&W7BÖ6—G’Ö—6ÆæBÖÆ–fW7G–ÆRæ‡FÖÂrĞ¢Ğ§Ó° ¢òòV6‚&ö¦V7B&÷r6'&–W2WfW'—F†–æræVVFVBf÷"&÷F‚F†R6&BäB—G2÷vâFWF–ÂvRà¦6öç7BÄ4T„ôÄDU%õ$ô¤T5E2Ò°¢°¢6ÇVs¢v†÷&—¦öâÖ†–ÆÇ2rÂ&V¢t—6¶æF"WFW&’rÂ&ö¦V7EöæÖS¢t†÷&—¦öâ†–ÆÇ2rÀ¢FvÆ–æS¢tvFVBvöÆb6öÖ×Væ—G’ÂÖGW&RÆæG66–ærrÂ&–6U÷&ævS¢u$Ò"ãTÒ(	2$ÒdÒrÀ¢FVçW&S¢tg&VV†öÆBrÂ6öÖ×WFUöæ÷FS¢wãRÖ–âFò6V6öæBÆ–æ²rÀ¢FW67&—F–öã¢$†÷&—¦öâ†–ÆÇ2—2öæRöb—6¶æF"WFW&’w2Ö÷7BW7F&Æ—6†VBÆæFVBF÷vç6†—2Â'V–ÇB&÷VæBâ‚Ö†öÆRvöÆb6÷W'6Rv—F‚#BÖ†÷W"wV&FVB6V7W&—G’7&÷72—G2&V6–æ7G2â—Bw26öÖÖöâ6†÷'FÆ—7BVçG'’f÷"fÖ–Æ–W2&VÆö6F–ærg&öÒ6–æv÷&RæBf÷"&WF—&VW2&–÷&—F—6–ærÆ–fW7G–ÆR–æg&7G'V7GW&R÷fW"&÷†–Ö—G’FòF†R6—G’6VçG&RåÆåÆåµÆ6V†öÆFW"(	B6ÒFòFC¢7V6–f–2&V6–æ7B&V6öÖÖVæFF–öç2Â6ö×&&ÆR&W6ÆRG&ç67F–öç2ÂæBç’7W'&VçB&öÖ÷F–öç2÷"æWrÖÆVæ6‚†6W2v÷'F‚fÆvv–æråÒ"À¢7FGW3¢tæ÷r6VÆÆ–ærrÀ¢–ÖvU÷W&Ã¢v‡GG3¢òö–ÖvW2çVç7Æ6‚æ6öÒ÷†÷FòÓcS“cSC#ƒRÖffCF3S3–“÷ÓƒgsÓ#fWFóÖf÷&ÖBff—CÖ7&÷rÀ¢V&Æ—6†VC¢uE%TRp¢ÒÀ¢°¢6ÇVs¢vV6òÖ&÷Fæ–2rÂ&V¢t—6¶æF"WFW&’rÂ&ö¦V7EöæÖS¢tV6ò&÷Fæ–2rÀ¢FvÆ–æS¢tV6ò×F†VÖVBF÷vç6†—Â7G&öærfÖ–Ç’ÖVæ—F–W2rÂ&–6U÷&ævS¢u$Òã„Ò(	2$ÒBãTÒrÀ¢FVçW&S¢tg&VV†öÆBrÂ6öÖ×WFUöæ÷FS¢wã#Ö–âFò6V6öæBÆ–æ²rÀ¢FW67&—F–öã¢$V6ò&÷Fæ–2—2æGW&R×F†VÖVBF÷vç6†—v—F‚W‡FVç6—fR&·2ÂÆ¶W2ÂæBfÖ–Ç’Ö÷&–VçFVBÖVæ—F–W2â—BG&w2'W–W'2Æöö¶–ærf÷"&Ææ6R&WGvVVâw&VVæW'’æB6öææV7F—f—G’Âv—F‚66†ööÇ2æB&WF–Â÷F–öç2FWfVÆ÷–ær7FVF–Ç’&÷VæB—BåÆåÆåµÆ6V†öÆFW"(	B6ÒFòFC¢7V6–f–2&V6–æ7B&V6öÖÖVæFF–öç2Â66†ööÇ2æV&'’ÂæB7W'&VçB&öÖ÷F–öç2åÒ"À¢7FGW3¢tæ÷r6VÆÆ–ærrÀ¢–ÖvU÷W&Ã¢v‡GG3¢òö–ÖvW2çVç7Æ6‚æ6öÒ÷†÷FòÓS“#S“Sƒ“cSSÓ&#3sCSCfCS÷ÓƒgsÓ#fWFóÖf÷&ÖBff—CÖ7&÷rÀ¢V&Æ—6†VC¢uE%TRp¢ÒÀ¢°¢6ÇVs¢vV7BÖÆVFærrÂ&V¢t—6¶æF"WFW&’rÂ&ö¦V7EöæÖS¢tV7BÆVFærrÀ¢FvÆ–æS¢u&VÖ—VÒvFVBVæ6ÆfRÂÆ&vW"Æ÷B6—¦W2rÂ&–6U÷&ævS¢u$Ò$Ò(	2$ÒTÒrÀ¢FVçW&S¢tg&VV†öÆBrÂ6öÖ×WFUöæ÷FS¢wã#RÖ–âFò6V6öæBÆ–æ²rÀ¢FW67&—F–öã¢$V7BÆVFær—2&VÖ—VÒvFVBVæ6ÆfR¶æ÷vâf÷"Æ&vW"Æ÷B6—¦W2æBV–WFW"ÂÖ÷&RW†6ÇW6—fRfVVÂF†â6öÖRöb—G2æV–v†&÷W&–ærF÷vç6†—2â÷VÆ"v—F‚Ww&F–ærfÖ–Æ–W2vçF–ærÖ÷&R76Rv—F†÷WBÖ÷f–ærgW'F†W"g&öÒF†R6—G’åÆåÆåµÆ6V†öÆFW"(	B6ÒFòFC¢7V6–f–2&V6–æ7B&V6öÖÖVæFF–öç2æB7W'&VçB&öÖ÷F–öç2åÒ"À¢7FGW3¢tæ÷r6VÆÆ–ærrÀ¢–ÖvU÷W&Ã¢v‡GG3¢òö–ÖvW2çVç7Æ6‚æ6öÒ÷†÷FòÓcSƒSSC3CÖ&SccSf3÷ÓƒgsÓ#fWFóÖf÷&ÖBff—CÖ7&÷rÀ¢V&Æ—6†VC¢uE%TRp¢ÒÀ¢°¢6ÇVs¢w&b×&–æ6W72Ö6÷fRrÂ&V¢t¤"F÷vârÂ&ö¦V7EöæÖS¢u"db&–æ6W726÷fR(	2†6R2rÀ¢FvÆ–æS¢t&÷&FW"ÖF¦6VçB†–v‚×&—6Rv—F‚F—&V7B%E2Æ–æ²6öææV7F—f—G’Fò6–æv÷&RrÀ¢&–6U÷&ævS¢tVçV—&Rf÷"&–6–ærrÀ¢FVçW&S¢tg&VV†öÆBrÀ¢6öÖ×WFUöæ÷FS¢scSÒ6†VÇFW&VBvÆ²Fò¤"4•+r%E2Æ–æ²„'V¶—B6†v"’FòvööFÆæG2æ÷'F‚Õ%BrÀ¢FW67&—F–öã¢%"db&–æ6W726÷fR—2¦ö†÷"&‡'Rw2†–v†W7B×&öf–ÆR&W6–FVçF–ÂÆæFÖ&²(	BÖ—†VB×W6RÖ7FW'Æâ'V–ÇB–ÖÖVF–FVÇ’F¦6VçBFòF†R¤"7W7Fö×2Â–ÖÖ–w&F–öâæBV&çF–æR„4•’6ö×ÆW‚ÂF†R'W6–W7BÆæB&÷&FW"7&÷76–ær–âF†Rv÷&ÆBv—F‚3SÃG&fVÆÆW'2F–Ç’â†6R2Â¶æ÷vâ2æWr667V—FW2ÖW&7R2Â—2F†RÆFW7BF÷vW"–âF†—2FWfVÆ÷ÖVçBÂ6''––ærf÷'v&BF†R6ÖR6öææV7F—f—G’Öf—'7B&÷÷6—F–öâv—F‚Ww&FVBf6–Æ—F–W2æBF—&V7B%E266W72åÆåÆåF†R6–ævÆRÖ÷7B–×÷'FçBf7B&÷WBF†—2FG&W72—2F†RcSÖÖWG&R6†VÇFW&VBvÆ·v’6öææV7F–ærF†RFWfVÆ÷ÖVçBF—&V7FÇ’Fò¤"4•â–÷RvÆ²g&öÒ–÷W"Æö&'’Â6÷fW&VBÂFò–ÖÖ–w&F–öâ–âVæFW"FVâÖ–çWFW2(	BæòfV†–6ÆRæVVFVBâv—F‚F†R%E2Æ–æ²…&–BG&ç6—B7—7FVÒ’(	B'V¶—B6†v"7FF–öâÂF†R¦ö†÷"&‡'RFW&Ö–çW2(	Bæ÷r÷W&F–öæÂÂF†BvÆ²6öçF–çVW2öâ&–Â–çFòvööFÆæG2æ÷'F‚Õ%B7FF–öâ–â6–æv÷&RÂv†W&R—B6öææV7G2FòF†RF†ö×6öâÔV7B6ö7BÆ–æRæBF†R&W7BöbF†R6–æv÷&RÕ%BæWGv÷&²âF†R6öÖ×WFRg&öÒÆö&'’Fò÷&6†&B&öB—26†÷'FW"g&öÒF†—2FG&W72F†âg&öÒç’÷F†W"ÖÆ—6–â&÷W'G’åÆåÆå†6R2w2W&&â6·’&²ö67W–W2ÆWfVÂb(	BgVÆÂ7F—fRfÆö÷"v—F‚7v–ÖÖ–ærööÂÂ¦7W§¦’Â¶–G2rööÂÂ6÷fW&VB$%ÆvâÂÆV—7W&RÆvâÂFVææ—26÷W'BÂ&6¶WF&ÆÂ6÷W'BÂ÷WFFö÷"w–ÒÂw–Ò&ööÒÂ–öv&ööÒÂÆV—7W&RG&6²Â6VæÂ6†–ÆF6&R6VçG&RÂæB×VÇF—W'÷6R&ööÒâÆWfVÂBFG2–æFö÷"&FÖ–çFöâ†ÆÂÂ6æöö¶W"&ööÒÂæBF&ÆRFVææ—2&ööÒ(	BÇW2F†R6÷fW&VBÆ–æ²'&–FvRF†B6öææV7G2F—&V7FÇ’–çFò"dbÖÆÂÂv—F‚÷fW"CS&WF–Â÷WFÆWG2v—F†–âF†R6ÖR6ö×ÆW‚âF†RCSÖÖWG&R6·’Æ÷VævR¦övv–ærG&6²öâÆWfVÂb—2F†RöæÇ’VÆWfFVB¦övv–ærG&6²öb—G2¶–æB–â¦ö†÷"&‡'RåÆåÆåF†Rv–FW""db&–æ6W726÷fRÖ7FW'Æâ–æ6ÇVFW2¦ö†÷"&‡'Rw2f—'7B÷W&†÷W6R(	BF†R"dbW&f÷&Ö–ær'G26VçG&R(	B&—fFRÖ&–æ–6‡B6ÇV"öâF†R–çFW&æF–öæÂÖ&–æ&÷VÆWf&BÂæBvFW&g&öçB&öÖVæFR66W72ÆöærF†R7G&—Böb¦ö†÷"âF†W6R&Ræ÷BgWGW&RÆç3¢F†W’&R÷W&F–ærFöF’åÆåÆåF†R–çfW7FÖVçB66R—2F—&V7C¢&÷&FW"ÖF¦6VçBÂ%E2Ö6öææV7FVBÂÆ–æ¶VBFòCSÖ÷WFÆWBÖÆÂÂv—F‚FVÖöç7G&&ÆR&VçFÂFVÖæBG&—fVâ'’7&÷72Ö&÷&FW"6öÖ×WFW'2v†òæVVB¤"&6Rv—F†–âvÆ¶–ærF—7Fæ6Röb6–æv÷&Râ"db&–æ6W726÷fR†26öç6—7FVçFÇ’&æ¶VB2ÖÆ—6–w2Ö÷7B×f–WvVB6öæFöÖ–æ—VÒ&VçFÂÆ—7F–ær7&÷72Ö¦÷"&÷W'G’÷'FÇ2(	BÖWG&–2&VfÆV7F–ær7GVÂFVæçB–çFW&W7BÂæ÷BFWfVÆ÷W"Ö&¶WF–ærâ†6R2öffW'2æWrÖÆVæ6‚VçG'’ö–çB–çFòF†BW7F&Æ—6†VB&VçFÂÖ&¶WBâ"À¢Væ—E÷G—W3¢°¢²G—S¢u7GVF–òrÂ6—¦S¢s327gBrÒÀ¢²G—S¢sÔ&VG&ööÒrÂ6—¦S¢sSSR(	2S“27gBrÒÀ¢²G—S¢s"Ô&VG&ööÒrÂ6—¦S¢ssƒ(	2ƒ“B7gBrÒÀ¢²G—S¢s2Ô&VG&ööÒrÂ6—¦S¢sƒ“B(	2ÃSb7gBrÒÀ¢²G—S¢sBÔ&VG&ööÒrÂ6—¦S¢sÃSSR7gBrÒÀ¢ÒÀ¢fVGW&W3¢°¢tg&VV†öÆBF—FÆR(	B&&Rf÷"†–v‚×&—6R–â¤"F÷vârÀ¢scSÒ6†VÇFW&VBvÆ·v’F—&V7BFò¤"4•(	Bæò6"æVVFVBrÀ¢u%E2Æ–æ²„'V¶—B6†v"’FòvööFÆæG2æ÷'F‚Õ%B(	B6–æv÷&R&–Â66W72rÀ¢uW&&â6·’&²„ÆWfVÂb“¢ööÂÂ¦7W§¦’Â¶–G2ööÂÂFVææ—2Â&6¶WF&ÆÂÂw–ÒÂ–öv&ööÒÂ6VæÂCSÒ¦övv–ærG&6²rÀ¢tÆWfVÂC¢–æFö÷"&FÖ–çFöâÂ6æöö¶W"ÂF&ÆRFVææ—2²6÷fW&VBÆ–æ²'&–FvRFò"dbÖÆÂƒCS²÷WFÆWG2’rÀ¢u"dbW&f÷&Ö–ær'G26VçG&Rb&—fFRÖ&–æ–6‡B6ÇV"v—F†–âF†RÖ7FW'ÆârÀ¢uvFW&g&öçB&öÖVæFRÆöærF†R7G&—Böb¦ö†÷"rÀ¢uVæ—Bf–æ—6†W3¢F–Ö&W"Ö–âFö÷"ÂÇVÖ–æ—VÒvÆ¦VBv–æF÷w2ÂgVÆÂÖ†V–v‡BF–ÆW2ÂvÆ72&Æ6öç’&–Æ–æw2rÀ¢$ÖÆ—6–w2Ö÷7B×f–WvVB6öæFò&VçFÂÆ—7F–ær(	B&÷fVâ7&÷72Ö&÷&FW"6öÖ×WFW"FVÖæB"À¢ÒÀ¢7FGW3¢tæ÷r6VÆÆ–ærrÀ¢–ÖvU÷W&Ã¢v‡GG3¢òö–ÖvW2çVç7Æ6‚æ6öÒ÷†÷FòÓCƒc3#S###rÓƒƒSCƒS#SVS÷ÓƒgsÓ#fWFóÖf÷&ÖBff—CÖ7&÷rÀ¢V&Æ—6†VC¢uE%TRp¢ÒÀ¢°¢6ÇVs¢w7VÖÖW"×7V—FW2rÂ&V¢t¤"F÷vârÂ&ö¦V7EöæÖS¢u7VÖÖW"7V—FW2rÀ¢FvÆ–æS¢tg&VV†öÆBGVÂÖ¶W’7V—FW2–âF†R†V'Böb¤"F÷vâ(	B&–6VB&VÆ÷rÖ&¶WBBR×–V"ÖöÆBÆæB6÷7BrÀ¢&–6U÷&ævS¢tg&öÒ$ÒSƒ²rÀ¢FVçW&S¢tg&VV†öÆBrÀ¢6öÖ×WFUöæ÷FS¢tÖ–çWFW2Fò¤"4•+rÖ–âFò¤"6VçG&Â+rvÆ¶–ærF—7Fæ6RFò6—G’7V&Rbµ4Â6—G’rÀ¢FW67&—F–öã¢%7VÖÖW"7V—FW26—G2B¦ÆâFVçFW&ÒÂ¦ö†÷"&‡'RF÷vâ(	BF†R÷&–v–æÂ6—G’6VçG&RÂv†W&RWfW'—F†–ær—2vÆ¶&ÆRæBæ÷F†–ær—2gW'F†W"F†âFVâÖ–çWFW2v’âF†R&ö¦V7B—2FWfVÆ÷VB'’6öææö—76WW"&÷W'F–W26Fâ&†BÂv†÷6RG&6²&V6÷&B–æ6ÇVFW2F†R6ö×ÆWFVBÆVFær†V–v‡G2F÷vç6†—–âçW6¦–åÆåÆåv†BÖ¶W2F†—2&ö¦V7BF–ffW&VçBg&öÒ÷F†W"¤"F÷vâÆVæ6†W2—2—G2&–6Rö–çBâF†RFWfVÆ÷W"7V—&VBF†—2ÆæBR–V'2vòÂÆöær&Vf÷&R¦ö†÷"&‡'Rw2&÷W'G’Ö&¶WB&V7FVBFòF†R%E2Æ–æ²ææ÷Væ6VÖVçBæBF†R¥2Õ4U¢g&ÖWv÷&²â2&W7VÇBÂ7VÖÖW"7V—FW2—2&–6VBB$Ò“c(	3Ã“RW"7V&Rfö÷B(	BBF–ÖRv†Vâ6ö×&&ÆR6ö×ÆWFVB6öæFöÖ–æ—V×2–âF†R6ÖR6÷'&–F÷"&RG&ç67F–ærB$ÒÃ(	3Ã36bâ–÷R&R'W––ær–çFòF†R6—G’6VçG&RBF—66÷VçBFòF†RW†—7F–ær&W6ÆRÖ&¶WBÂ&6¶VB'’g&VV†öÆBF—FÆRåÆåÆäÆÂF‡&VRVæ—BG—W2&RFW6–væVB&÷VæBF†RGVÂ¶W’6öæ6WB(	BGvòÆö6¶&ÆRÂ6VÆbÖ6öçF–æVB76W2v—F†–â6–ævÆRVæ—BÂV6‚v—F‚—G2÷vâVçG&æ6Rv†W&RÆ–6&ÆRâF†—2v—fW2'W–W'2F†RfÆW†–&–Æ—G’FòÆ—fR–âöæR¶W’æB&VçBF†R÷F†W"Â÷"ÆV6R&÷F‚¶W—26W&FVÇ’FòF–ffW&VçBFVæçG2âF†R&ö¦V7FVB&ööÒ×&VçFÂ––VÆG2&ævRg&öÒbãRRFò‚RFWVæF–æröâVæ—BG—RÂ6–væ–f–6çFÇ’†VBöbG&F—F–öæÂ6–ævÆRÖÆWB6öæf–wW&F–öç2–âF†R6ÖR&VåÆåÆåF†R¤"F÷vâÆö6F–öâÖVç2–÷W"FVæçG2†fR–ÖÖVF–FR66W72FòWfW'—F†–ærF†BG&—fW2&VçFÂFVÖæB–âF†—26÷'&–F÷#¢¦ö†÷"&‡'R7W7Fö×2Â–ÖÖ–w&F–öâæBV&çF–æR„4•’—2Ö–çWFW2v’ÂÆ6–ærF†—2FG&W72F—&V7FÇ’–âF†R7&÷72Ö&÷&FW"6öÖ×WFW"6F6†ÖVçBâ6—G’7V&RÖÆÂÂµ4Â6—G’ÖÆÂÂ†÷7—FÂ7VÇFæ‚Ö–æ‚ÂæB¤"6VçG&Â‡F†R–çFW&6—G’&–ÂFW&Ö–æÂ’&RÆÂv—F†–â6†÷'BG&—fR÷"vÆ²âF†R%E2Æ–æ²'V¶—B6†v"7FF–öâÂ6öææV7F–ær¦ö†÷"&‡'RF—&V7FÇ’Fò6–æv÷&Rw2F†ö×6öâÔV7B6ö7BÕ%BÆ–æRÂ6—G2–âF†R6ÖRW&&â6ÇW7FW"âf÷"FVæçG26öÖ×WF–ærFò6–æv÷&Rv—F†÷WB6"ÂF†—2÷7F6öFR†2æò7V'7F—GWFR–â¦ö†÷"&‡'RåÆåÆåF†R&ö¦V7B6öÖW2v—F‚'F–ÂgW&æ—6‚6¶vR(	B—&6öâÂvFW"†VFW"Â¶—F6†Vâ6&–æWBÂæBF–v—FÂFö÷"Æö6²(	B&VGV6–ærF†Rf—BÖ÷WB6÷7BæBF–ÖR&Vf÷&RVæ—B6â&R&VçFVB÷WBâ“RÆöâÖ&v–â—2f–Æ&ÆRÂv—F‚&öw&W76—fR–çFW&W7B–ÖVçG2GW&–ær6öç7G'V7F–öâ¶VW–ær†öÆF–ær6÷7G2Æ÷r–âF†RV&Ç’7FvW2â"À¢Væ—E÷G—W3¢°¢²G—S¢uG—R(	BGVÂ¶W’ƒ2&VBò2&F‚’rÂ6—¦S¢s“"7gBrÒÀ¢²G—S¢uG—R"(	B"³&VBò"&F‚rÂ6—¦S¢sƒ‚7gBrÒÀ¢²G—S¢uG—R2(	BGVÂ¶W’…7GVF–ò²&VBò"&F‚’rÂ6—¦S¢sS“’7gBrÒÀ¢ÒÀ¢fVGW&W3¢°¢tg&VV†öÆBF—FÆR–âF†R†V'Böb¤"F÷vârÀ¢u&–6VBB$Ò“c(	3Ã“R6b(	B&VÆ÷rF†R&W6ÆRÖ&¶WB…$ÒÃ(	3Ã36b’F†æ·2FòÆæB7V—&VBR–V'2vòrÀ¢tGVÂ¶W’Æ–÷WB7&÷72ÆÂG—W2(	BÆ—fR–âöæRÂ&VçBF†R÷F†W"Â÷"Ö†–Ö—6R&ööÒ×&VçFÂ––VÆBrÀ¢u&ööÒ×&VçFÂ$ô’&ö¦V7FVBBbãR^(	3‚RFWVæF–æröâVæ—BG—RrÀ¢tÖ–çWFW2Fò¤"4•(	Bv—F†–âF†R7&÷72Ö&÷&FW"6öÖ×WFW"&VçFÂ6F6†ÖVçBrÀ¢uvÆ¶–ærF—7Fæ6RFò6—G’7V&RÂµ4Â6—G’ÖÆÂÂ†÷7—FÂ7VÇFæ‚Ö–æ‚ÂæB¤"6VçG&ÂrÀ¢u%E2Æ–æ²'V¶—B6†v"7FF–öâ–âF†R6ÖRW&&â6÷'&–F÷"(	B6–æv÷&R&–Â66W72f÷"FVæçG2rÀ¢s“RÆöâÖ&v–âÂBã"R–çFW&W7BÂ3R×–V"FVçW&R(	BÆ÷rVçG'’6—FÂ&WV—&VBrÀ¢u'F–ÂgW&æ—6‚6¶vR–æ6ÇVFVC¢—&6öâÂvFW"†VFW"Â¶—F6†Vâ6&–æWBÂF–v—FÂFö÷"Æö6²rÀ¢ÒÀ¢7FGW3¢tæ÷r6VÆÆ–ærrÀ¢–ÖvU÷W&Ã¢v‡GG3¢òö–ÖvW2çVç7Æ6‚æ6öÒ÷†÷FòÓCƒc3#S###rÓƒƒSCƒS#SVS÷ÓƒgsÓ#fWFóÖf÷&ÖBff—CÖ7&÷rÀ¢V&Æ—6†VC¢uE%TRp¢ÒÀ¢°¢6ÇVs¢v&öF–§R×&W6–FVæ6W2rÂ&V¢t—6¶æF"WFW&’rÂ&ö¦V7EöæÖS¢t&öF–§R&W6–FVæ6W2rÀ¢FvÆ–æS¢t¦æW6RFWfVÆ÷W"+rÖVF–æ’+ræòf÷&V–vâ'W–W"&W7G&–7F–öç2rÀ¢&–6U÷&ævS¢u$Ò#“’Ã(	2$ÒcS’ÃrÀ¢FVçW&S¢tÆV6V†öÆBrÂ6öÖ×WFUöæ÷FS¢wã–¶ÒFò6V6öæBÆ–æ²…GV2’rÀ¢FW67&—F–öã¢$&öF–§R&W6–FVæ6W2—2âƒ"×Væ—BGv–â×F÷vW"6W'f–6VB'FÖVçB–âÖVF–æ’Â—6¶æF"WFW&’ÂFWfVÆ÷VB'’7&VVBw&÷W¦ââ—B—2öæRöbF†RfWræWrÆVæ6†W2–âÖVF–æ’v—F‚æòÖ–æ–×VÒW&6†6R&–6Rf÷"f÷&V–vâ'W–W'2Âw&VVå$Rw&VVâ6W'F–f–6F–öâÂæB¦æW6R×VÆ—G’f—BÖ÷WBâF÷vW"—2æ÷r6VÆÆ–ærv—F‚"Ö&VG&ööÒÂ2Ö&VG&ööÒÂæBGVÂÖ¶W’Væ—G2f–Æ&ÆRg&öÒ$Ò#“’ÃâF†RÖ&VG&ööÒVæ—G2&RgVÆÇ’6öÆBâ"À¢7FGW3¢tæ÷r6VÆÆ–ærrÀ¢–ÖvU÷W&Ã¢w†÷F÷2ö&öF–§RôW&–Âf–Wræ§VrrÀ¢&ö¦V7E÷W&Ã¢w&ö¦V7G2ö&öF–§R×&W6–FVæ6W2æ‡FÖÂrÀ¢V&Æ—6†VC¢uE%TRp¢ÒÀ¢°¢6ÇVs¢rrÂ&V¢tf÷&W7B6—G’rÂ&ö¦V7EöæÖS¢u&ö¦V7BÆ6V†öÆFW"(	Bf÷&W7B6—G’rÀ¢FvÆ–æS¢rrÂ&–6U÷&ævS¢u$Ò(	BrÂFVçW&S¢rrÂ6öÖ×WFUöæ÷FS¢rrÀ¢FW67&—F–öã¢rrÂ7FGW3¢t6öÖ–ær6ööârÂ–ÖvU÷W&Ã¢rrÂV&Æ—6†VC¢uE%TRp¢Ğ¥Ó° ¦gVæ7F–öâv†G6Æ–æ²†ÖW76vR’°¢&WGW&â‡GG3¢ò÷væÖRòGµt„E4ôåTÔ$U'Ó÷FW‡CÒG¶Væ6öFUU$”6ö×öæVçB†ÖW76vR—Ö°§Ğ ¦gVæ7F–öâ6ÇVv–g’‡FW‡B’°¢&WGW&â‡FW‡BÇÂrr’çFôÆ÷vW$66R‚’çG&–Ò‚’ç&WÆ6R‚õµæ×£Ó•Ò²örÂrÒr’ç&WÆ6R‚ò…â×ÂÒB’örÂrr“°§Ğ ¦gVæ7F–öâ'F–6ÆT6&D‡FÖÂ†’°¢6öç7B†46öçFVçBÒæ&öG’bbæ&öG’çG&–Ò‚’æÆVæwF‚â°¢6öç7B—5¦‚Òö7W'&VçDÆærÓÓÒw¦‚s°¢6öç7BF—FÆRÒ†—5¦‚bbçF—FÆU÷¦‚’òçF—FÆU÷¦‚¢çF—FÆS°¢6öç7B7VÖÖ'’Ò†—5¦‚bbç7VÖÖ'•÷¦‚’òç7VÖÖ'•÷¦‚¢†ç7VÖÖ'’ÇÂrr“°¢6öç7B–ÖrÒæ–ÖvU÷W&ÂòÆ–Ör6Æ73Ò&6&BÖ–Ör"7&3Ò"G¶æ–ÖvU÷W&ÇÒ"ÇCÒ"G·F—FÆWÒ"7G–ÆSÒ&ö&¦V7BÖf—C¦6÷fW#²#æ¢ÆF—b6Æ73Ò&6&BÖ–Ör#ãÂöF—cæ°¢6öç7B‡&VbÒæÆ–æ²òæÆ–æ²¢r2s°¢6öç7BFrÒ‡&VbÓÒr2ròvr¢vF—bs°¢6öç7BÆ–æ´GG"Ò‡&VbÓÒr2rò‡&VcÒ"G¶‡&VgÒ&¢rs°¢&WGW&â ¢ÂG·FwÒG¶Æ–æ´GG'Ò6Æ73Ò&6&B&WfVÂG¶†46öçFVçBòrr¢v6&B×Æ6V†öÆFW"wÒ"7G–ÆSÒ'FW‡BÖFV6÷&F–öã¦æöæS²#à¢G¶–ÖwĞ¢ÆF—b6Æ73Ò&6&BÖ&öG’#à¢ÆF—b6Æ73Ò&6&BÖW–V'&÷r#âG¶—5¦‚ò~[ˆ.YË®kIîZùòr¢tÖ&¶WB–ç6–v‡BwÓÂöF—cà¢Æƒ26Æ73Ò&6&B×F—FÆR#âG·F—FÆWÓÂöƒ3à¢Ç6Æ73Ò&6&BÖW†6W'B#âG·7VÖÖ'—ÓÂ÷à¢Ç7â6Æ73Ò&6&BÖÆ–æ²#âG¶†46öçFVçBò†—5¦‚ò~™ˆ^Šû¾i»NZI¢r¢u&VBÖ÷&Rr’¢†—5¦‚ò~XÛ>[nhêX{¢r¢t6öÖ–ær6ööâr—ÓÂ÷7ãà¢ÂöF—cà¢ÂòG·FwÓæ°§Ğ ¦gVæ7F–öâ&ö¦V7D6&D‡FÖÂ‡’°¢6öç7B&rÒæ–ÖvU÷W&Âò&6¶w&÷VæBÖ–ÖvS§W&Â‚rG·æ–ÖvU÷W&ÇÒr–¢rs°¢6öç7B6ÇVrÒç6ÇVrÇÂ6ÇVv–g’‡ç&ö¦V7EöæÖR“°¢6öç7B‡&VbÒ6ÇVrò&ö¦V7Bæ‡FÖÃ÷6ÇVsÒG¶Væ6öFUU$”6ö×öæVçB‡6ÇVr—Ö¢r2s°¢&WGW&â ¢Æ‡&VcÒ"G¶‡&VgÒ"6Æ73Ò'&ö¦V7BÖ6&B&WfVÂ"7G–ÆSÒ"G¶&wÒ#à¢Ç7â6Æ73Ò'&ö¦V7B×7FGW2#âG·ç7FGW2ÇÂtVçV—&RwÓÂ÷7ãà¢ÆF—b6Æ73Ò'&ö¦V7BÖ&öG’#à¢ÆF—b6Æ73Ò'&ö¦V7BÖæÖR#âG·ç&ö¦V7EöæÖWÓÂöF—cà¢ÆF—b6Æ73Ò'&ö¦V7B×&–6R#âG·ç&–6U÷&ævRÇÂrwÓÂöF—cà¢ÆF—b6Æ73Ò'&ö¦V7BÖFW62#âG·çFvÆ–æRÇÂæFW67&—F–öâÇÂrwÓÂöF—cà¢Ç7â6Æ73Ò'&ö¦V7BÖ7F#åf–Wr&ö¦V7CÂ÷7ãà¢ÂöF—cà¢Âöæ°§Ğ ¦7–æ2gVæ7F–öâvWE&ö¦V7G2‚’°¢6öç7B&÷w2Òv—BfWF6…6†VWB…4„TUEô4ôäd”rç&ö¦V7G477eW&Â“°¢6öç7BfÆ–BÒ&÷w2ò&÷w2æf–ÇFW"‡"Óâ"çV&Æ—6†VBÓÓÒuE%TRr’¢µÓ°¢&WGW&âfÆ–BæÆVæwF‚òfÆ–B¢Ä4T„ôÄDU%õ$ô¤T5E3°§Ğ ¦7–æ2gVæ7F–öâ&VæFW$'F–6ÆW2†&VÂF&vWE6VÆV7F÷"’°¢6öç7BF&vWBÒFö7VÖVçBçVW'•6VÆV7F÷"‡F&vWE6VÆV7F÷"“°¢–b‚F&vWB’&WGW&ã°¢6öç7B&÷w2Òv—BfWF6…6†VWB…4„TUEô4ôäd”ræ'F–6ÆW477eW&Â“°¢ÆWBÆ—7C°¢6öç7BÆö6ÂÒ…Ä4T„ôÄDU%ô%D”4ÄU5¶&VÒÇÂµÒ’æf–ÇFW"†Óâæ&öG’ÓÓÒvW†—7G2rbbæÆ–æ²“°¢–b‡&÷w2’°¢6öç7B6†VWDÆ—7BÒ&÷w2æf–ÇFW"‡"Óâ"æ&VÓÓÒ&Vbb"çV&Æ—6†VBÓÓÒuE%TRrbb"æÆ–æ²bb"æÆ–æ²ÓÒr2r“°¢òòÖW&vS¢Æö6Â'F–6ÆW2f—'7BÂF†Vâ6†VWB'F–6ÆW2æ÷BÇ&VG’6÷fW&VB'’Æö6À¢6öç7B6†VWDÆ–æ·2ÒæWr6WB‡6†VWDÆ—7BæÖ‡"Óâ"æÆ–æ²’“°¢6öç7BÆö6ÄöæÇ’ÒÆö6Âæf–ÇFW"†Óâ6†VWDÆ–æ·2æ†2†æÆ–æ²’“°¢Æ—7BÒ6†VWDÆ—7BæÆVæwF‚ò²ââæÆö6ÄöæÇ’Âââç6†VWDÆ—7EÒ¢Æö6Ã°¢ÒVÇ6R°¢Æ—7BÒÆö6Ã°¢Ğ¢F&vWBæ–ææW$…DÔÂÒÆ—7BæÖ†'F–6ÆT6&D‡FÖÂ’æ¦ö–â‚rr“°¢–æ—E&WfVÂ‚“°§Ğ ¦7–æ2gVæ7F–öâ&VæFW%&ö¦V7G2†&VÂF&vWE6VÆV7F÷"’°¢6öç7BF&vWBÒFö7VÖVçBçVW'•6VÆV7F÷"‡F&vWE6VÆV7F÷"“°¢–b‚F&vWB’&WGW&ã°¢6öç7BÆÂÒv—BvWE&ö¦V7G2‚“°¢6öç7BÆ—7BÒÆÂæf–ÇFW"‡Óâæ&VÓÓÒ&V“°¢F&vWBæ–ææW$…DÔÂÒÆ—7BæÆVæwF€¢òÆ—7BæÖ‡Óâ&ö¦V7D6&D‡FÖÂ‡’’æ¦ö–â‚rr¢¢sÇ7G–ÆSÒ&6öÆ÷#¢f"‚ÒÖ–æ²Ö×WFVB“²#äÖ÷&R&ö¦V7G26öÖ–ær6ööâf÷"F†—2&VãÂ÷âs°¢–æ—E&WfVÂ‚“°§Ğ ¢òòÒÒÒÒG–æÖ–2&ö¦V7BFWF–ÂvR‡&ö¦V7Bæ‡FÖÃ÷6ÇVsÒâââ’ÒÒÒĞ¦7–æ2gVæ7F–öâ&VæFW%&ö¦V7EvR‚’°¢6öç7B&×2ÒæWrU$Å6V&6…&×2‡v–æF÷ræÆö6F–öâç6V&6‚“°¢6öç7B6ÇVrÒ&×2ævWB‚w6ÇVrr“°¢6öç7B&ö÷BÒFö7VÖVçBçVW'•6VÆV7F÷"‚r7&ö¦V7B×&ö÷Br“°¢–b‚&ö÷B’&WGW&ã° ¢6öç7BÆÂÒv—BvWE&ö¦V7G2‚“°¢6öç7BÒÆÂæf–æB‡&÷rÓâ‡&÷rç6ÇVrÇÂ6ÇVv–g’‡&÷rç&ö¦V7EöæÖR’’ÓÓÒ6ÇVr“° ¢–b‚’°¢&ö÷Bæ–ææW$…DÔÂÒ ¢Ç6V7F–öâ6Æ73Ò&öâ×v†—FR"7G–ÆSÒ'FF–æs¢C‚ƒ²FW‡BÖÆ–vã¦6VçFW#²#à¢ÆF—b6Æ73Ò'w&#à¢ÆF—b6Æ73Ò&W–V'&÷r"7G–ÆSÒ&§W7F–g’Ö6öçFVçC¦6VçFW#²F—7Æ“¦fÆWƒ²#å&ö¦V7Bæ÷Bf÷VæCÂöF—cà¢Æƒ6Æ73Ò'6V7F–öâ×F—FÆR"7G–ÆSÒ&Ö&v–â×F÷£‡ƒ²#åvR6÷VÆFâwBf–æBF†BÆ—7F–æsÂöƒà¢Ç6Æ73Ò'6V7F–öâ×7V""7G–ÆSÒ&Ö&v–ã¢G‚WFò#‡ƒ²FW‡BÖÆ–vã¦6VçFW#²#ä—BÖ’†fR&VVâ&VÖ÷fVB÷"F†RÆ–æ²—2÷WBöbFFRãÂ÷à¢Æ‡&VcÒ&–æFW‚æ‡FÖÂ"6Æ73Ò&'Fâ'FâÖ÷WFÆ–æRÖF&²#ä&6²Fò†öÖSÂöà¢ÂöF—cà¢Â÷6V7F–öãæ°¢&WGW&ã°¢Ğ ¢Fö7VÖVçBçF—FÆRÒG·ç&ö¦V7EöæÖWÒÂG·æ&VÒ(	B&–6RwV–FRÂ6ÒFVRÂ&÷W'G’Gf—6÷&°¢6öç7BÖWFFW62ÒFö7VÖVçBçVW'•6VÆV7F÷"‚vÖWF¶æÖSÒ&FW67&—F–öâ%Òr“°¢–b†ÖWFFW62’ÖWFFW62ç6WDGG&–'WFR‚v6öçFVçBrÂG·ç&ö¦V7EöæÖWÒÂG·æ&VÓ¢G·çFvÆ–æRÇÂrwÒG·ç&–6U÷&ævRÇÂrwÒ&–6RwV–FRæBVçV—'’(	B6ÒFVRÂ&÷W'G’Gf—6÷"æ“° ¢6öç7B&V6ÇVtÖÒ²t—6¶æF"WFW&’s¢v—6¶æF"×WFW&’æ‡FÖÂrÂt¤"F÷vâs¢v¦"×F÷vâæ‡FÖÂrÂtf÷&W7B6—G’s¢vf÷&W7BÖ6—G’æ‡FÖÂrÓ°¢6öç7B&V‡&VbÒ&V6ÇVtÖ·æ&VÒÇÂv–æFW‚æ‡FÖÂs°¢6öç7BFW65&w&‡2Ò‡æFW67&—F–öâÇÂrr’ç7Æ—B‚uÆåÆâr’æf–ÇFW"„&ööÆVâ’æÖ‡BÓâÇ7G–ÆSÒ&6öÆ÷#¢f"‚ÒÖ–æ²Ö×WFVB“²Ö&v–âÖ&÷GFöÓ¢gƒ²#âG·GÓÂ÷æ’æ¦ö–â‚rr“°¢6öç7Bv×6rÒVæ6öFUU$”6ö×öæVçB††’6ÒÂ’vÒ–çFW&W7FVB–âG·ç&ö¦V7EöæÖWÒæ“° ¢&ö÷Bæ–ææW$…DÔÂÒ ¢Æ†VFW"6Æ73Ò'&ö¦V7BÖ†W&ò"7G–ÆSÒ&&6¶w&÷VæBÖ–ÖvS¢W&Â‚rG·æ–ÖvU÷W&ÂÇÂrwÒr“²#à¢ÆF—b6Æ73Ò'&ö¦V7BÖ†W&òÖ6öçFVçB#à¢ÆF—b6Æ73Ò&'&VF7'VÖ"#à¢Æ‡&VcÒ&–æFW‚æ‡FÖÂ#ä†öÖSÂöâfæ'7²òfæ'7²Æ‡&VcÒ"G¶&V‡&VgÒ#âG·æ&VÓÂöâfæ'7²òfæ'7²G·ç&ö¦V7EöæÖWĞ¢ÂöF—cà¢ÆF—b6Æ73Ò&†W&ò×Fw2#à¢G·çFvÆ–æRòÇ7â6Æ73Ò'Fr#âG·çFvÆ–æWÓÂ÷7ãæ¢rwĞ¢ÂöF—cà¢Æƒ6Æ73Ò'&ö¦V7BÖ†W&ò×F—FÆR#âG·ç&ö¦V7EöæÖWÓÂöƒà¢ÆF—b6Æ73Ò'&ö¦V7BÖ†W&ò×&–6R#âG·ç&–6U÷&ævRÇÂrwÒG·ç7FGW2òr+rr²ç7FGW2¢rwÓÂöF—cà¢ÂöF—cà¢Âö†VFW#à ¢Ç6V7F–öâ6Æ73Ò&öâ×v†—FR#à¢ÆF—b6Æ73Ò'w&#à¢ÆF—b6Æ73Ò&–çG&òÖw&–B#à¢ÆF—b6Æ73Ò'&WfVÂ#à¢ÆF—b6Æ73Ò&W–V'&÷r#ä&÷WBF†—2&ö¦V7CÂöF—cà¢Æƒ"6Æ73Ò'6V7F–öâ×F—FÆR"7G–ÆSÒ&föçB×6—¦S¢#‡ƒ²Ö&v–â×F÷¢‡ƒ²#âG·çFvÆ–æRÇÂrwÓÂöƒ#à¢ÆF—b6Æ73Ò&F—f–FW"#ãÂöF—cà¢G¶FW65&w&‡2ÇÂsÇ7G–ÆSÒ&6öÆ÷#¢f"‚ÒÖ–æ²Ö×WFVB“²#äFWF–Ç26öÖ–ær6ööâãÂ÷âwĞ¢ÂöF—cà¢ÆF—b6Æ73Ò'&WfVÂ#à¢ÆF—b6Æ73Ò&f7BÖ6&B#à¢ÆƒCå&–6RwV–FSÂöƒCà¢ÆF—b6Æ73Ò&f7B×&÷r#ãÇ7ãå&ævSÂ÷7ããÇ7ãâG·ç&–6U÷&ævRÇÂ~(	BwÓÂ÷7ããÂöF—cà¢ÆF—b6Æ73Ò&f7B×&÷r#ãÇ7ãåFVçW&SÂ÷7ããÇ7ãâG·çFVçW&RÇÂ~(	BwÓÂ÷7ããÂöF—cà¢ÆF—b6Æ73Ò&f7B×&÷r#ãÇ7ãä6öÖ×WFSÂ÷7ããÇ7ãâG·æ6öÖ×WFUöæ÷FRÇÂ~(	BwÓÂ÷7ããÂöF—cà¢ÆF—b6Æ73Ò&f7B×&÷r#ãÇ7ãå7FGW3Â÷7ããÇ7ãâG·ç7FGW2ÇÂ~(	BwÓÂ÷7ããÂöF—cà¢ÂöF—cà¢ÂöF—cà¢ÂöF—cà¢ÂöF—cà¢Â÷6V7F–öãà ¢G²‡çVæ—E÷G—W2bbçVæ—E÷G—W2æÆVæwF‚’ÇÂ‡æfVGW&W2bbæfVGW&W2æÆVæwF‚’ò ¢Ç6V7F–öâ6Æ73Ò&öâÖöfgv†—FR"7G–ÆSÒ'FF–æs¢c‚²#à¢ÆF—b6Æ73Ò'w&#à¢ÆF—b7G–ÆSÒ&F—7Æ“¦w&–C²w&–B×FV×ÆFRÖ6öÇVÖç3¢g"g#²v¢C‡ƒ²Æ–vâÖ—FV×3¢7F'C²#à¢G·çVæ—E÷G—W2bbçVæ—E÷G—W2æÆVæwF‚ò ¢ÆF—b6Æ73Ò'&WfVÂ#à¢ÆF—b6Æ73Ò&W–V'&÷r"7G–ÆSÒ&Ö&v–âÖ&÷GFöÓ£'ƒ²#åVæ—BG—W3ÂöF—cà¢ÇF&ÆR7G–ÆSÒ'v–GFƒ£S²&÷&FW"Ö6öÆÆ6S¦6öÆÆ6S²föçBÖfÖ–Ç“§f"‚ÒÖföçBÖ&öG’“²föçB×6—¦S£Wƒ²#à¢ÇF†VCà¢ÇG"7G–ÆSÒ&&÷&FW"Ö&÷GFöÓ£'‚6öÆ–Bf"‚ÒÖvöÆBÓS“²#à¢ÇF‚7G–ÆSÒ'FW‡BÖÆ–vã¦ÆVgC²FF–æs£‡‚²6öÆ÷#§f"‚ÒÖ–æ²“²föçB×vV–v‡C£c²#åG—SÂ÷Fƒà¢ÇF‚7G–ÆSÒ'FW‡BÖÆ–vã§&–v‡C²FF–æs£‡‚²6öÆ÷#§f"‚ÒÖ–æ²“²föçB×vV–v‡C£c²#ä'V–ÇB×WÂ÷Fƒà¢Â÷G#à¢Â÷F†VCà¢ÇF&öG“à¢G·çVæ—E÷G—W2æÖ‡RÓâ ¢ÇG"7G–ÆSÒ&&÷&FW"Ö&÷GFöÓ£‚6öÆ–B6S†SfS²#à¢ÇFB7G–ÆSÒ'FF–æs£‚²6öÆ÷#§f"‚ÒÖ–æ²“²#âG·RçG—WÓÂ÷FCà¢ÇFB7G–ÆSÒ'FF–æs£‚²6öÆ÷#§f"‚ÒÖ–æ²Ö×WFVB“²FW‡BÖÆ–vã§&–v‡C²#âG·Rç6—¦WÓÂ÷FCà¢Â÷G#æ’æ¦ö–â‚rr—Ğ¢Â÷F&öG“à¢Â÷F&ÆSà¢ÂöF—cæ¢rwĞ¢G·æfVGW&W2bbæfVGW&W2æÆVæwF‚ò ¢ÆF—b6Æ73Ò'&WfVÂ#à¢ÆF—b6Æ73Ò&W–V'&÷r"7G–ÆSÒ&Ö&v–âÖ&÷GFöÓ£'ƒ²#ä¶W’fVGW&W3ÂöF—cà¢ÇVÂ7G–ÆSÒ&Æ—7B×7G–ÆS¦æöæS²FF–æs£²Ö&v–ã£²#à¢G·æfVGW&W2æÖ†bÓâ ¢ÆÆ’7G–ÆSÒ&F—7Æ“¦fÆWƒ²v£ƒ²FF–æs£—‚²&÷&FW"Ö&÷GFöÓ£‚6öÆ–B6S†SfS²föçBÖfÖ–Ç“§f"‚ÒÖföçBÖ&öG’“²föçB×6—¦S£Wƒ²6öÆ÷#§f"‚ÒÖ–æ²Ö×WFVB“²Æ–æRÖ†V–v‡C£ãS²#à¢Ç7â7G–ÆSÒ&6öÆ÷#§f"‚ÒÖvöÆBÓS“²fÆW‚×6‡&–æ³£²Ö&v–â×F÷£'ƒ²#î)É3Â÷7ãà¢Ç7ãâG¶gÓÂ÷7ãà¢ÂöÆ“æ’æ¦ö–â‚rr—Ğ¢Â÷VÃà¢ÂöF—cæ¢rwĞ¢ÂöF—cà¢ÂöF—cà¢Â÷6V7F–öãæ¢rwĞ ¢G·æ–ÖvW2bbæ–ÖvW2æÆVæwF‚ò ¢Ç6V7F–öâ6Æ73Ò&öâÖæg’"7G–ÆSÒ'FF–æs¢c‚²#à¢ÆF—b6Æ73Ò'w&#à¢ÆF—b6Æ73Ò&W–V'&÷r&WfVÂ"7G–ÆSÒ&§W7F–g’Ö6öçFVçC¦6VçFW#²F—7Æ“¦fÆWƒ²Ö&v–âÖ&÷GFöÓ£‡ƒ²6öÆ÷#¢f"‚ÒÖvöÆBÓC“²#å&ö¦V7B†÷F÷3ÂöF—cà¢Æƒ"6Æ73Ò'6V7F–öâ×F—FÆR&WfVÂ"7G–ÆSÒ'FW‡BÖÆ–vã¦6VçFW#²Ö&v–âÖ&÷GFöÓ£3'ƒ²6öÆ÷#¢6ffc²#å6VRF†RFWfVÆ÷ÖVçCÂöƒ#à¢ÆF—b6Æ73Ò'&ö¦V7BÖvÆÆW'’&WfVÂ#à¢G·æ–ÖvW2æÖ†–ÖrÓâ ¢Æf–wW&R6Æ73Ò'&ö¦V7BÖvÆÆW'’Ö—FVÒ#à¢Æ–Ör7&3Ò"G¶–ÖrçW&ÇÒ"ÇCÒ"G¶–Öræ6F–öâÇÂç&ö¦V7EöæÖWÒ"ÆöF–æsÒ&Æ§’#à¢G¶–Öræ6F–öâòÆf–v6F–öãâG¶–Öræ6F–öçÓÂöf–v6F–öãæ¢rwĞ¢Âöf–wW&Sæ’æ¦ö–â‚rr—Ğ¢ÂöF—cà¢ÂöF—cà¢Â÷6V7F–öãæ¢rwĞ ¢Ç6V7F–öâ6Æ73Ò&öâÖöfgv†—FR#à¢ÆF—b6Æ73Ò'w&#à¢ÆF—b7G–ÆSÒ'FW‡BÖÆ–vã¢6VçFW#²Ö&v–âÖ&÷GFöÓ¢Cƒ²#à¢ÆF—b6Æ73Ò&W–V'&÷r&WfVÂ"7G–ÆSÒ&§W7F–g’Ö6öçFVçC¦6VçFW#²F—7Æ“¦fÆWƒ²#ä–çFW&W7FVB–âG·ç&ö¦V7EöæÖWÓÂöF—cà¢Æƒ"6Æ73Ò'6V7F–öâ×F—FÆR&WfVÂ"7G–ÆSÒ&Ö&v–â×F÷¢‡ƒ²#å6VæB–÷W"FWF–Ç2Â’vÆÂföÆÆ÷rWF—&V7FÇ“Âöƒ#à¢Ç6Æ73Ò'6V7F–öâ×7V"&WfVÂ"7G–ÆSÒ&Ö&v–ã¢G‚WFò²FW‡BÖÆ–vã¢6VçFW#²#ä6†÷'Bæ÷FRöâ–÷W"'VFvWBæBF–ÖVÆ–æR†VÇ2ÖR'&–ær–÷RF†R&–v‡BÆ—7F–æw2Âæ÷B§W7Bç’Æ—7F–æw2ãÂ÷à¢ÂöF—cà¢Æf÷&Ò6Æ73Ò&VçV—'’Öf÷&Ò&WfVÂ"7F–öãÒ&‡GG3¢òöf÷&×7&VRæ–òöböÖvö¦G§wr"ÖWF†öCÒ%õ5B#à¢Æ–çWBG—SÒ&†–FFVâ"æÖSÒ'&ö¦V7B"fÇVSÒ"G·ç&ö¦V7EöæÖWÒ#à¢ÆF—b6Æ73Ò&f÷&Ò×&÷r#à¢ÆF—b6Æ73Ò&f–VÆB#à¢ÆÆ&VÂf÷#Ò'bÖæÖR#äæÖSÂöÆ&VÃà¢Æ–çWBG—SÒ'FW‡B"–CÒ'bÖæÖR"æÖSÒ&æÖR"&WV—&VCà¢ÂöF—cà¢ÆF—b6Æ73Ò&f–VÆB#à¢ÆÆ&VÂf÷#Ò'b×†öæR#å†öæRòv†G4Ç7â7G–ÆSÒ&föçB×vV–v‡C£C²6öÆ÷#§f"‚ÒÖ–æ²Ö×WFVB“²föçB×6—¦S£ãƒVVÓ²#â†–æ6ÇVFR6÷VçG'’6öFR“Â÷7ããÂöÆ&VÃà¢Æ–çWBG—SÒ'FVÂ"–CÒ'b×†öæR"æÖSÒ'†öæR"Æ6V†öÆFW#Ò&Rærâ³cSc3CƒS‚"&WV—&VCà¢ÂöF—cà¢ÂöF—cà¢ÆF—b6Æ73Ò&f–VÆB#à¢ÆÆ&VÂf÷#Ò'bÖVÖ–Â#äVÖ–ÃÂöÆ&VÃà¢Æ–çWBG—SÒ&VÖ–Â"–CÒ'bÖVÖ–Â"æÖSÒ&VÖ–Â"&WV—&VCà¢ÂöF—cà¢ÆF—b6Æ73Ò&f–VÆB#à¢ÆÆ&VÂf÷#Ò'bÖÖW76vR#äÖW76vSÂöÆ&VÃà¢ÇFW‡F&V–CÒ'bÖÖW76vR"æÖSÒ&ÖW76vR"Æ6V†öÆFW#Ò%FVÆÂÖR&÷WB–÷W"'VFvWBÂF–ÖVÆ–æRÂæBv†B–÷Rw&RÆöö¶–ærf÷"âââ#ãÂ÷FW‡F&Và¢ÂöF—cà¢Æ'WGFöâG—SÒ'7V&Ö—B"6Æ73Ò&'Fâ'FâÖvöÆBf÷&Ò×7V&Ö—B#å6VæBVçV—'“Âö'WGFöãà¢Ç6Æ73Ò&f÷&ÒÖæ÷FR#ä÷"6¶—F†Rf÷&Ò(	BÆ‡&VcÒ&‡GG3¢ò÷væÖRòGµt„E4ôåTÔ$U'Ó÷FW‡CÒG·v×6wÒ"F&vWCÒ%ö&Ææ²"&VÃÒ&æö÷VæW""7G–ÆSÒ&6öÆ÷#¢f"‚ÒÖæg’Ó““²föçB×vV–v‡C¢c²#æÖW76vRÖRF—&V7FÇ’öâv†G4ÂöâãÂ÷à¢Âöf÷&Óà¢ÂöF—cà¢Â÷6V7F–öãæ° ¢–æ—E&WfVÂ‚“°§Ğ ¢òò–æ—DæbæB–æ—E&WfVÂ6ÆÆVBf––æ—DÆæuFövvÆRÆ—7FVæW"&VÆ÷p ¢òòÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓĞ¢òò$”Ä”äuTÂDôttÄR(	BTâòKŠŞihp¢òòÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓÓĞ¦ÆWBö7W'&VçDÆærÒvVâs°¦6öç7B$Tõ¤‚Ò²tvVæW&Âs¢~{»ÎY‚rÂt¤"F÷vâs¢~ik[[ˆ.XË¢rÂt—6¶æF"WFW&’s¢~KéŞijş[›.‹ëîXZÎK‹¾YøârÂtf÷&W7B6—G’s¢~j:îié~Yøî[ˆ"rÓ° ¦6öç7BE$å4ÄD”ôå2Ò°¢Vã¢°¢òòæ`¢væbÖ†öÖRs¢t†öÖRrÀ¢væbÖ¦'Bs¢t¦ö†÷"&‡'RF÷vârÀ¢væbÖ—s¢t—6¶æF"WFW&’rÀ¢væbÖf2s¢tf÷&W7B6—G’rÀ ¢òò†W&ğ¢v†W&ò×F—FÆRs¢u–÷W"&÷W'G’Gf—6÷"f÷"¦ö†÷"Â'V–ÇBöâÆö6Âw&÷VæBG'WF‚ârÀ¢v†W&ò×7V"s¢t’†VÇfÖ–Æ–W2æB–çfW7F÷'2f–æBF†R&–v‡B&÷W'F–W27&÷72—6¶æF"WFW&’Â¦ö†÷"&‡'RF÷vâÂæB7V6–Âf–ææ6–Â¦öæRÂf÷&W7B6—G’(	Bv—F‚F†RG&FRÖöfg2W‡Æ–æVBWg&öçBÂæ÷BgFW"–÷UÂwfR6–væVBârÀ ¢òò&öf–ÆR7Æ—@¢w&öf–ÆRÖW–V'&÷rs¢u–÷W"&÷W'G’Gf—6÷"rÀ¢w&öf–ÆR×&öÆRs¢u&÷W'G’Gf—6÷"+r$Tâƒ3#"rÀ¢w&öf–ÆRÖFW62s¢u7V6–Æ—6–ær–âÆæFVB&÷W'F–W27&÷72—6¶æF"WFW&’Â¦ö†÷"&‡'RF÷vâÂæB7V6–Âf–ææ6–Â¦öæRÂf÷&W7B6—G’â’†VÇ'W–W'2VæFW'7FæBF†V—"÷F–öç2&Vf÷&R6öÖÖ—GF–ærFòç’&ö¦V7BârÀ¢w&öf–ÆRÖ'Fâ×vs¢t6†Böâv†G4rÀ¢w&öf–ÆRÖ'FâÖW‡Æ÷&Rs¢tW‡Æ÷&R&÷W'F–W2rÀ ¢òò&÷W@¢v&÷WBÖW–V'&÷rs¢t&÷WB6ÒrÀ¢v&÷WBÖ†VFÆ–æRs¢uVæFW'7FæBf—'7Bâ&÷W'G’ÆFW"ârÀ¢v&÷WB×s¢tÖ÷7B'W–W'2–â¦ö†÷"vWB6öÆB&ö¦V7B&Vf÷&Rç–öæR6·2v†BF†W’7GVÆÇ’æVVBâ’v÷&²F†R÷F†W"v’(	BVæFW'7FæF–ær–÷W"W'÷6Rf—'7C¢fÖ–Ç’&VÆö6F–öâÂ&WF—&VÖVçBÂ÷"–çfW7FÖVçBÂF†VâÖF6†–ærF†BFòF†R&–v‡B6öÖ×Væ—G’æB&–6R&ævRârÀ¢v&÷WB×"s¢t’7V6–Æ—6R–âÇ7G&öæsä¦ö†÷"&‡'RF÷vâæB—6¶æF"WFW&’&÷W'F–W2g&öÒ$ÒÒFò$ÒÓÂ÷7G&öæsâ7&÷72W7F&Æ—6†VB6öÖ×Væ—F–W2Âv—F‚FVWfÖ–Æ–&—G’–âÆö6ÂÖ&¶WBG–æÖ–72æBF†R÷væW'6†—'VÆW2F†BÖGFW"f÷"&÷F‚ÖÆ—6–âæB–çFW&æF–öæÂ'W–W'2ârÀ¢wv‡’ÖW–V'&÷rs¢uv‡’v÷&²v—F‚ÖRrÀ¢wv‡’Ö†VFÆ–æRs¢tÆö6Âw&÷VæBG'WF‚ÂW‡Æ–æVBÆ–æÇ’ârÀ¢wv‡’×s¢t’Ç6ò7&VFRf–FVò6öçFVçB'&V¶–ærF÷vâ¦ö†÷"&÷W'G’7G&FVw’(	B6ò'’F†RF–ÖRvR7V²Â–÷UÂwfRÆ–¶VÇ’Ç&VG’6VVâ†÷r’F†–æ²&÷WBF†—2Ö&¶WBârÀ¢wv‡’×"s¢tWfW'’&V6öÖÖVæFF–öâ6öÖW2v—F‚F†RG&FRÖöfg2Âæ÷B§W7BF†R†–v†Æ–v‡G2â–b&ö¦V7B—6åÂwB&–v‡Bf÷"–÷W"6—GVF–öâÂ•ÂvÆÂFVÆÂ–÷R&Vf÷&R–÷Rv7FRf–Wv–ærG&—ârÀ¢w7FB×&ævRs¢tfö7W2&ævRrÀ¢w7FBÖF—7G&–7G2s¢t6÷&RF—7G&–7G2rÀ ¢òòÖ&¶WB6æ6†÷@¢vÖ&¶WBÖW–V'&÷rs¢tÖ&¶WB6æ6†÷BrÀ¢vÖ&¶WBÖ†VFÆ–æRs¢uv†W&RF†R¦ö†÷"Ö&¶WB7FæG2FöF’ârÀ¢vÖ&¶WB×7V"s¢tV–6²&VBöâ7W'&VçB6öæF—F–öç27&÷72F†RF—7G&–7G2’6÷fW"(	BWFFVB2F†RÖ&¶WBÖ÷fW2ârÀ¢vÖ&¶WBÖ¦'B×F—FÆRs¢t6—G’Ö6VçG&R&ö¦V7G2&VÖ–âF†R66W76–&ÆRVçG'’ö–çBrÀ¢vÖ&¶WBÖ¦'BÖW†6W'Bs¢tf÷"'W–W'2v÷&¶–ærv—F‚F–v‡FW"'VFvWG2Â6VÆV7BW†V×F–öâ&ö¦V7G2–âF†R6—G’6VçG&R&R7F–ÆÂF†RÖ÷7B66W76–&ÆRv’–çFòF†RÖ&¶WBârÀ¢vÖ&¶WBÖ—×F—FÆRs¢tÆæFVBFVÖæB†öÆF–ær7FVG’–âW7F&Æ—6†VBF÷vç6†—2rÀ¢vÖ&¶WBÖ—ÖW†6W'Bs¢tV6ò&÷Fæ–2Â†÷&—¦öâ†–ÆÇ2ÂæBV7BÆVFær6öçF–çVRFò6VR6öç6—7FVçB–çFW&W7Bg&öÒfÖ–Æ–W2æB&WF—&VW26VV¶–ærvFVBÂÖGW&R6öÖ×Væ—F–W2ârÀ¢vÖ&¶WBÖf2×F—FÆRs¢u7V6–Âf–ææ6–Â¦öæR7FGW2&W6†–ærF†R–çfW7FÖVçB6öçfW'6F–öârÀ¢vÖ&¶WBÖf2ÖW†6W'Bs¢u7V6–Âf–ææ6–Â¦öæR7FGW2†26†ævVBF†R6Æ7VÇW2f÷"–çfW7F÷'2vV–v†–ærf÷&W7B6—G’v–ç7B÷F†W"—6¶æF"F—7G&–7G2ârÀ ¢òòW‡Æ÷&P¢vW‡Æ÷&RÖW–V'&÷rs¢tW‡Æ÷&R'’F—7G&–7BrÀ¢vW‡Æ÷&RÖ†VFÆ–æRs¢uF‡&VRF—7G&–7G2ÂF‡&VRfW'’F–ffW&VçB'W–W"&öf–ÆW2ârÀ¢vW‡Æ÷&R×7V"s¢tV6‚†2—G2÷vâ&–6–ærÂ6†&7FW"ÂæBÆ–fW7G–ÆRf—Bâ–6²v†W&R–÷W"–çFW&W7B6—G2æB•ÂvÆÂvÆ²–÷RF‡&÷Vv‚—B–âFWF–ÂârÀ¢v&VÖ¦'BÖW–V'&÷rs¢tVçG'’ö–çBrÀ¢v&VÖ¦'B×F—FÆRs¢t¦ö†÷"&‡'RF÷vârÀ¢v&VÖ¦'BÖFW62s¢t6—G’Ö6VçG&RÆ—f–æræB66W76–&ÆRVçG'’ÖÆWfVÂ&ö¦V7G26Æ÷6RFòF†R6W6Wv’ârÀ¢v&VÖ¦'BÖÆ–æ²s¢tW‡Æ÷&R¦ö†÷"&‡'RF÷vârÀ¢v&VÖ—ÖW–V'&÷rs¢t6÷&Rfö7W2rÀ¢v&VÖ—×F—FÆRs¢t—6¶æF"WFW&’rÀ¢v&VÖ—ÖFW62s¢tV6ò&÷Fæ–2Â†÷&—¦öâ†–ÆÇ2ÂV7BÆVFær(	BÆæFVBfÖ–Ç’æB&WF—&VÖVçBÆ—f–ærârÀ¢v&VÖ—ÖÆ–æ²s¢tW‡Æ÷&R—6¶æF"WFW&’rÀ¢v&VÖf2ÖW–V'&÷rs¢u7V6–Â¦öæRrÀ¢v&VÖf2×F—FÆRs¢tf÷&W7B6—G’rÀ¢v&VÖf2ÖFW62s¢u7V6–Âf–ææ6–Â¦öæRv—F‚F‚–æ6VçF—fW2æBF—7F–æ7B—6ÆæBÆ–fW7G–ÆR&÷÷6—F–öâârÀ¢v&VÖf2ÖÆ–æ²s¢tW‡Æ÷&Rf÷&W7B6—G’rÀ ¢òò5D¢v7FÖW–V'&÷rs¢tÆWEÂw2FÆ²rÀ¢v7FÖ†VFÆ–æRs¢tæ÷B7W&Rv†W&RFò7F'Cò6VæBÖR–÷W"6—GVF–öâârÀ¢v7F×7V"s¢t6†÷'Bv†G4ÖW76vR—2Væ÷Vv‚(	BW'÷6RÂ'VFvWB&ævRÂæBF–ÖVÆ–æRâ•ÂvÆÂö–çB–÷RFòF†R&–v‡BF—7G&–7B&Vf÷&RvRFÆ²&ö¦V7G2ârÀ¢v7FÖ'Fâs¢t6†Bv—F‚6Òöâv†G4rÀ  ¢òòæWr†6R¶W—0¢v†W&òÖW–V'&÷rs¢t–æFWVæFVçB&÷W'G’wV–FR+r¦ö†÷"&‡'RrÀ¢v†W&òÖ'FâÖ&V2s¢tW‡Æ÷&R&V2rÀ¢v†W&òÖ'FâÖwV–FW2s¢t'W––ærwV–FW2rÀ¢væbÖ&V2s¢t&V2rÀ¢væb×&ö¦V7G2s¢u&ö¦V7G2rÀ¢væbÖwV–FW2s¢twV–FW2rÀ¢w&ö¦V7G2ÖW–V'&÷rs¢tfVGW&VB&ö¦V7G2rÀ¢w&ö¦V7G2Ö†VFÆ–æRs¢t6öÖ×Væ—F–W2v÷'F‚Æöö²&–v‡Bæ÷rârÀ¢w&ö¦V7G2×7V"s¢t6†÷'FÆ—7BÂæ÷BF—&V7F÷'’(	BF†R&ö¦V7G2’v÷VÆB'&–ærVÆ–f–VB'W–W"FòFöF’ârÀ¢w&ö¦V7G2ÖÆÂs¢uf–WrÆÂ&ö¦V7G2rÀ¢vwV–FW2ÖW–V'&÷rs¢t'W––ærwV–FW2rÀ¢vwV–FW2Ö†VFÆ–æRs¢tWfW'—F†–ær–÷RæVVBFò¶æ÷r&Vf÷&R–÷R'W’ârÀ¢vwV–FW2×7V"s¢uF÷–26ÇW7FW'26÷fW&–ærf÷&W7B6—G’ÂÔÓ$‚Â¥2Õ4U¢ÂvöÆb6öÖ×Væ—F–W2Â&WF—&VÖVçBÂæBÖ÷&RârÀ¢vwV–FW2ÖÆÂs¢tÆÂwV–FW2rÀ¢vwV–FRÖf2s¢tf÷&W7B6—G’rÀ¢vwV–FRÖf2ÖFW62s¢u4e¢7FGW2Â—6ÆæBÆ—f–ærÂvöÆbf–ÆÆÂÔÓ$‚(	BF†R6ö×ÆWFRf÷&W7B6—G’–7GW&RârÀ¢vwV–FRÖÖÓ&‚s¢tÔÓ$‚&öw&ÖÖRrÀ¢vwV–FRÖÖÓ&‚ÖFW62s¢tVÆ–v–&–Æ—G’ÂFW÷6—B&WV—&VÖVçG2Âf÷&W7B6—G’4e¢G&6²ÂæB†÷rFòÇ’ârÀ¢vwV–FR×6W¢s¢t¥2Õ4U¢rÀ¢vwV–FR×6W¢ÖFW62s¢uF†R¦ö†÷"Õ6–æv÷&R7V6–ÂV6öæöÖ–2¦öæRæBv†B—BÖVç2f÷"&÷W'G’fÇVW2ârÀ¢vwV–FRÖvöÆbs¢tvöÆb6öÖ×Væ—F–W2rÀ¢vwV–FRÖvöÆbÖFW62s¢t†÷&—¦öâ†–ÆÇ2Âf÷&W7B6—G’vöÆbÂÆV—7W&Rf&Ò(	BvöÆbÖf6–ær&÷W'F–W26ö×&VBârÀ¢vwV–FR×66†ööÇ2s¢t–çFW&æF–öæÂ66†ööÇ2rÀ¢vwV–FR×66†ööÇ2ÖFW62s¢uv†–6‚F÷vç6†—26—B6Æ÷6W7BFò¦ö†÷%Âw2&W7B–çFW&æF–öæÂ66†ööÇ2ârÀ¢vwV–FR×&WF—&Rs¢u&WF—&VÖVçB–â¤"rÀ¢vwV–FR×&WF—&RÖFW62s¢t6÷7BöbÆ—f–ærÂ†VÇF†6&RÂÆ–fW7G–ÆRÂæBF†R&W7B6öÖ×Væ—F–W2f÷"&WF—&VW2ârÀ¢v'F–6ÆW2ÖW–V'&÷rs¢tÆFW7B'F–6ÆW2rÀ¢v'F–6ÆW2Ö†VFÆ–æRs¢u&V6VçBwV–FW2æBÖ&¶WBæÇ—6—2ârÀ¢v'F–6ÆW2ÖÆÂs¢tÆÂ'F–6ÆW2rÀ¢v&÷WBÖW–V'&÷rs¢t&÷WB6ÒFVRrÀ¢vfö÷FW"Ö&V2s¢t&V2rÀ¢vfö÷FW"ÖwV–FW2s¢twV–FW2rÀ¢væbÖ&÷WBs¢t&÷WB6ÒrÀ ¢òòfö÷FW ¢vfö÷FW"×FvÆ–æRs¢uF†R–æFWVæFVçB&÷W'G’¶æ÷vÆVFvR&6Rf÷"¦ö†÷"&‡'R(	Bf÷&W7B6—G’Â—6¶æF"WFW&’ÂÔÓ$‚Â¥2Õ4U¢ÂæB&W–öæBârÀ¢vfö÷FW"ÖF—7G&–7G2s¢tF—7G&–7G2rÀ¢vfö÷FW"Ö6öçF7Bs¢t6öçF7BrÀ ¢òò'W–W"w2¶æ÷vÆVFvR‡V"†–æFW‚æ‡FÖÂ¢v‡V"ÖW–V'&÷rs¢$%U”U"u2´äõtÄTDtR…T""À¢v‡V"Ö†VFÆ–æRs¢uVæFW'7FæBF†RÖ&¶WB&Vf÷&R–÷R'W’ârÀ¢v‡V"×7V"s¢$W76VçF–ÂwV–FW2g&öÒ6Òw2Gf—6÷'’FW6²(	B6÷fW&–ær¥2Õ4U¢ÂÔÓ$‚Â&V6ö×&—6öç2Â66†ööÇ2ÂæB'W––ær&ö6W72âWfW'’wV–FR—2w&—GFVâf÷"'W–W'2Âæ÷B6VÆÆW'2â"À¢v‡V"Ö&ææW"s¢tU54TåD”Â$TD”är+rwV–FW2WFFVBf÷"##b(	B&W6V&6†VBæBw&—GFVâ'’6ÒFVRrÀ¢v‡V"×f–WrÖÆÂs¢uf–WrÆÂ'W–W"wV–FW2(i"rÀ¢v‡V"Ö§76W¢s¢t¥2Õ4U¢6ö×ÆWFRwV–FS¢v†B—BÖVç2f÷"¦ö†÷"'W–W'2rÀ¢v‡V"ÖÖÓ&‚s¢tÔÓ$‚##b6ö×ÆWFRwV–FS¢VÆ–v–&–Æ—G’Â6÷7G2b†÷rFòÇ’rÀ¢v‡V"Öf2s¢t—2f÷&W7B6—G’v÷'F‚'W––ær–â##còrÀ¢v‡V"×7Vçv’s¢t—27Vçv’6—G’—6¶æF"WFW&’v÷'F‚'W––ær–â##còrÀ¢v‡V"×66†ööÇ2s¢t–çFW&æF–öæÂ66†ööÇ2–â—6¶æF"WFW&’##c¢gVÆÂwV–FRrÀ¢v‡V"Ö6ö×&Rs¢t†÷&—¦öâ†–ÆÇ2g2V6ò&÷Fæ–2g2V7BÆVFæs¢v†–6‚Fò'W“òrÀ¢v‡V"×6g¢s¢$f÷&W7B6—G’4e¢bÔÓ$ƒ¢F†R6ö×ÆWFR'W–W"w2wV–FR"À¢v‡V"×&WF—&Rs¢u&WF—&–ær–â—6¶æF"WFW&“¢vöÆbÂ†VÇF†6&Rbv†BFòW‡V7BrÀ¢v‡V"ÖÆæFVBs¢uv†ò6†÷VÆB'W’ÆæFVB&÷W'G’–â—6¶æF"WFW&“òrÀ¢v‡V"Ó&æFÆ–æ²s¢t'W––æræV"F†R6V6öæBÆ–æ³¢7Vçv’6—G’g2f÷&W7B6—G’rÀ ¢òò'F–6ÆW2‡V"5D¢v'F–6ÆW2Ö7FÖW–V'&÷rs¢$6âwBf–æB–÷W"ç7vW#ò"À¢v'F–6ÆW2Ö7FÖ†VFÆ–æRs¢t6²6ÒF—&V7FÇ’ârÀ¢v'F–6ÆW2Ö7F×7V"s¢t6†÷'Bv†G4ÖW76vR—2f7FW"F†â&VF–ærWfW'—F†–ærâFVÆÂÖR–÷W"W'÷6RÂ'VFvWBÂæBF–ÖVÆ–æR(	B•ÂvÆÂö–çB–÷R–âF†R&–v‡BF—&V7F–öâârÀ¢v'F–6ÆW2Ö7FÖ'Fâs¢t6†Bv—F‚6Òöâv†G4rÀ¢ÒÀ ¢¦ƒ¢°¢òòæ`¢væbÖ†öÖRs¢~K‹¾šRrÀ¢væbÖ¦'Bs¢~ik[[ˆ.XË¢rÀ¢væbÖ—s¢~KéŞijş[›.‹ëîXZÎK‹¾YøârÀ¢væbÖf2s¢~j:îié~Yøî[ˆ"rÀ ¢òò†W&ğ¢v†W&ò×F—FÆRs¢~h*YÊiùNKÙ¾{ÚîK‰®y¨Nšî™zîûÈÎh˜îjiÊÎYËûÈÎkIîh([ˆ.YË®8"rÀ¢v†W&ò×7V"s¢~h‰[ŠîXªZën[ªŞXø®h©^‹XNˆ^YÊKéŞijş[›.‹ëîXZÎK‹¾Yøî8ik[[ˆ.XË®Xø®x›XŠ¾˜y‰èŞXË®j:îié~Yøî[ˆ.h›îX‹Y˜.y¨Nh‹şKª~(	N(	NŠêh*YÊzÛî{ªnX˜Ş[kˆ^jY®K¨nŠz>h˜iÈXŠ[È®8"rÀ ¢òò&öf–ÆR7Æ—@¢w&öf–ÆRÖW–V'&÷rs¢~h*y¨N{ÚîK‰®šî™zârÀ¢w&öf–ÆR×&öÆRs¢~{ÚîK‰®šî™zâ+r$Tâƒ3#"rÀ¢w&öf–ÆRÖFW62s¢~K‰>k:K¨îKéŞijş[›.‹ëîXZÎK‹¾Yøî8ik[[ˆ.XË®Xø®x›XŠ¾˜y‰èŞXË®j:îié~Yøî[ˆ.y¨Nh‹şKª~8.h‰[ŠîXªK›ZënYÊX®X{®Xk>Zé®K˜¾X˜ŞXX^XˆnK¨nŠz>h˜iÈ˜hº8"rÀ¢w&öf–ÆRÖ'Fâ×vs¢uv†G4ˆN{;µ6ÒrÀ¢w&öf–ÆRÖ'FâÖW‡Æ÷&Rs¢~kXşŠxh‹şKªrrÀ ¢òò&÷W@¢v&÷WBÖW–V'&÷rs¢~X[>K¨å6ÒrÀ¢v&÷WBÖ†VFÆ–æRs¢~XXK¨nŠz>™Èk.ûÈÎXhŞ‹h‹şKª~8"rÀ¢v&÷WB×s¢~ZJ~ZI®i[K›ZënYÊiùNKÙ¾‹ùk*ŠûNkˆ^jY®ˆz®[{y¨N™Èk.ûÈÎ[[{.{¸şŠ*¾hê™HK¨nKˆKŠ®šyºî8.h‰y¨Nik[Èşhhy»XøŞ(	N(	NXXK¨nŠz>h*y¨Nyºîy¨NûÉ®Zën[ªŞi
+Î‹ø8˜KÉX[¾ˆ‹ùiŠşh©^‹XNZ)îXÎûÈÎXhŞK‹®h*XË˜XŞY˜.y¨NzKîXË®Y(ÎK»~jÎˆÈ>Y»N8"rÀ¢v&÷WB×"s¢~h‰K‰>k:K¨îik[[ˆ.XË®Xø®KéŞijş[›.‹ëîXZÎK‹¾YøâÇ7G&öæså$ÓKˆ~ˆ{5$ÓKˆsÂ÷7G&öæsây¨Nh‹şKª~ûÈÎk{XZ^K¨nŠz>iÊÎYË[ˆ.YË®XªhûÈÎKº^Xø®ZûššÎiÚ^Š[şK©®iÊÎYËXø®k[~ZInK›ZënYØ~˜.yJy¨N{ÚîK‰®ŠxNX‰8"rÀ¢wv‡’ÖW–V'&÷rs¢~K‹®K¸K˜˜hºh‰rÀ¢wv‡’Ö†VFÆ–æRs¢~iÊÎYËZéîXk^ûÈÎkˆ^i›Yxë8"rÀ¢wv‡’×s¢~h‰K™şX‹nKÙÎŠxnš)Xh^ZëûÈÎk{XZ^Šz>iéiùNKÙ¾h‹şKª~zÙnyZ^(	N(	Nh˜Kº^[Ù>h‰KºÎKªNkXi{nûÈÎh*[èXúşˆ;Ş[{.{¸şK¨nŠz>h‰Zû‹ùKŠ®[ˆ.YË®y¨NyÈ¾k9^8"rÀ¢wv‡’×"s¢~jøşKˆKŠ®hêˆÙ˜;Ş™˜N[ŠnXŠ[È®XˆniéûÈÎˆÎKˆŞK¸^K¸^iŠşKªîx+8.Zh.iéÎiùKŠ®šyºîKˆŞ˜.Yh*y¨Nh8^Xk^ûÈÎh‰KÉ®YÊh*kZ®‹KKˆjÊyÈ¾h‹şŠÎzˆ¾K˜¾X˜ŞY®Šøh*8"rÀ¢w7FB×&ævRs¢~K‰>k:K»~jÎXË®™{BrÀ¢w7FBÖF—7G&–7G2s¢~j[ø>x˜~XË¢rÀ ¢òòÖ&¶WB6æ6†÷@¢vÖ&¶WBÖW–V'&÷rs¢~[ˆ.YË®[ú¾ŠêòrÀ¢vÖ&¶WBÖ†VFÆ–æRs¢~iùNKÙ¾[ˆ.YË®xëXk^KˆŠx8"rÀ¢vÖ&¶WB×7V"s¢~kk^y¹nh‰h˜iÈŞXªx˜~XË®y¨NiÈik[ˆ.YË®Xªh(	N(	N™¨ş[ˆ.YË®XùXÉnhÈ{ºŞi»Nik8"rÀ¢vÖ&¶WBÖ¦'B×F—FÆRs¢~[ˆ.KŠŞ[ø>šyºîK¸ŞiŠşiÈi‰>XZ^YË®y¨N˜hº’rÀ¢vÖ&¶WBÖ¦'BÖW†6W'Bs¢~ZûK¨îš(Nzé~‹è>{J~y¨NK›ZënûÈÎ[ˆ.KŠŞ[ø>˜:Xˆn‹XXŞšyºîK¸ŞiŠş‹ù¾XZ^[ˆ.YË®iÈKëşhÛ~y¨N˜	N[èN8"rÀ¢vÖ&¶WBÖ—×F—FÆRs¢~h‰xiş™X~XË®iÈYËh‹şKª~™Èk.KùŞhÈz‹>Zé¢rÀ¢vÖ&¶WBÖ—ÖW†6W'Bs¢tV6ò&÷Fæ–>8†÷&—¦öâ†–ÆÇ>Xø¤V7BÆVFæ~hÈ{ºŞXù~X‹Zû¾k.h‰xişY»N™{zKîXË®y¨NZën[ªŞXø®˜KÉK«®Z:¾™Ù.yÙ8"rÀ¢vÖ&¶WBÖf2×F—FÆRs¢~x›XŠ¾˜y‰èŞXË®YËKØŞ˜xŞZh©^‹XNjÎ[rÀ¢vÖ&¶WBÖf2ÖW†6W'Bs¢~x›XŠ¾˜y‰èŞXË®‹ª¾K»ŞiKXùK¨nh©^‹XNˆ^YÊj:îié~Yøî[ˆ.KˆîX[nK¹nKéŞijş[›.‹ëîx˜~XË®K˜¾™{Ny¨N˜hºˆ>˜xş8"rÀ ¢òòW‡Æ÷&P¢vW‡Æ÷&RÖW–V'&÷rs¢~hÈx˜~XË®hê.{J"rÀ¢vW‡Æ÷&RÖ†VFÆ–æRs¢~KˆZJ~x˜~XË®ûÈÎKˆzxŞhŠ®xKnKˆŞYÎy¨NK›ZënZé®KØŞ8"rÀ¢vW‡Æ÷&R×7V"s¢~jøşKŠ®x˜~XË®˜;ŞiÈYNˆz®y¨NK»~jÎ8x›x+Y(ÎyIşkK¾ik[Èş8.˜hºh*hIşX[N‹j>y¨Nx˜~XË®ûÈÎh‰[nK‹®h*Šún{¸nŠë.Šz>8"rÀ¢v&VÖ¦'BÖW–V'&÷rs¢~XZ^™zK˜¾˜’rÀ¢v&VÖ¦'B×F—FÆRs¢~ik[[ˆ.XË¢rÀ¢v&VÖ¦'BÖFW62s¢~[ˆ.KŠŞ[ø>yIşkK¾ûÈÎ™Ú‹ùX[>XÚûÈÎhùKé¾i‰>K¨îXZ^YË®y¨NK»~jÎ˜hº8"rÀ¢v&VÖ¦'BÖÆ–æ²s¢~hê.{J.ik[[ˆ.XË¢rÀ¢v&VÖ—ÖW–V'&÷rs¢~j[ø>˜xŞx+’rÀ¢v&VÖ—×F—FÆRs¢~KéŞijş[›.‹ëîXZÎK‹¾YøârÀ¢v&VÖ—ÖFW62s¢tV6ò&÷Fæ–>8†÷&—¦öâ†–ÆÇ>8V7BÆVFæ~(	N(	N˜.YZën[ªŞXø®˜KÉK«®Z:¾y¨NiÈYËh‹şKª~8"rÀ¢v&VÖ—ÖÆ–æ²s¢~hê.{J.KéŞijş[›.‹ëîXZÎK‹¾YøârÀ¢v&VÖf2ÖW–V'&÷rs¢~x›XŠ¾{¸şkXîXË¢rÀ¢v&VÖf2×F—FÆRs¢~j:îié~Yøî[ˆ"rÀ¢v&VÖf2ÖFW62s¢~x›XŠ¾˜y‰èŞXË®ûÈÎKª¾iÈzˆîXªKÉh:ûÈÎYÙhº^xºÎx›y¨Nk[~[)¾yIşkK¾KÙ>š¨Î8"rÀ¢v&VÖf2ÖÆ–æ²s¢~hê.{J.j:îié~Yøî[ˆ"rÀ ¢òò5D¢v7FÖW–V'&÷rs¢~[ÈZx¾Y*Šú"rÀ¢v7FÖ†VFÆ–æRs¢~KˆŞyú^K¸îKÙ^[ÈZx¾ûÉşh¨®h*y¨Nh8^Xk^Y®Šøh‰8"rÀ¢v7F×7V"s¢~KˆiÚzèyúŞy¨Ev†G4khhş[ZIşK¨n(	N(	NyJ˜	N8š(Nzé~ˆÈ>Y»NY(Îi{n™{N{«ş8.h‰KÉ®YÊhêˆÙšyºîK˜¾X˜ŞK‹®h*hÈ~[É^jÚ>zîy¨Nx˜~XË®8"rÀ¢v7FÖ'Fâs¢~Kˆå6ŞYÊ…v†G4Kˆ®KªNkXrÀ  ¢òòæWr†6R¶W—0¢v†W&òÖW–V'&÷rs¢t–æFWVæFVçB&÷W'G’wV–FR+r¦ö†÷"&‡'RrÀ¢v†W&òÖ'FâÖ&V2s¢tW‡Æ÷&R&V2rÀ¢v†W&òÖ'FâÖwV–FW2s¢t'W––ærwV–FW2rÀ¢væbÖ&V2s¢t&V2rÀ¢væb×&ö¦V7G2s¢u&ö¦V7G2rÀ¢væbÖwV–FW2s¢twV–FW2rÀ¢}üß[h‘éì¶»§q«^wÜ	Ë[šÎˆ	Ø\XÛ\ËÛ[Lš[X[^\ÚXKLŒ‹XÛÛ\]KYİZYKš[	Ë\™XNˆ	ÑÙ[™\˜[	ËÜXÜÎˆ	Û[Lš^Z[™ËYİZYIÈKˆÈ]Nˆ	Ò”ËTÑVˆÚ]H›ÚÜ‹TÚ[™Ø\Ü™HÜXÚX[XÛÛ›ÛZXÈ›Û™HXİX[HYX[œÈ›Üˆ›Ü\H^Y\œÉË]WŞšˆ	Ò”ËTÑV»ï&¹§å9¥¬9ânyb*ùîãù­c¹c.¹kîy¢/ù.©ù.l9k­¹¡#ùdlùç`9.à9.b	Ëİ[[X\Nˆ	ÕÚXÚ›Û™\È\™H[˜ÛYYHMIH›][˜ÛÛYH^›ÜˆÛ›İÛYÙHÛÜšÙ\œËÚXÚ›ÚÜˆ\™X\È™[™Yš][Üİœ›ÛHÛÜœÜ˜]H™[ØØ][ÛœË[™Ú]\ˆHÜÜ[š]H\È[™XYHšXÙY[‹‰Ëİ[[X\WŞšˆ	ù­­yæå¹c.¹gçøà yçéz+á¹méy/g: !LMIyîçù. 9¢`9o¥ùê#¸à ydê¹.¦ù§å9/fùg,9c.¹.ã¹/ y.&º/àyaiy.+ycåùæâ¹§ 9i&»ï#9.éycâ¹§.¹/&¹¦+ùd)¹mìº(ªùn ¹g.¹k¦¹.íøà ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÚÎ‹ËÚ[XYÙ\Ë[œÜ\Ú˜ÛÛKÜİËLMLNMŒÌMÌŒYMM˜ÍY˜˜YYÜON	ÏN	˜]]ÏY›Ü›X]	™š]XÜ›Ü	Ë[šÎˆ	Ø\XÛ\ËÚœË\Ù^‹Z›ÚÜ‹\Ú[™Ø\Ü™K\ÜXÚX[YXÛÛ›ÛZXË^›Û™K\›Ü\KYİZYKš[	Ë\™XNˆ	ÑÙ[™\˜[	ËÜXÜÎˆ	ÚœË\Ù^‹^Z[™ËYİZYIÈKˆËÈ™]È^Y\‹\›Ùš[H	ˆ›Ú™Xİ\XÛ\ÂˆÈ]Nˆ	Ô‰‘ˆš[˜Ù\ÜÈÛİ™H\ÙHÎˆÚÈÚİ[^H[™ÚÈÚİ[›İ	Ë]WŞšˆ	Ô‰‘¹è©ù¨`¹fëyak9..ù®o¹ë+ù§'ûï&º, z+éy.l;ï#:, y.#z+éy.l	Ëİ[[X\Nˆ	Ğ[ˆÛ™\İœ™XZÙİÛˆÙˆÚÈˆİÛ—	ÜÈ[Üİ™XÛÙÛš\ØX›HØ]\™œ›ÛYÚ\š\ÙHİZ]È8 %ÛÛ[]]\œË•È[™\İÜœËœ™YZÛÙYZÙ\œÈ8 %[™ÚÈÚİ[ÛÚÈ[Ù]Ú\™K‰Ëİ[[X\WŞšˆ	ú+æ¹k§º)èù§¤9¥¬9llyn ¹c.¹§ 9çéyd#y®ê9¬-:jæ9l`º` ¹d"9dê¹ìnù.l9k­¸ %8 %:`&¹bé9¥ãøà T•ù¢¥z-a: !xà y¬.9.ayg,9idy.l9k­¸ %8 %9.éycâº, yn¥9cé¹/g:  ú&dxà ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÚ˜‹]İÛ‹Ú˜‹\›™‹[šYÚšœÉË[šÎˆ	Ø\XÛ\ËÜ™‹\š[˜Ù\ÜËXÛİ™K\\ÙKLËYÛÛÙX^Kš[	Ë\™XNˆ	ÒˆİÛ‰ËÜXÜÎˆ	Ú˜‹]İÛ‹^Z[™ËYİZYIÈKˆÈ]Nˆ	Ôİ[[Y\ˆİZ]\Èˆ\ÈHX[RÙ^H[š]HšYÚ[™\İY[ÉË]WŞšˆ	Ôİ[[Y\ˆİZ]\ù¥¬9ll{ï&¹cã:d©yc&ycey/cy¦+ùd)¹¦+ù«hùèk¹æ¡9¢¥z-a;ï'ÉËİ[[X\Nˆ	Ñœ™YZÛX[ZÙ^HİZ]\È[ˆˆİÛˆšXÙY]MK^YX\‹[Û[™ÛÜİ8 %ÚÈHX[ZÙ^H›Ü›X]İZ]ËH™[[İ˜]YŞH™Z[™][™Ú]È™\šYH™Y›Ü™H^Z[™Ë‰Ëİ[[X\WŞšˆ	ù¥¬9llyn ¹c.¹.éLMynm9bcyg,9.íùaî¹e+¹æ¡9¬.9.ayg,9idycã:d©yc&yieù¢/ø %8 %9cã:d©yc&y¨/9l`:` ¹d":, xà z ã9d#¹æ¡9éçúaäyëe¹åi{ï#9.éycâº-+y.l9bczhnù¨.9k§¹æ¡9.¢úhnxà ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÚ˜‹]İÛ‹Ú˜‹X˜^KšœÉË[šÎˆ	Ø\XÛ\ËÜİ[[Y\‹\İZ]\ËZ˜‹YX[ZÙ^KZ[™\İY[š[	Ë\™XNˆ	ÒˆİÛ‰ËÜXÜÎˆ	Ú˜‹]İÛ‹^Z[™ËYİZYIÈKˆÈ]Nˆ	Ö[İHÚİ[Û›H^H[™Y[ˆ\ÚØ[™\ˆ]\šHYˆ[İH\™HÛ™HÙˆ\ÙH\\ÈÙˆ^Y\‰Ë]WŞšˆ	ùcê¹§"z/æM9ìnù.l9k­¹¢cz` ¹d"9g*9/§y¥«ùnlº/¯¹ak9..ùgãº-+y.l9§"yg,9¢/ù.©ÉËİ[[X\Nˆ	ÕH›İ\ˆ^Y\ˆ›Ùš[\È]Ù[Z[™[H™[™Yš]œ›ÛH[™Y[ˆ\ÚØ[™\ˆ]\šH8 %[™H™Y›YÜÈ]İYÙÙ\İHYÚ\š\ÙHÜˆY™™\™[\™XHXZÙ\È[Ü™HÙ[œÙK‰Ëİ[[X\WŞšˆ	ùç'ù«hú ïy.ã¹/§y¥«ùnlº/¯¹ak9..ùgã¹§"yg,9¢/ù.©ù.+ycåùæâ¹æ¡9fæùìnù.l9k­»ï#9.éycâ¹nîº+«º`"y¢êzjæ9l`¹¢%¹am¹.å¹g,9c.¹æ¡:h¡:+i¹/èycíøà ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÙXÛËX›İ[šXËÙXÛÌKšœÉË[šÎˆ	Ø\XÛ\ËİÚË\Úİ[X^K[[™YZ\ÚØ[™\‹\]\šKš[	Ë\™XNˆ	Ò\ÚØ[™\ˆ]\šIËÜXÜÎˆ	Ú\ÚØ[™\‹\]\šK^Z[™ËYİZYIÈKˆÈ]Nˆ	Ôš]™\šXHØ\™[ˆØ]Ø\šNˆ\ÈÔÓ	ÜÈ™]ÈİÛœÚ\ÛÜ^Z[™ÈX\›OÉË]WŞšˆ	Ôš]™\šXHØ\™[ˆØ]Ø\š{ï&’ÔÓ9¥¬:eaù¦+ùd)¹`/9o¥ù¥êy§'ùaiy¢bûï'ÉËİ[[X\Nˆ	Ğ[ˆÛ™\İÛÚÈ]Ú]\ˆ^Z[™ÈX\›H[ˆ˜[™\ˆØ]Ø\šHXZÙ\ÈÙ[œÙKÚ]ÔÓ	ÜÈ˜XÚÈ™XÛÜ™İYÙÙ\İË[™ÚÈ\È›Ú™Xİ\ÈXİX[H›Ü‹‰Ëİ[[X\WŞšˆ	ú+æ¹k§º+á9/,9g*˜[™\ˆØ]Ø\šy¥êy§'ù.l9aiy¦+ùd)¹d"9ä!¸à RÔÓ:/áùo :+¬9oez+í9¦#¹.¡¹.à9.b;ï#9.éycâº+ézhnyæë¹ç'ù«hú` ¹d"9dê¹ìnù.l9k­¸à ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÙXÛËX›İ[šXËÙYXÚ]KšœÉË[šÎˆ	Ø\XÛ\ËÜš]™\šXKYØ\™[‹]Ø]Ø\šKZÜÛ]ÛÜX^Z[™Ëš[	Ë\™XNˆ	Ò\ÚØ[™\ˆ]\šIËÜXÜÎˆ	Ú\ÚØ[™\‹\]\šK^Z[™ËYİZYIÈKˆÈ]Nˆ	ÒÜš^›Ûˆ[È™\Ø[HœÈ™]È][˜ÚŒˆÚXÚXZÙ\È[Ü™HÙ[œÙOÉË]WŞšˆ	ÒÜš^›Ûˆ[ù.£9¢bù¢/ù.#¹¥¬9ææŒ»ï&¹dê¹.*¹¦í9b$¹ë¥ûï'ÉËİ[[X\Nˆ	ĞÛÛ\\š[™È™\Ø[HÛY\È[ˆÜš^›Ûˆ[ÈYØZ[œİ™]È][˜Ú\È[ˆ\ÚØ[™\ˆ]\šH8 %šXÚ[™ËÛÛ™][Û‹[Y[[™K[™ÚXÚ^Y\ˆ›Ùš[HİZ]ÈXXÚÜ[Û‹‰Ëİ[[X\WŞšˆ	ùkîy«åÜš^›Ûˆ[ù.£9¢bù¢/ù.#¹/§y¥«ùnlº/¯¹ak9..ùgã¹¥¬9ææ8 %8 %9.íù¨/8à yâ­¹a­xà y¥íºeí9î¯ûï#9.éycâ¹dê¹ìnù.l9k­º` ¹d"9dê¹éãz`"y¢êxà ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÚÜš^›Û‹Z[ËÚXÛX‹šœÉË[šÎˆ	Ø\XÛ\ËÚÜš^›Û‹Z[Ë\™\Ø[K]œË[™]Ë[][˜ÚLŒ‹š[	Ë\™XNˆ	Ò\ÚØ[™\ˆ]\šIËÜXÜÎˆ	Ú\ÚØ[™\‹\]\šK^Z[™ËYİZYIÈKˆÈ]Nˆ	ÔÚ[™Ø\Ü™X[ˆ^Z[™È›Ü\H[ˆ›ÚÜˆ˜ZNˆÛÛ\]HİZYHŒ‰Ë]WŞšˆ	ù¥¬9b¨9ghy.®¹g*9§å9/fù¥¬9llyïk¹.&»ï&ŒŒ¹nm9k£9¥m9£!ùceÉËİ[[X\Nˆ	ÓİÛ™\œÚ\[\ËP”Ñ[\XØ][ÛœËØ[ˆ[YÚXš[]K™\İ\™X\Ë[™ÚXÚ^Y\ˆ›Ùš[\È^Z[™È[ˆˆÙ[Z[™[HİZ]È›ÜˆÚ[™Ø\Ü™X[œÈ[ˆŒ‹‰Ëİ[[X\WŞšˆ	ùïk¹.&º)á9b&xà PP”Ñ9olydãxà z--ù«/º-a9¨/8à y§ 9/lùg,9c.»ï#9.éycâ¹¥¬9b¨9ghy.®¹g*9¥¬9llyïk¹.&¹ç'ù«hú` ¹d"9dê¹ìnù.l9k­¸à ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÚÎ‹ËÚ[XYÙ\Ë[œÜ\Ú˜ÛÛKÜİËLMLMŒLLÌÎ‹LÙNLÎYYÜON	ÏN	˜]]ÏY›Ü›X]	™š]XÜ›Ü	Ë[šÎˆ	Ø\XÛ\ËÜÚ[™Ø\Ü™X[‹X^Z[™Ë\›Ü\KZ˜‹YİZYKš[	Ë\™XNˆ	ÑÙ[™\˜[	ËÜXÜÎˆ	Ø^Z[™ËYİZYIÈKˆÈ]Nˆ	ÓX[^\ÚX[ˆÛÜšÚ[™È[ˆÚ[™Ø\Ü™NˆÚİ[[İH^H[ˆˆİÛˆÜˆ\ÚØ[™\ˆ]\šOÉË]WŞšˆ	ùg*9¥¬9b¨9ghyméy/g9æ¡:jk9§iz)où.¦¹.®»ï&º+éy.l9¥¬9llyn ¹c.º/æ9¦+ù/§y¥«ùnlº/¯¹ak9..ùgã»ï'ÉËİ[[X\Nˆ	ĞHÛX\ˆXÚ\Ú[Ûˆœ˜[Y]ÛÜšÈ›ÜˆX[^\ÚX[œÈX\›š[™È[ˆÑÑ8 %ÛÛ[]]\ˆ™YYË˜[Z[HY™\İ[K[™\İY[\œÜÙK[™İÈ[İ\ˆÛÜšÈ]\›ˆ]\›Z[™\ÈHšYÚ\™XK‰Ëİ[[X\WŞšˆ	ù..º-f¹cå¹¥¬9n yæ¡:jk9§iz)où.¦¹.®¹£ä9/¦ù®!y¦l9a¬ùëe¹¨a¹§­¸ %8 %:`&¹bé:g 9¬`¸à yk­¹n«yå'ù­.øà y¢¥z-a9æë¹æ¡;ï#9.éycâ¹méy/g9ª(yo#ùi ¹/eya¬ùk¦¹«hùèk¹æ¡9ïk¹.&¹g,9c.¸à ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÚÎ‹ËÚ[XYÙ\Ë[œÜ\Ú˜ÛÛKÜİËLMMNNML‹YLØ™™™LØÌÍYÜON	ÏN	˜]]ÏY›Ü›X]	™š]XÜ›Ü	Ë[šÎˆ	Ø\XÛ\ËÛX[^\ÚX[‹]ÛÜšÚ[™Ë\Ú[™Ø\Ü™KX^KZ˜‹]İÛ‹[Ü‹Z\ÚØ[™\‹\]\šKš[	Ë\™XNˆ	ÑÙ[™\˜[	ËÜXÜÎˆ	Ø^Z[™ËYİZYIÈKˆÈ]Nˆ	Ô™]\™YW	ÜÈÚXÚÛ\İ›Üˆ^Z[™È›Ü\H[ˆ›ÚÜˆ˜ZHŒ‰Ë]WŞšˆ	ÌŒ¹nm:` 9/$y.®¹hêùg*9§å9/fù¥¬9llyïk¹.&¹®!yceIËİ[[X\Nˆ	Õš\ØHÜ[ÛœËX[Ø\™HXØÙ\ÜË\™XHÙ[Xİ[Û‹[™YœÈYÚ\š\ÙK[™Hš[˜[˜ÚX[İXİ\™H™]\™Y\È™YYÈÙ]šYÚ™Y›Ü™H^Z[™È[ˆ‹‰Ëİ[[X\WŞšˆ	ùëoº+àz`"zhnxà yc.ùå¥ù§hy.í¸à yg,9c.º`"y¢êxà y§"yg,9.#ºjæ9l`¹kîy«å;ï#9.éycâº` 9/$y.®¹hêùg*9¥¬9llyïk¹.&¹bczhnùä!¹®!yæ¡:-(¹b¨y§­¹§¡8à ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÚÎ‹ËÚ[XYÙ\Ë[œÜ\Ú˜ÛÛKÜİËLMMNLÌLËMNLÍYÜON	ÏN	˜]]ÏY›Ü›X]	™š]XÜ›Ü	Ë[šÎˆ	Ø\XÛ\ËÜ™]\™YKXÚXÚÛ\İX^Z[™ËZ›ÚÜ‹\›Ü\Kš[	Ë\™XNˆ	ÑÙ[™\˜[	ËÜXÜÎˆ	Ü™]\™[Y[^Z[™ËYİZYK[Lš	ÈKˆÈ]Nˆ	ÒˆÛÛ™ÈœÈ[™YˆÚXÚ\ÈH™]\ˆ[™\İY[[ˆŒÉË]WŞšˆ	ù¥¬9llyak9käİœù§"yg,9¢/ù.©ûï&ŒŒ¹nm9dê¹.*¹¦+ù¦í9ioyæ¡9¢¥z-a;ï'ÉËİ[[X\Nˆ	Ğ[ˆÛ™\İÛÛ\\š\ÛÛˆÙˆZY[Ø\][\™XÚX][Û‹\]ZY]K[˜[›Ùš[\Ë[™ÚXÚ[™\İY[İXİ\™HİZ]ÈÚXÚ^Y\ˆ[ˆHˆX\šÙ]‰Ëİ[[X\WŞšˆ	ú+æ¹k§¹kîy«å9¥-¹æâ¹ã¡øà z-a9§+9h§¹`/8à y­`ybª9 )øà yéçù¢-ùìnùg¢ûï#9.éycâ¹dê¹éãy¢¥z-a9îäù§¡:` ¹d"9¥¬9llyn ¹g.¹æ¡9dê¹ìnù.l9k­¸à ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÚÎ‹ËÚ[XYÙ\Ë[œÜ\Ú˜ÛÛKÜİËLMMŒNLËXÙMÍ™˜MÜON	ÏN	˜]]ÏY›Ü›X]	™š]XÜ›Ü	Ë[šÎˆ	Ø\XÛ\ËÚ˜‹XÛÛ™Ë]œË[[™YZ[™\İY[LŒ‹š[	Ë\™XNˆ	ÑÙ[™\˜[	ËÜXÜÎˆ	Ø^Z[™ËYİZYIÈKˆÈ]Nˆ	Ñ›Ü™ZYÛˆ^Y\—	ÜÈİZYHÈ›ÚÜˆ›Ü\Nˆ[\Ë™\İšXİ[ÛœÈ[™™\İ\™X\ÈŒ‰Ë]WŞšˆ	ùi%¹fïy.®¹§å9/fùïk¹.&¹£!ùceûï&º)á9k¦¸à zfd9b-¹.#¹§ 9/lùg,9c.ŒŒ‰Ëİ[[X\Nˆ	Ñ]™\][™ÈH›Ü™ZYÛˆ^Y\ˆ™YYÈÈÛ›İÈ8 %Z[š[][HšXÙH™\ÚÛË[™Y™\İšXİ[ÛœËØ[ˆİXİ\™K”Õ[™H™\İ\™X\È›ÜˆY™™\™[^Y\ˆ˜][Û˜[]Y\Ë‰Ëİ[[X\WŞšˆ	ùi%¹fïy.l9k­ºhnùçéx %8 %9§ 9/c¹.íù¨/:eê9©æøà y§"yg,9¢/ù.©úfd9b-¸à z--ù«/¹îäù§¡8à T”Õ;ï#9.éycâº` ¹d"9.#yd#9fïyìcy.l9k­¹æ¡9§ 9/lùg,9c.¸à ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÚÎ‹ËÚ[XYÙ\Ë[œÜ\Ú˜ÛÛKÜİËLMŒÌLŒLŒËNYMLMYOÜON	ÏN	˜]]ÏY›Ü›X]	™š]XÜ›Ü	Ë[šÎˆ	Ø\XÛ\ËÙ›Ü™ZYÛ‹X^Y\‹YİZYKZ›ÚÜ‹\›Ü\Kš[	Ë\™XNˆ	ÑÙ[™\˜[	ËÜXÜÎˆ	Ø^Z[™ËYİZYIÈKˆÈ]Nˆ	Ğ˜[™\ˆØ]Ø\šNˆ\ÚØ[™\ˆ]\šW	ÜÈ™^ËPXÜ™HİÛœÚ\	Ë]WŞšˆ	Ğ˜[™\ˆØ]Ø\š{ï&¹/§y¥«ùnlº/¯¹ak9..ùgã¹."ù. 9.*ŒÌ:"ìy.ªy¥¬:eaÉËİ[[X\Nˆ	ĞHËXXÜ™H›Ú[Y]™[ÜY[HÚ^XZ›Üˆ]™[Ü\œÈ\ÈZÚ[™ÈÚ\H[ˆ[X[ˆØ]Ø\šH8 %\™W	ÜÈHØØ[KH›ØYXØÙ\ÜÈİÜK[™Ú]LË
+Èİ\œ›İ[™[™È[š]ÈYX[ˆ›Üˆ^Y\œË‰Ëİ[[X\WŞšˆ	ùakyi)ùcäyleyeaº e9d"9o 9cäyæ¡Ì:"ìy.ªy¥¬:eaù«hùg*[X[ˆØ]Ø\šy¢$9oh¸ %8 %:)á9ª(xà z`dú-ëúacyieûï#9.éycâ¹dj:/®LLÌ
+ùcey/cykîy.l9k­¹¡#ùdlùç`9.à9.b8à ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËİØ]Ø\šKXY\šX[[X\šœÉË[šÎˆ	Ø\XÛ\ËØ˜[™\‹]Ø]Ø\šKY]\™KY]™[ÜY[Z\ÚØ[™\‹\]\šKš[	Ë\™XNˆ	Ò\ÚØ[™\ˆ]\šIËÜXÜÎˆ	Ú\ÚØ[™\‹\]\šK^Z[™ËYİZYIÈKˆËÈİ[Ø^HÚ]H\ÚØ[™\ˆ]\šBˆÈ]Nˆ	Ò\Èİ[Ø^HÚ]H\ÚØ[™\ˆ]\šHÛÜ^Z[™È[ˆŒÉË]WŞšˆ	ÌŒ¹nm9/§y¥«ùnlº/¯¹ak9..ùgãºf,ùabygã¹¦+ùd)¹`/9o¥ú-+y.l;ï'ÉËİ[[X\Nˆ	Ğ[ˆÛ™\İ^Y\—	ÜÈİZYHÈİ[Ø^HÚ]H8 %‹XÜ™\Ë“LÌˆÑ‹Z[SİÛ‹SÜ\˜]H[Ù[ÙXÛÛ™[šÈXØÙ\ÜË[™ÚÈ\ÈİÛœÚ\Ù[Z[™[HİZ]Ë‰Ëİ[[X\WŞšˆ	úf,ùabygãº+æ¹k§¹.l9k­¹£!ùceø %8 %Œ:"ìy.ªxà T“LÌ9.¯ÑÑ¸à PZ[SİÛ‹SÜ\˜]yª(yo#øà yë+9.£:`&º`dùaiycèûï#9.éycâº+ézeaùc.¹ç'ù«hú` ¹d"9dê¹ìnù.l9k­¸à ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÜİ[Ø^KZ\ÚØ[™\‹Üİ[Ø^KZ\ÚØ[™\‹Y›Û™KšœÉË[šÎˆ	Ø\XÛ\ËÚ\Ë\İ[Ø^KXÚ]KZ\ÚØ[™\‹\]\šK]ÛÜX^Z[™ËLŒ‹š[	Ë\™XNˆ	Ò\ÚØ[™\ˆ]\šIËÜXÜÎˆ	Ú\ÚØ[™\‹\]\šK^Z[™ËYİZYIÈKˆÈ]Nˆ	Ôİ[Ø^HÚ]HœÈÜš^›Ûˆ[ÈœÈXÛÈ›İ[šXÎˆÚXÚÚİ[[İH^OÉË]WŞšˆ	úf,ùabygãœÈÜš^›Ûˆ[ÈœÈXÛÈ›İ[šXûï&º+éz`"ydê¹.*»ï'ÉËİ[[X\Nˆ	Ñ\™XİÛÛ\\š\ÛÛˆÙˆ™YHXZ›Üˆ\ÚØ[™\ˆ]\šHİÛœÚ\È8 %[\™KØÚÛÛË]™[Ü\ˆ[Ù[X]\š]K[™ÚXÚ^Y\ˆ›Ùš[Hš]ÈXXÚ‰Ëİ[[X\WŞšˆ	ùæí9£©ykîy«å9/§y¥«ùnlº/¯¹ak9..ùgã¹."yi)ù..ú) zeaùc.¸ %8 %9g,9idxà yki¹¨(xà ycäyleyea¹ª(yo#øà y¢$9á§ùn©»ï#9.éycâ¹dê¹ìnù.l9k­º` ¹d"9dê¹.*¸à ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÜİ[Ø^KZ\ÚØ[™\‹Üİ[Ø^K]İÛ‹šœÉË[šÎˆ	Ø\XÛ\ËÜİ[Ø^KXÚ]K]œËZÜš^›Û‹Z[Ë]œËYXÛËX›İ[šXËš[	Ë\™XNˆ	Ò\ÚØ[™\ˆ]\šIËÜXÜÎˆ	Ú\ÚØ[™\‹\]\šK^Z[™ËYİZYIÈKˆÈ]Nˆ	ÔØÚÛÛÈ[ˆİ[Ø^HÚ]H\ÚØ[™\ˆ]\šNˆ[İZYH›Üˆ˜[Z[Y\ÈŒ‰Ë]WŞšˆ	ù/§y¥«ùnlº/¯¹ak9..ùgãºf,ùabygã¹ki¹¨({ï&ŒŒ¹nm9k­¹n«yk£9¥m9£!ùceÉËİ[[X\Nˆ	Ñ]™\HØÚÛÛ[œÚYHİ[Ø^HÚ]H8 %İ[Ø^H[\›˜][Û˜[ØÚÛÛÒ’ÊÊHÚXZ˜Z™YZİ\ÙH^\ØÚÛÛˆÛÙ[™ÈØÚÛÛİÚ[HØÚÛÛ\]Y\İšX[ˆ[™[Ü™K‰Ëİ[[X\WŞšˆ	úf,ùabygã¹a¡y«ãù. 9¢`9ki¹¨(x %8 %İ[Ø^yfïzfayki¹¨(xà TÒ’ÊÊHÚXZ˜Z8à U™YZİ\Ùyno9a/ùfëxà M¹ï%¹ê"ùki¹¨(xà y®.9¬ìùki¹¨(xà zjk9§+ùëbxà ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÙXÛËX›İ[šXËÙYXÚ]KšœÉË[šÎˆ	Ø\XÛ\ËÜØÚÛÛË\İ[Ø^KXÚ]KZ\ÚØ[™\‹\]\šKY˜[Z[Y\Ëš[	Ë\™XNˆ	Ò\ÚØ[™\ˆ]\šIËÜXÜÎˆ	Ú\ÚØ[™\‹\]\šK^Z[™ËYİZYIÈKˆÈ]Nˆ	Ôİ[Ø^HÚ]H\ÚØ[™\ˆ]\šNˆH‹PXÜ™HİÛœÚ\^Z[™Y	Ë]WŞšˆ	ù/§y¥«ùnlº/¯¹ak9..ùgãºf,ùabygã»ï&ŒŒ:"ìy.ªzeaùc.¹aj:)èù§¤	Ëİ[[X\Nˆ	ÕH˜XİX[İ™\šY]ÈÙˆİ[Ø^HÚ]H8 %Ú^™KÑ‹š]™H[\œË“ÓÈ[Ù[ÙXİ\š]HÙ]\[™Ú]]YX[œÈÈ^HÚ][ˆ[ˆ[YÜ˜]YİÛœÚ\‰Ëİ[[X\WŞšˆ	úf,ùabygã¹.¢ùk§¹© º)â8 %8 %:)á9ª(xà QÑ¸à y.¥9i)ù¥+ù§ìxà P“Óùª(yo#øà y/çyk¢zacyïk»ï#9.éycâ¹g*9îï9d":eaùc.¹ïk¹.&¹æ¡9¡#ù.bxà ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÜİ[Ø^KZ\ÚØ[™\‹Üİ[Ø^KZ\ÚØ[™\‹XY\šX[šœÉË[šÎˆ	Ø\XÛ\ËÜİ[Ø^KXÚ]KZ\ÚØ[™\‹\]\šK]İÛœÚ\Y^Z[™Yš[	Ë\™XNˆ	Ò\ÚØ[™\ˆ]\šIËÜXÜÎˆ	Ú\ÚØ[™\‹\]\šIÈKˆÈ]Nˆ	ÕÚHİ[Ø^HÚ]H\ÚØ[™\ˆ]\šH\ÈÛ™HÙˆX[^\ÚXW	ÜÈÜ™Y[™\İİÛœÚ\ÉË]WŞšˆ	ù..¹/ezf,ùabygã¹¦+újk9§iz)où.¦¹§ 9îïú"l¹æ¡:eaùc.¹.bù. 	Ëİ[[X\Nˆ	Ó™]™\›ÈHŒLNNUÚÛÛ\‹LÍ™Y\ËLX[™Ü›İ™\ËÜ™Y[”‘H][[HØÚÛÛ8 %H™X[İ\İZ[˜Xš[]H]H™Z[™İ[Ø^HÚ]K‰Ëİ[[X\WŞšˆ	ÌŒL9nm9aà:fí¹æë¹¨!øà MNNUÚ9i*ºf,ú ïxà MLË9.!ù¨íy¨$xà LL9.!ù¨íyî¨¹¨$y§¥øà QÜ™Y[”‘yæozaäyki¹¨(x %8 %:f,ùabygã¹æ¡9ç'ùk§¹cëù£ yîëycäyley¥l9£k¸à ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÜİ[Ø^KZ\ÚØ[™\‹Üİ[Ø^KZ\ÚØ[™\‹]Ø]\™œ›ÛšœÉË[šÎˆ	Ø\XÛ\ËÜİ[Ø^KXÚ]KZ\ÚØ[™\‹\]\šKYÜ™Y[™\İ]İÛœÚ\š[	Ë\™XNˆ	Ò\ÚØ[™\ˆ]\šIËÜXÜÎˆ	Ú\ÚØ[™\‹\]\šIÈKˆÈ]Nˆ	Ôİ[Ø^HÚ]H\ÚØ[™\ˆ]\šH›Üˆ™]\™Y\ÎˆY™\İ[KÙ[™\ÜÈ[™SL’	Ë]WŞšˆ	ú` 9/$y.®¹hêùæ¡:f,ùabygã»ï&¹å'ù­.ù¥®yo#øà y`iyn­ù.#“SL’	Ëİ[[X\Nˆ	ÔÙXİ\š]KØ[ØXš[]KÙ[™\ÜË˜]\˜[[š\›Û›Y[[™X[Ø\™HXØÙ\ÜÈÛ™\İH\ÜÙ\ÜÙY›Üˆ™]\™Y\È]˜[X][™Èİ[Ø^HÚ]H\ÈH™]\™[Y[\İ[˜][Û‹‰Ëİ[[X\WŞšˆ	ú+æ¹k§º+á9/,:` 9/$y.®¹hêùæ¡9k¢y/çxà y«iz(c9ã«ùh øà y`iyn­ú+¯¹¥¯xà z!ê¹á-¹ã«ùh ùcâ¹c.ùå¥ù§hy.í¸ %8 %9¦+ùd)º` ¹d"9/g9..º` 9/$yæë¹æ¡9g,8à ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÜİ[Ø^KZ\ÚØ[™\‹Üİ[Ø^KZ\ÚØ[™\‹]Ø]\™œ›ÛšœÉË[šÎˆ	Ø\XÛ\ËÜİ[Ø^KXÚ]KZ\ÚØ[™\‹\]\šK\™]\™Y\ËYİZYKš[	Ë\™XNˆ	Ò\ÚØ[™\ˆ]\šIËÜXÜÎˆ	Ú\ÚØ[™\‹\]\šK™]\™[Y[[Lš	ÈKˆÈ]Nˆ	ÔÚYÛ˜]\™HÛYH]İ[Ø^HÚ]H\ÚØ[™\ˆ]\šNˆÚ]^Y\œÈ™YYÈÛ›İÉË]WŞšˆ	úf,ùabygã”ÚYÛ˜]\™HÛY{ï&¹.l9k­ºhnùçéIËİ[[X\Nˆ	ÕÚ]ÚYÛ˜]\™HÛYH\ËÚ]HÚYÛ˜]\™HÛYH™]Ø\™È›Û[İ[ÛˆYX[œË[™HÙ^H]Y\İ[ÛœÈÈ\ÚÈ™Y›Ü™HÛÛ[Z][™ÈÈH\˜Ú\ÙK‰Ëİ[[X\WŞšˆ	ÔÚYÛ˜]\™HÛYy¦+ù.à9.b8à TÚYÛ˜]\™HÛYH™]Ø\™ù/&9 è9¡#ùdlùç`9.à9.b;ï#9.éycâ¹¢oú+îº-+y.l9bczhnúeë¹æ¡9alúe+ºeëºh¦8à ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÜİ[Ø^KZ\ÚØ[™\‹Üİ[Ø^KXšYËX›Ş[Ù™šXÙKšœÉË[šÎˆ	Ø\XÛ\ËÜÚYÛ˜]\™KZÛYK\İ[Ø^KXÚ]KZ\ÚØ[™\‹\]\šKš[	Ë\™XNˆ	Ò\ÚØ[™\ˆ]\šIËÜXÜÎˆ	Ú\ÚØ[™\‹\]\šK^Z[™ËYİZYIÈKˆÈ]Nˆ	Ôİ[Ø^HÚ]H\ÚØ[™\ˆ]\šH[™H”ËTÑVˆÚ][™\İÜœÈ™YYÈÛ›İÉË]WŞšˆ	úf,ùabygã¹.#’”ËTÑV»ï&¹¢¥z-a: !zhnùçéIËİ[[X\Nˆ	ÒİÈH›ÚÜ‹TÚ[™Ø\Ü™HÜXÚX[XÛÛ›ÛZXÈ›Û™HY™™XİÈİ[Ø^HÚ]H8 %ÛÛ[Y\˜ÚX[[X[™™\ÚY[X[Ü[İ™\‹[™HÛ™\İÛ™Ë]\›H[™\İY[Ø\ÙK‰Ëİ[[X\WŞšˆ	ù§å9¥¬9ânyb*ùîãù­c¹c.¹i ¹/eyolydãzf,ùabygã¸ %8 %9ea¹.&ºg 9¬`¸à y/cùk¡y®¨¹aî¹¥b9n¥;ï#9.éycâº+æ¹k§¹æ¡:eoù§'ù¢¥z-a9bcy¦køà ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÜİ[Ø^KZ\ÚØ[™\‹Üİ[Ø^KZ\ÚØ[™\‹XY\šX[šœÉË[šÎˆ	Ø\XÛ\ËÜİ[Ø^KXÚ]KZ\ÚØ[™\‹\]\šKZœË\Ù^‹Z[™\İÜœËš[	Ë\™XNˆ	Ò\ÚØ[™\ˆ]\šIËÜXÜÎˆ	Ú\ÚØ[™\‹\]\šKœË\Ù^‰ÈKˆÈ]Nˆ	Ğ^Z[™È™X\ˆHÙXÛÛ™[šÎˆİ[Ø^HÚ]HœÈ›Ü™\İÚ]IË]WŞšˆ	ùë+9.£:`&º`dúfa:/äyïk¹.&»ï&ºf,ùabygãœù¨ë¹§¥ùgã¹n ‰Ëİ[[X\Nˆ	ÕÛÈXZ›Üˆ]™[ÜY[È™X\ˆX\ÈÛÛ\\™Y\™XİH8 %Y™\İ[K[\™KØÚÛÛËÑ–ˆ\ÚYÛ˜][Û‹ÛÛ[][š]HX]\š]H[™ÚXÚ^Y\ˆ›Ùš[Hš]ÈXXÚ‰Ëİ[[X\WŞšˆ	úgh:/äUX\ùæ¡9.)9i)ùcäyleyæí9£©ykîy«å8 %8 %9å'ù­.ù¥®yo#øà yg,9idxà yki¹¨(xà TÑ–º-a9¨/8à yé/¹c.¹¢$9á§ùn©»ï#9.éycâ¹dê¹ìnù.l9k­º` ¹d"9dê¹.*¸à ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÜİ[Ø^KZ\ÚØ[™\‹Üİ[Ø^K\ÙXÛÛ™[[šËšœÉË[šÎˆ	Ø\XÛ\ËÜÙXÛÛ™[[šË\İ[Ø^KXÚ]K]œËY›Ü™\İXÚ]Kš[	Ë\™XNˆ	Ò\ÚØ[™\ˆ]\šIËÜXÜÎˆ	Ú\ÚØ[™\‹\]\šK›Ü™\İXÚ]K^Z[™ËYİZYIÈKˆÈ]Nˆ	Ôİ[Ø^H[\›˜][Û˜[ØÚÛÛ\ÚØ[™\ˆ]\šNˆ\È]ÛÜ]š[™È™X\˜OÉË]WŞšˆ	ù/§y¥«ùnlº/¯¹ak9..ùgã”İ[Ø^yfïzfayki¹¨({ï&¹`/9o¥ùg*:fa:/äyïk¹.&¹d%ûï'ÉËİ[[X\Nˆ	ĞØ[˜YX[‹ÒPˆİ\œšXİ[[Hœ›ÛHø $ÑÜ˜YHLˆ8 %H›Ü\H^Y\—	ÜÈİZYHÈ]š[™È™X\ˆÜˆÚ][ˆİ[Ø^HÚ]H›ÜˆØÚÛÛXØÙ\ÜËÚÈ]İZ]Ë[™Ú]ÈÛÛœÚY\‹‰Ëİ[[X\WŞšˆ	ùb¨9¢ïùi)ËÒPº+ï¹ê"ûï#9no9a/ùfëz!ìÌL¹nm9î©ø %8 %9g*:f,ùabygã¹a¡y¢%ºfa:/äyïk¹.&¹æ¡9¢/ù.©ù.l9k­¹£!ùceûï#:` ¹d":, {ï#9.éycâºg :) z  úaãùæ¡9.¢úhnxà ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÙXÛËX›İ[šXËÙYXÚ]KšœÉË[šÎˆ	Ø\XÛ\ËÜİ[Ø^KZ[\›˜][Û˜[\ØÚÛÛZ\ÚØ[™\‹\]\šKš[	Ë\™XNˆ	Ò\ÚØ[™\ˆ]\šIËÜXÜÎˆ	Ú\ÚØ[™\‹\]\šK^Z[™ËYİZYIÈKˆËÈ›Ü™\İÚ]BˆÈ]Nˆ	Ñ›Ü™\İÚ]HÚÜİİÛˆÜˆÜÜ[š]OÈHÛ™\İ[œİÙ\ˆ[ˆŒ‰Ë]WŞšˆ	ù¨ë¹§¥ùgã¹n ºk/9gãº/æ9¦+ù§.º`aûï'ÌŒ¹nm9æ¡:+æ¹k§º)èùëe	Ëİ[[X\Nˆ	ÕHÚÜİİÛˆX™[›ÛİÙY›Ü™\İÚ]H›ÜˆYX\œËˆ\™H\ÈÚ]Hİ\œ™[]HXİX[HÚİÜÈ8 %[™Ú]]YX[œÈ›Üˆ^Y\œÈÙ^K‰Ëİ[[X\WŞšˆ	úk/9gã¹¨!ùëo¹fì9¢l9¨ë¹§¥ùgã¹n ¹i&¹nm8à ¹odùbcy¥l9£k¹k§ºfay¦/¹é.¹.à9.b8 %8 %9.éycâ¹kîy.â¹¥éy.l9k­¹¡#ùdlùç`9.à9.b8à ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÙ›Ü™\İXÚ]KÙ˜ËZ\Û[™œ™ÉË[šÎˆ	Ø\XÛ\ËÙ›Ü™\İXÚ]KYÚÜİ]İÛ‹[Ü‹[ÜÜ[š]Kš[	Ë\™XNˆ	Ñ›Ü™\İÚ]IËÜXÜÎˆ	Ù›Ü™\İXÚ]IÈKˆÈ]Nˆ	Ò\È›Ü™\İÚ]HÛÜ^Z[™È[ˆŒÈ[ˆYš\ÛÜ—	ÜÈÛ™\İ\ÜÙ\ÜÛY[	Ë]WŞšˆ	ÌŒ¹nm9¨ë¹§¥ùgã¹n ¹`/9o¥ú-+y.l9d%ûï'úhoºeë¹æ¡:+æ¹k§º+á9/,	Ëİ[[X\Nˆ	ÕÚÈ›Ü™\İÚ]HİZ]ËÚÈ]Ù\È›İ[™HÛ™\İØ\ÙH›Üˆ[™YØZ[œİ^Z[™È\™HšYÚ›İË‰Ëİ[[X\WŞšˆ	ù¨ë¹§¥ùgã¹n º` ¹d":, xà y.#z` ¹d":, {ï#9.éycâ¹odùbcy.l9aiy¢%¹.#y.l9aiyæ¡:+æ¹k§¹ä!¹å,xà ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÙ›Ü™\İXÚ]KÙ›Ü™\İXÚ]K\Ú]KLËšœÉË[šÎˆ	Ø\XÛ\ËÚ\ËY›Ü™\İXÚ]K]ÛÜX^Z[™ËLŒ‹š[	Ë\™XNˆ	Ñ›Ü™\İÚ]IËÜXÜÎˆ	Ù›Ü™\İXÚ]IÈKˆÈ]Nˆ	ĞØ[ˆ›Ü™\İÚ]H]X[YH›ÜˆSL’ÈHÑ–ˆ›ÙÜ˜[[YH^Z[™Y	Ë]WŞšˆ	ù¨ë¹§¥ùgã¹n º ïyå,ú+íÓSL’9d%ûï'ÔÑ–º+¨yb$º+éº)èÉËİ[[X\Nˆ	Ñ›Ü™\İÚ]H\ÈHÛ›H›Ú™Xİ[ˆX[^\ÚXHÚ]]ÈİÛˆSL’Ø]YÛÜH8 %İÙ\ˆ\ÜÚ]›ÈZ[š[][HšXÙKˆ\™H\È^XİHİÈ]ÛÜšÜË‰Ëİ[[X\WŞšˆ	ù¨ë¹§¥ùgã¹n ¹¦+újk9§iz)où.¦¹e+ù. 9¢éy§"y.$ùlg“SL’9ìnùb*ùæ¡:hnyæë¸ %8 %9¦í9/c¹kf9«/»ï#9¥è9§ 9/c¹.íù¨/:) y¬`¸à ¹.éy."ù¦+ùamù/dú/ä9/g9¥®yo#øà ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÙ›Ü™\İXÚ]KÙÛÛ‹L‹œ™ÉË[šÎˆ	Ø\XÛ\ËÙ›Ü™\İXÚ]K[[Lš\Ù‹YİZYKš[	Ë\™XNˆ	Ñ›Ü™\İÚ]IËÜXÜÎˆ	Ù›Ü™\İXÚ]K[Lš	ÈKˆÈ]Nˆ	Ñ›Ü™\İÚ]HÛÛˆš[NˆÚ]]\ËÚ][İHÙ][™ÚÈ]İZ]ÉË]WŞšˆ	ù¨ë¹§¥ùgã¹n ºjæ9l%9i*ùb*ùh¡{ï&¹¦+ù.à9.b8à yo¥ùb,9.à9.b8à z` ¹d":, IËİ[[X\Nˆ	Ğ[ˆ[œÚYHÛÚÈ]HŒLŒÛÛˆš[H8 %š]˜]HØ\™[‹›ÛÙÜ\œ˜XÙKÛÛˆÛİ\œÙHšY]Ë[™K^YX\ˆœ™YHY[X™\œÚ\ˆ™X[İÜÈœ›ÛH[ˆXİX[[š]š\Ú]‰Ëİ[[X\WŞšˆ	ÕŒLŒ:jæ9l%9i*ùb*ùh¡y­ìyn©º)èù§¤8 %8 %9éày.®º"¬yfëxà ylbúhmºg,¹cì8à zjæ9l%9i*ùä ùg.¹¦kú)à¹câynm9acz-.y/&¹ìcxà ¹k§ºfaycey/cycàº)à¹k§¹¢ãxà ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËİš[KYØ\™[‹Y^\š[Ü‹šœÉË[šÎˆ	Ø\XÛ\ËÙ›Ü™\İXÚ]KYÛÛ‹]š[KYİZYKš[	Ë\™XNˆ	Ñ›Ü™\İÚ]IËÜXÜÎˆ	Ù›Ü™\İXÚ]KÛÛ‰ÈKˆÈ]Nˆ	Ó]š[™È[ˆH›Ü™\İÚ]HYÚš\ÙNˆÚ]È^Xİ[ˆŒ‰Ë]WŞšˆ	ù/cùg*9¨ë¹§¥ùgã¹n ºjæ9l`»ï&ŒŒ¹nm9æ¡9ç'ùk§¹/dúj£	Ëİ[[X\Nˆ	ÔÙXHšY]ÜË™\ÛÜ˜XÚ[]Y\Ë\Û[™Z\‹[™İÈH]š[™È[š\›Û›Y[ÛÛ\\™\ÈÈXZ[›[™›ÚÜˆ8 %[ˆÛ™\İØ[İ›İYÚ›Üˆ^Y\œÈÛÛœÚY\š[™ÈH›Ü™\İÚ]H\\Y[‰Ëİ[[X\WŞšˆ	ù­mù¦køà yn©¹`aùo#ú+¯¹¥¯xà y­mùl¦ùên¹¬%;ï#9.éycâ¹.#¹¥¬9llya¡zfa¹æî9«å9æ¡9lay/cùã«ùh ø %8 %9..º  ú&dy¨ë¹§¥ùgã¹n ¹ak9käùæ¡9.l9k­¹£ä9/¦ùæ¡:+æ¹k§º)èù§¤8à ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÙ›Ü™\İXÚ]KÙ›Ü™\İXÚ]K\Ú]KLKšœÉË[šÎˆ	Ø\XÛ\ËÙ›Ü™\İXÚ]KZYÚš\ÙK[]š[™ËLŒ‹š[	Ë\™XNˆ	Ñ›Ü™\İÚ]IËÜXÜÎˆ	Ù›Ü™\İXÚ]IÈKˆÈ]Nˆ	ÕÚH^Y\œÈÚÛÜÙH›Ü™\İÚ]NˆH\Û[™Y™\İ[H›Ø›ÙH[ÜÈX›İ]	Ë]WŞšˆ	ù.l9k­º`"y¢êy¨ë¹§¥ùgã¹n ¹æ¡9c§ùfè;ï&¹¥è9.®¹£ä9câ¹æ¡9­mùl¦ùå'ù­.ù¥®yo#ÉËİ[[X\Nˆ	ÕHX[™Ü›İ™HÛÜœšYÜ‹ÛÈÛÜ›\˜[šÙYÛÛˆÛİ\œÙ\Ëš]™K\İ\ˆ™\ÛÜ˜XÚ[]Y\Ë™XXÚXØÙ\ÜË[™]KYœ™YH\Û[™]š[™È8 %HY™\İ[HØ\ÙH›Üˆ›Ü™\İÚ]K‰Ëİ[[X\WŞšˆ	ùî¨¹¨$y§¥ú-l9nâ¸à y.)9.*¹.%¹åc9£¤¹d#zjæ9l%9i*ùä ùg.¸à y.¥9¦'ùî©ùn©¹`aú+¯¹¥¯xà y­mù®êyaiycèùcâ¹acyê#¹­mùl¦ùå'ù­.ø %8 %9¨ë¹§¥ùgã¹n ¹æ¡9å'ù­.ù¥®yo#ù¨b9/¢øà ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÙ›Ü™\İXÚ]KÙ›Ü™\İXÚ]K\Ú]KL‹šœÉË[šÎˆ	Ø\XÛ\ËÙ›Ü™\İXÚ]KZ\Û[™[Y™\İ[Kš[	Ë\™XNˆ	Ñ›Ü™\İÚ]IËÜXÜÎˆ	Ù›Ü™\İXÚ]K™]\™[Y[	ÈKˆËÈ\ÚØ[™\ˆ]\šBˆÈ]Nˆ	Ò\ÚØ[™\ˆ]\šH[™Y›Ü\Nˆ^Y\—	ÜÈİZYHŒ‰Ë]WŞšˆ	ù/§y¥«ùnlº/¯¹ak9..ùgã¹§"yg,9¢/ù.©ûï&ŒŒ¹nm9.l9k­¹£!ùceÉËİ[[X\Nˆ	ÕÚ]ÈÛ›İÈ™Y›Ü™H^Z[™ÈHØ]Y[™YÛYH[ˆXÛÈ›İ[šXËÜš^›Ûˆ[ËÜˆX\İY[™È8 %›Üˆ›İX[^\ÚX[œÈ[™›Ü™ZYÛ™\œÈÛÛœÚY\š[™È\ÚØ[™\ˆ]\šH[ˆŒ‹‰Ëİ[[X\WŞšˆ	ùg*XÛÈ›İ[šXøà RÜš^›Ûˆ[ù¢%‘X\İY[™ú-+y.l9fí:eî9§"yg,9¢/ù.©ùbczhnù.¡º)èùæ¡9.¢ø %8 %:` ¹d":jk9§iz)où.¦¹§+9g,9câ¹i%¹fïy.l9k­¸à ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÚÜš^›Û‹Z[ËÚL‹šœÉË[šÎˆ	Ø\XÛ\ËÚ\ÚØ[™\‹\]\šK[[™Y\›Ü\KYİZYKLŒ‹š[	Ë\™XNˆ	Ò\ÚØ[™\ˆ]\šIËÜXÜÎˆ	Ú\ÚØ[™\‹\]\šK^Z[™ËYİZYIÈKˆÈ]Nˆ	ÒÜš^›Ûˆ[ÈœÈXÛÈ›İ[šXÈœÈX\İY[™ÎˆÚXÚÚİ[[İH^OÉË]WŞšˆ	ÒÜš^›Ûˆ[ÈœÈXÛÈ›İ[šXÈœÈX\İY[™ûï&º+éz`"ydê¹.*»ï'ÉËİ[[X\Nˆ	ĞHÚYKXK\ÚYHÛÛ\\š\ÛÛˆÙˆH™YH[ÜİÜ[\ˆ[™YİÛœÚ\È[ˆ\ÚØ[™\ˆ]\šH›Üˆ˜[Z[Y\È[™™]\™Y\È8 %Ú]HXÚ\Ú[Ûˆœ˜[Y]ÛÜšÈ›ÜˆØØ[[™›Ü™ZYÛˆ^Y\œË‰Ëİ[[X\WŞšˆ	ù/§y¥«ùnlº/¯¹ak9..ùgã¹."yi)ù§ 9àëzeê9§"yg,:eaùc.¹æ¡9ª*¹d$ykîy«å;ï#:gh¹d$yk­¹n«ycâº` 9/$y.®¹hêø %8 %:fa9§+9g,9câ¹i%¹fïy.l9k­¹a¬ùëe¹¨a¹§­¸à ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÚÜš^›Û‹Z[ËÚLËœ™ÉË[šÎˆ	Ø\XÛ\ËÚÜš^›Û‹Z[Ë]œËYXÛËX›İ[šXË]œËYX\İ[Y[™Ëš[	Ë\™XNˆ	Ò\ÚØ[™\ˆ]\šIËÜXÜÎˆ	Ú\ÚØ[™\‹\]\šK^Z[™ËYİZYIÈKˆÈ]Nˆ	Ò[\›˜][Û˜[ØÚÛÛÈ™X\ˆ\ÚØ[™\ˆ]\šNˆŒˆİZYIË]WŞšˆ	ù/§y¥«ùnlº/¯¹ak9..ùgãºfa:/äyæ¡9fïzfayki¹¨({ï&ŒŒ¹nm9£!ùceÉËİ[[X\Nˆ	ÕÚXÚ\İX›\ÚYİÛœÚ\ÈÚ]ÛÜÙ\İÈ›ÚÜ—	ÜÈ™\İ[\›˜][Û˜[ØÚÛÛÈ8 %[™İÈÈ[ˆ[İ\ˆ›Ü\H\˜Ú\ÙH\›İ[™ØÚÛÛ›Û™\Ë‰Ëİ[[X\WŞšˆ	ùdê¹.¦ù¢$9á§úeaùc.¹§ :gh:/äy§å9/fù§ 9ioyæ¡9fïzfayki¹¨(x %8 %9.éycâ¹i ¹/eyfí9îåyki¹c.º)á9b$¹ïk¹.&¸à ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÙXÛËX›İ[šXËÙYXÚ]KšœÉË[šÎˆ	Ø\XÛ\ËÚ[\›˜][Û˜[\ØÚÛÛËZ\ÚØ[™\‹\]\šKLŒ‹š[	Ë\™XNˆ	Ò\ÚØ[™\ˆ]\šIËÜXÜÎˆ	Ú\ÚØ[™\‹\]\šKØÚÛÛÉÈKˆÈ]Nˆ	Ô™]\š[™È[ˆ\ÚØ[™\ˆ]\šNˆÛÛ‹X[Ø\™K[™ÛÜİÙˆ]š[™ÉË]WŞšˆ	ùg*9/§y¥«ùnlº/¯¹ak9..ùgãº` 9/${ï&ºjæ9l%9i*øà yc.ùå¥ù.#¹å'ù­.ù¢$9§+	Ëİ[[X\Nˆ	ÕÚH™]\™Y\È8 %›İX[^\ÚX[ˆ[™›Ü™ZYÛˆ8 %ÙY\ÚÛÜÚ[™È\ÚØ[™\ˆ]\šKˆÛÛˆÛİ\œÙ\Ëš]˜]HÜÜ][ËÛÜİÙˆ]š[™Ë[™Ú][İHXİX[H™YYÈ[ˆ›Ü‹‰Ëİ[[X\WŞšˆ	ù..¹/ez` 9/$y.®¹hêù£ yîëz`"y¢êy/§y¥«ùnlº/¯¹ak9..ùgã¸à ºjæ9l%9i*ùä ùg.¸à yéàyêâùc.úfh¸à yå'ù­.ù¢$9§+;ï#9.éycâ¹ç'ù«húg :) z)á9b$¹æ¡9.¢úhnxà ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÚÜš^›Û‹Z[ËÚXÛX‹šœÉË[šÎˆ	Ø\XÛ\ËÜ™]\š[™ËZ\ÚØ[™\‹\]\šKYÛÛ‹ZX[Ø\™Kš[	Ë\™XNˆ	Ò\ÚØ[™\ˆ]\šIËÜXÜÎˆ	Ú\ÚØ[™\‹\]\šK™]\™[Y[ÛÛ‰ÈKˆËÈˆİÛ‚ˆÈ]Nˆ	ÕÚ[\™H™H[›İYÚÜ[][ÛˆÈİ\Ü›ÚÜˆ˜ZHİÛˆ™[[X\šÙ]ÉË]WŞšˆ	ù§å9/fù¥¬9llyn ¹c.¹éçú-`yn ¹g.¹¦+ùd)¹§"z-¬ùi'ù.®¹cèù¥+ù¤¤{ï'ÉËİ[[X\Nˆ	ÌKŒLÈZ[[ÛˆX[^\ÚX[œÈ]™H[ˆÚ[™Ø\Ü™KˆÍLÜ›ÜÜÈZ[Kˆ•ÈÜ[œÈ[ˆŒËˆH]KYš]™[ˆÛÚÈ]ÚÈH[˜[È\™KİÈX[HÛİ[[İ™K[™Ú]H[X™\œÈXİX[HØ^K‰Ëİ[[X\WŞšˆ	ÌLLù.!újk9§iz)où.¦¹.®¹lay/cùg*9¥¬9b¨9ghxà ¹«ãù¥éLÍy.!ù.®º/áùh øà ”•ùl!¹.£ŒŒùnm9o :`&¸à ¹¥l9£kºjlybª9b!¹§¤;ï&¹éçù¢-ù¦+ú, xà ycëú ïz/àyéîùi&¹l${ï#9.éycâ¹¥l9keùk§ºfaz+í9¦#¹.¡¹.à9.b8à ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÚ˜‹]İÛ‹Ô•ÌKšœÉË[šÎˆ	Ø\XÛ\ËÚ˜‹]İÛ‹\™[[[X\šÙ]\Ü[][Û‹š[	Ë\™XNˆ	ÒˆİÛ‰ËÜXÜÎˆ	Ú˜‹]İÛ‹^Z[™ËYİZYIÈKˆÈ]Nˆ	ÌÈ[™ÜÈÈØ]Ú™Y›Ü™H^Z[™È[ˆ›ÚÜˆ˜ZHİÛ‰Ë]WŞšˆ	ùg*9¥¬9llyn ¹c.¹.l9¢/ùbczhnù¬ê9¡#ùæ¡ù.í¹.¢ÉËİ[[X\Nˆ	ÓX\ÙZÛ˜\Ë•ÈšXÚ[™È\İÜ[ÛœË[™Z[[™ÈX[˜YÙ[Y[\ÜİY\È[Üİ^Y\œÈZ\ÜËˆ\™W	ÜÈÚ]ÈÚXÚÈ™Y›Ü™H[İHÚYÛ‹‰Ëİ[[X\WŞšˆ	ùi)ùi&¹¥l9.l9k­¹oïz)á¹æ¡9éçùî©ºfmúf,xà T•ùk¦¹.íù¢ky¦ì¹câ¹©o9k¡ùë¨yä!ºeëºh¦8à ¹ëo¹î©¹bczhnù¨.9§éyæ¡9.¢úhnxà ‰Ë›ÙNˆ	Ù^\İÉË[XYÙWİ\›ˆ	ÜİÜËÚ˜‹]İÛ‹Ú˜‹XÚ]K\Ü]X\™Kœ™ÉË[šÎˆ	Ø\XÛ\ËÌË][™ÜËX™Y›Ü™KX^Z[™ËZ˜‹]İÛ‹š[	Ë\™XNˆ	ÒˆİÛ‰ËÜXÜÎˆ	Ú˜‹]İÛ‹^Z[™ËYİZYIÈKˆËÈSL’ˆÈ]Nˆ	ÓSL’X[^\ÚXHŒˆ[\XØ][ÛˆİZYIË]WŞšˆ	ÓSL’:jk9§iz)où.¦ŒŒ»ï&¹k£9¥m9å,ú+íù£!ùceÉËİ[[X\Nˆ	Ñ[YÚXš[]K\ÜÚ][[İ[Ë[˜ÛÛYH™\]Z\™[Y[Ë[™Hİ\XK\İ\\XØ][Ûˆ›ØÙ\ÜÈ^Z[™Y‰Ëİ[[X\WŞšˆ	ùå,ú+íú-a9¨/8à ykf9«/ºaäzh§xà y¥-¹aiz) y¬`¹câº`$9«iyå,ú+íù­`yê"ú+éº)èøà ‰Ë›ÙNˆ	ÉË[XYÙWİ\›ˆ	ÚÎ‹ËÚ[XYÙ\Ë[œÜ\Ú˜ÛÛKÜİËLMMMMÎMŒÙX˜MLMØMÏÜON	ÏN	˜]]ÏY›Ü›X]	™š]XÜ›Ü	Ë[šÎˆ	ÈÉË\™XNˆ	ÑÙ[™\˜[	ËÜXÜÎˆ	Û[Lš^Z[™ËYİZYIÈKˆËÈ”ËTÑV‚ˆÈ]Nˆ	Ò”ËTÑVˆ^Z[™YˆÚ]H›ÚÜ‹TÚ[™Ø\Ü™HÜXÚX[XÛÛ›ÛZXÈ›Û™HYX[œÈ›Üˆ›Ü\IË]WŞšˆ	Ò”ËTÑVº+éº)èûï&¹§å9¥¬9ânyb*ùîãù­c¹c.¹kîy¢/ù.©ù¡#ùdlùç`9.à9.b	Ëİ[[X\Nˆ	ÒİÈH”ËTÑVˆœ˜[Y]ÛÜšÈÚ[™Ù\ÈH[™\İY[Ø\ÙH›Üˆ\ÚØ[™\ˆ›Ü\Y\ÈÛÜÙHÈHÚXÚÜÚ[Ë‰Ëİ[[X\WŞšˆ	Ò”ËTÑV¹¨a¹§­¹i ¹/ey¥.ycæ:gh:/äyalùchyæ¡9/§y¥«ùnlº/¯¹¢/ù.©ù¢¥z-a9¨/9l`8à ‰Ë›ÙNˆ	ÉË[XYÙWİ\›ˆ	ÚÎ‹ËÚ[XYÙ\Ë[œÜ\Ú˜ÛÛKÜİËLMLNMŒÌMÌŒYMM˜ÍY˜˜YYÜON	ÏN	˜]]ÏY›Ü›X]	™š]XÜ›Ü	Ë[šÎˆ	ÈÉË\™XNˆ	ÑÙ[™\˜[	ËÜXÜÎˆ	ÚœË\Ù^‹^Z[™ËYİZYIÈK—NÂ‚‹ËÈKKKH^[™YXÙZÛ\ˆ›Ú™XİÈÚ]]KX\™XH›Üˆš[\š[™ÈKKKB˜ÛÛœİVS‘QÔ“Ò‘PÕÈHÂˆÂˆÛYÎˆ	Üš]™\šXKYØ\™[‹]Ø]Ø\šIË\™XNˆ	Ò\ÚØ[™\ˆ]\šIË›Ú™XİÛ˜[YNˆ	Ôš]™\šXHØ\™[ˆØ]Ø\šIËˆYÛ[™Nˆ	ÒÔÓœ™YZÛš]™\œÚYHİÛœÚ\8 %ŒÈXÜ™\È[Û™Èİ[™ØZHY[^]KZ[]\Èœ›ÛHYPÚ]IËˆšXÙWÜ˜[™ÙNˆ	Ñœ›ÛH“HLÈ
+\œ˜XÙJH0­Èœ›ÛH“HKŒÌ“H™]
+Û\İ\ŠIËˆ[\™Nˆ	Ñœ™YZÛ	ËˆÛÛ[]]WÛ›İNˆ	ÓZ[]\ÈÈX\ÈÚXÚÜÚ[šXHÙXÛÛ™[šÈ^™\ÜİØ^IËˆ\ØÜš\[Ûˆ”š]™\šXHØ\™[ˆØ]Ø\šH\ÈÔÓÛ[™ÜÉÈ›YÜÚ\İÛœÚ\›Ú™Xİ[ˆ\ÚØ[™\ˆ]\šH8 %HŒËXXÜ™Hœ™YZÛX\İ\‹\[›™YÛÛ[][š]HZ[[Û™ÈHØÙ[šXÈİ[™ØZHY[^]Hš]™\™œ›Ûˆ]\ÈÛ™HÙˆH\™Ù\İœ™YZÛ[™Y]™[ÜY[ÈÈ][˜Ú[ˆ\ÚØ[™\ˆ]\šH[ˆ™XÙ[YX\œËÜÚ][Û™Y]H]ZY]\‹Ü™Y[™\ˆ[™ÙˆH\İšXİ™X\ˆYPÚ]H[™HX\ÈÚXÚÜÚ[ÛÜœšYÜ‹——•ÛÈ›ÙXİ\\È\™H]˜Z[X›KˆHİX›HİÜ™^H\œ˜XÙHÙ™™\œÈŒ	ÈÌ	È[™[™HX\ÜÚ]™H‹ŒNHÜHZ[]\šXÙYœ›ÛH“HLÈ8 %XZÚ[™È]Û™HÙˆH[ÜİÙ[™\›İ\ÛHÚ^™Y\œ˜XÙH[šY\È[ˆ\ÈšXÙH˜[™[ˆ\ÚØ[™\ˆ]\šKˆH[Ü˜HİX›HİÜ™^HÛ\İ\ˆİ\ÙHİ\È\ÈHÚY\ˆÌ‰ÈÌ	È[™[™‹NLˆÜHZ[]\]H™]šXÙHœ›ÛH\›Ş[X][H“HKŒÌ“H
+›ÜY˜XÚ[™È[\›YYX]JHÈ“HKŒÍH
+Ûİ]Y˜XÚ[™È[\›YYX]JKˆ›İ\\ÈØ\œHœ™YZÛ[™]šYX[[™]\Ë——•HİÛœÚ\\ÈZ[\›İ[™™YHÛÜ™HYX\Ëˆš\œİ[™]šYX[œ™YZÛ[™]\ÈÛˆ]™\H[š]8 %›İİ˜]K›İX\ÙZÛˆÙXÛÛ™Hš]™\œÚYHÙ][™ÎˆH]™[ÜY[˜XÙ\Èİ[™ØZHY[^]KÚ][™ØØ\Yš]™\™œ›Û›ÛY[˜Y\È\ÚYÛ™Y\ÈHÙ[™\YXÙHÙˆZ[HÛÛ[][š]HY™Kˆ\™HØØ[Y[Y[š]Y\È›ÙÜ˜[[YH[˜ÚÜ™YHHØ]Ø\šHÛXˆ8 %H[Y˜XÚ[]HÛXˆÚ]ÛË]ÛÜšÚ[™Èİ[™Ù\ËÜÜÈÛİ\ËŞ[[˜\Ú][K[™İÚ[[Z[™È˜XÚ[]Y\Ë\ÈYXØ]Y›ÙÙÚ[™È[™ŞXÛ[™È˜XÚÜÈ›İYÚİ]HÛÛ[][š]K——ÛÛ›™Xİ]š]H\ÈHÙ^H\ÙˆH›ÜÜÚ][Û‹ˆHÚ]HÚ]ÈÚ][ˆ™XXÚÙˆH\ÚØ[™\ˆÛØ\İ[YÚØ^KHÙXÛÛ™[šÈ^™\ÜİØ^H
+X\ÊK[™H\Ú\ˆİY[™ËT\›[™ÈYÚØ^H8 %Ú]š[™È™\ÚY[È][\H›İ]HÜ[ÛœÈÈÚ[™Ø\Ü™H[™ˆİÛ‹ˆYPÚ]KÚ]]ÈÛ\İ\ˆÙˆ[\›˜][Û˜[ØÚÛÛÈ[™[š]™\œÚ]HØ[\\Ù\Ë\È™X\˜KXZÚ[™È\ÈH˜]\˜[ÚÚXÙH›Üˆ˜[Z[Y\ÈÚÈš[Üš]\ÙHYXØ][Ûˆ[™œ˜\İXİ\™KˆÛ[™XYÛ\ÈÜÜ][YY[šH\È[ÛÈÚ][ˆHœ›ØY\ˆ\ÚØ[™\ˆ]\šHØ]ÚY[——\ÈH™]ÈÔÓİÛœÚ\š]™\šXHØ\™[ˆ™\™\Ù[ÈHš[X\HX\šÙ]\˜Ú\ÙH8 %›ÙÜ™\ÜÚ]™H^[Y[ØÚY[K]™[Ü\ˆØ\œ˜[K[™™]Ë[][˜ÚÜXÚYšXØ][ÛœËˆHœ™YZÛ]KÙ[™\›İ\ÈZ[]\Ú^™\Ë[™š]™\œÚYHÜÚ][Ûš[™ÈXÙH][ˆHÛÛ\[[™ÈÙYÛY[›Üˆ^Y\œÈÚÈØ[[Ü™HÜXÙH[ˆH\XØ[ˆİÛˆYÚ\š\ÙH]H[Ü™HXØÙ\ÜÚX›HšXÙH[ˆH\İX›\ÚYÜš^›Ûˆ[ÈÜˆXÛÈ›İ[šXÈ™\Ø[HX\šÙ]ˆ‹ˆ[š]İ\\ÎˆÂˆÈ\Nˆ	ÑİX›HİÜ™^H\œ˜XÙIËÚ^™Nˆ	ÌŒ	ÈÌ	È[™0­È‹ŒNHÜHZ[]\0­Èœ›ÛH“HLÉÈKˆÈ\Nˆ	Ñ[Ü˜HİX›HİÜ™^HÛ\İ\ˆ
+›Ü
+IËÚ^™Nˆ	ÌÌ—	ÈÌ	È[™0­È‹NLˆÜH0­È™]œ›ÛH“HKÌN	ÈKˆÈ\Nˆ	Ñ[Ü˜HİX›HİÜ™^HÛ\İ\ˆ
+Ûİ]
+IËÚ^™Nˆ	ÌÌ—	ÈÌ	È[™0­È‹NLˆÜH0­È™]œ›ÛH“HKÌÎ	ÈKˆKˆ™X]\™\ÎˆÂˆ	Ñœ™YZÛ[™]šYX[[™]\È8 %›İİ˜]K›İX\ÙZÛ	Ëˆ	ÍŒËXXÜ™HX\İ\‹\[›™YİÛœÚ\HÔÓÛ[™ÜÈ™\šY	Ëˆ	Ôš]™\™œ›ÛÙ][™È[Û™Èİ[™ØZHY[^]H8 %[™ØØ\Y›ÛY[˜YIËˆ	Õ\œ˜XÙNˆŒ	ÈÌ	È[™‹ŒNHÜHZ[]\œ›ÛH“HLÉËˆ	Ñ[Ü˜HÛ\İ\ˆÌ—	ÈÌ	È[™‹NLˆÜHZ[]\™]œ›ÛH“HKŒÌ“IËˆ	ÕHØ]Ø\šHÛXˆÛË]ÛÜšÚ[™Èİ[™ÙKÜÜÈÛİ\ËŞ[KİÚ[[Z[™È˜XÚ[]Y\ÉËˆ	ÑYXØ]Y›ÙÙÚ[™È[™ŞXÛ[™È˜XÚÜÈ›İYÚİ]HÛÛ[][š]IËˆ	ÑØ]Y[™İX\™YZİ\ˆÙXİ\š]IËˆ	ĞXØÙ\ÜÈšXH\ÚØ[™\ˆÛØ\İ[YÚØ^KÙXÛÛ™[šÈ^™\ÜİØ^K\Ú\ˆİY[™ËT\›[™ÈYÚØ^IËˆ	ÓZ[]\Èœ›ÛHX\ÈÚXÚÜÚ[0­È™X\ˆYPÚ]H[\›˜][Û˜[ØÚÛÛÈ[™[š]™\œÚ]HØ[\\Ù\ÉËˆ	ÕÚ][ˆH\ÚØ[™\ˆ]\šH”ËTÑVˆÜ›İİÛÜœšYÜ‰ËˆKˆİ]\Îˆ	Ó›İÈÙ[[™ÉËˆ[XYÙWİ\›ˆ	ÚÎ‹ËÚ[XYÙ\Ë[œÜ\Ú˜ÛÛKÜİËLMŒŒÍÎLÎKXÙNM˜ÌLLNÏÜON	ÏLLŒ	˜]]ÏY›Ü›X]	™š]XÜ›Ü	ËˆX›\ÚYˆ	Õ•QIÂˆKˆÂˆÛYÎˆ	Ù›Ü™\İXÚ]KYÛÛ‹]š[IË\™XNˆ	Ñ›Ü™\İÚ]IË›Ú™XİÛ˜[YNˆ	Ñ›Ü™\İÚ]HÛÛˆš[IËˆYÛ[™Nˆ	Ôš]˜]H[™Yš[HÛˆHÛÛˆÛİ\œÙIËšXÙWÜ˜[™ÙNˆ	Ô“HKSH8 $È“HËSIËˆ[\™Nˆ	Ôİ˜]IËÛÛ[]]WÛ›İNˆ	ßŒÌZ[ˆÈÙXÛÛ™[šÉËˆ\ØÜš\[Ûˆ•H›Ü™\İÚ]HÛÛˆš[H
+ŒLŒ
+H\ÈHÛË\İÜ™^H[™Yİ˜]H›Ü\HÙ]\™XİHÛˆHÛÛˆÛİ\œÙH8 %Ú]š]˜]HØ\™[‹›ÛÙÜ\œ˜XÙK[™HK^YX\ˆÛÛˆY[X™\œÚ\[˜ÛYY——–ÔØ[HÈYˆİ\œ™[]˜Z[Xš[]KšXÚ[™È\]\Ë[™ÛÛ\\š\ÛÛˆÚ]YÚ\š\ÙHÜ[ÛœË—H‹ˆİ]\Îˆ	Ó›İÈÙ[[™ÉËˆ[XYÙWİ\›ˆ	ÜİÜËİš[KYØ\™[‹Y^\š[Ü‹šœÉËˆX›\ÚYˆ	Õ•QIÂˆKˆÂˆÛYÎˆ	Ù›Ü™\İXÚ]KZYÚ\š\ÙIË\™XNˆ	Ñ›Ü™\İÚ]IË›Ú™XİÛ˜[YNˆ	Ñ›Ü™\İÚ]HYÚš\ÙIËˆYÛ[™Nˆ	ÔÙXK]šY]È\\Y[Ë™\ÛÜ˜XÚ[]Y\ÉËšXÙWÜ˜[™ÙNˆ	Ô“HÈ8 $È“HKSIËˆ[\™Nˆ	Ôİ˜]IËÛÛ[]]WÛ›İNˆ	ßŒÌZ[ˆÈÙXÛÛ™[šÉËˆ\ØÜš\[Ûˆ‘›Ü™\İÚ]IÜÈYÚ\š\ÙH\\Y[ÈÙ™™\ˆÙXHšY]ÜË™\ÛÜ\İ[HÛÛË[™\Û[™]š[™È]šXÙHÚ[È]\™H\™ÈX]Ú\ÈÛÜÙHÈÚ[™Ø\Ü™K——–ÔØ[HÈYˆÜXÚYšXÈİÙ\œË›ÛÜˆÛÛ\\š\ÛÛ‹[™İ\œ™[›Û[İ[ÛœË—H‹ˆİ]\Îˆ	Ó›İÈÙ[[™ÉËˆ[XYÙWİ\›ˆ	Ù˜Ë\ÛÛšœÉËˆX›\ÚYˆ	Õ•QIÂˆKˆÂˆÛYÎˆ	Ü™‹\š[˜Ù\ÜËXÛİ™IË\™XNˆ	ÒˆİÛ‰Ë›Ú™XİÛ˜[YNˆ	Ô‰‘ˆš[˜Ù\ÜÈÛİ™H8 $È\ÙHÉËˆYÛ[™Nˆ	Ğ›Ü™\‹XY˜XÙ[YÚ\š\ÙHÚ]\™Xİ•È[šÈÛÛ›™Xİ]š]HÈÚ[™Ø\Ü™IËˆšXÙWÜ˜[™ÙNˆ	Ñ[œ]Z\™H›ÜˆšXÚ[™ÉËˆ[\™Nˆ	Ñœ™YZÛ	ËˆÛÛ[]]WÛ›İNˆ	ÍLHÚ[\™YØ[ÈÈˆÒTH0­È•È[šÈ
+ZÚ]ÚYØ\ŠHÈÛÛÙ[™È›ÜT•	Ëˆ\ØÜš\[Ûˆ”‰‘ˆš[˜Ù\ÜÈÛİ™H\È›ÚÜˆ˜ZIÜÈYÚ\İ\›Ùš[H™\ÚY[X[[™X\šÈ8 %HZ^Y]\ÙHX\İ\œ[ˆZ[[[YYX][HY˜XÙ[ÈHˆİ\İÛ\Ë[[ZYÜ˜][Ûˆ[™]X\˜[[™H
+ÒTJHÛÛ\^H\ÚY\İ[™›Ü™\ˆÜ›ÜÜÚ[™È[ˆHÛÜ›Ú]ÍL˜]™[\œÈZ[Kˆ\ÙHËÛ›İÛˆ\È™]ÈØ\ØHİZ]\ÈY\˜İHË\ÈH]\İİÙ\ˆ[ˆ\È]™[ÜY[Ø\œZ[™È›ÜØ\™HØ[YHÛÛ›™Xİ]š]KYš\œİ›ÜÜÚ][ÛˆÚ]\Ü˜YY˜XÚ[]Y\È[™\™Xİ•ÈXØÙ\ÜË——•HÚ[™ÛH[Üİ[\Ü[˜XİX›İ]\ÈY™\ÜÈ\ÈHL[Y]™HÚ[\™YØ[İØ^HÛÛ›™Xİ[™ÈH]™[ÜY[\™XİHÈˆÒTKˆ[İHØ[Èœ›ÛH[İ\ˆØ˜KÛİ™\™YÈ[[ZYÜ˜][Ûˆ[ˆ[™\ˆ[ˆZ[]\È8 %›È™ZXÛH™YYYˆÚ]H•È[šÈ
+˜\Y˜[œÚ]Ş\İ[JH8 %ZÚ]ÚYØ\ˆİ][Û‹H›ÚÜˆ˜ZH\›Z[\È8 %›İÈÜ\˜][Û˜[]Ø[ÈÛÛ[Y\ÈÛˆ˜Z[[ÈÛÛÙ[™È›ÜT•İ][Ûˆ[ˆÚ[™Ø\Ü™KÚ\™H]ÛÛ›™XİÈÈHÛ\ÛÛ‹QX\İÛØ\İ[™H[™H™\İÙˆHÚ[™Ø\Ü™HT•™]ÛÜšËˆHÛÛ[]]Hœ›ÛHØ˜HÈÜ˜Ú\™›ØY\ÈÚÜ\ˆœ›ÛH\ÈY™\ÜÈ[ˆœ›ÛH[Hİ\ˆX[^\ÚX[ˆ›Ü\K——”\ÙHÉÜÈ\˜˜[ˆÚŞH\šÈØØİ\Y\È]™[ˆ8 %H[Xİ]™H›ÛÜˆÚ]İÚ[[Z[™ÈÛÛ˜Xİ^šKÚYÉÈÛÛÛİ™\™Y”H]Û‹Z\İ\™H]Û‹[›š\ÈÛİ\˜\ÚÙ]˜[Ûİ\İ]ÛÜˆŞ[KŞ[H›ÛÛK[ÙØH›ÛÛKZ\İ\™H˜XÚËØ][˜KÚ[Ø\™HÙ[™K[™][\\œÜÙH›ÛÛKˆ]™[YÈ[™ÛÜˆ˜YZ[Ûˆ[Û›ÛÚÙ\ˆ›ÛÛK[™X›H[›š\È›ÛÛH8 %\ÈHÛİ™\™Y[šÈœšYÙH]ÛÛ›™XİÈ\™XİH[È‰‘ˆX[Ú]İ™\ˆL™]Z[İ]]ÈÚ][ˆHØ[YHÛÛ\^ˆHL[Y]™HÚŞHİ[™ÙH›ÙÙÚ[™È˜XÚÈÛˆ]™[ˆ\ÈHÛ›H[]˜]Y›ÙÙÚ[™È˜XÚÈÙˆ]ÈÚ[™[ˆ›ÚÜˆ˜ZK——•HÚY\ˆ‰‘ˆš[˜Ù\ÜÈÛİ™HX\İ\œ[ˆ[˜ÛY\È›ÚÜˆ˜ZIÜÈš\œİÜ\˜Hİ\ÙH8 %H‰‘ˆ\™›Ü›Z[™È\ÈÙ[™H8 %Hš]˜]HX\š[˜HXXÚÛXˆÛˆH[\›˜][Û˜[X\š[˜H›İ[]˜\™[™Ø]\™œ›Û›ÛY[˜YHXØÙ\ÜÈ[Û™ÈHİ˜Z]Ùˆ›ÚÜ‹ˆ\ÙH\™H›İ]\™H[œÎˆ^H\™HÜ\˜][™ÈÙ^K——•H[™\İY[Ø\ÙH\È\™Xİˆ›Ü™\‹XY˜XÙ[•ËXÛÛ›™XİY[šÙYÈHL[İ]]X[Ú][[Ûœİ˜X›H™[[[X[™š]™[ˆHÜ›ÜÜËX›Ü™\ˆÛÛ[]]\œÈÚÈ™YYHˆ˜\ÙHÚ][ˆØ[Ú[™È\İ[˜ÙHÙˆÚ[™Ø\Ü™Kˆ‰‘ˆš[˜Ù\ÜÈÛİ™H\ÈÛÛœÚ\İ[H˜[šÙY\ÈX[^\ÚXIÜÈ[Üİ]šY]ÙYÛÛ™ÛZ[š][H™[[\İ[™ÈXÜ›ÜÜÈXZ›Üˆ›Ü\HÜ[È8 %HY]šXÈ™Y›Xİ[™ÈXİX[[˜[[\™\İˆ\ÙHÈÙ™™\œÈH™]Ë[][˜Ú[HÚ[[È]\İX›\ÚY™[[X\šÙ]ˆ‹ˆ[š]İ\\ÎˆÂˆÈ\Nˆ	ÔİY[ÉËÚ^™Nˆ	ÌÌLÈÜH	ÈKˆÈ\Nˆ	ÌKP™Y›ÛÛIËÚ^™Nˆ	ÍMMH8 $ÈNLÈÜH	ÈKˆÈ\Nˆ	Ì‹P™Y›ÛÛIËÚ^™Nˆ	ÍÎH8 $ÈMÜH	ÈKˆÈ\Nˆ	ÌËP™Y›ÛÛIËÚ^™Nˆ	ÎM8 $ÈKMMˆÜH	ÈKˆÈ\Nˆ	ÍP™Y›ÛÛIËÚ^™Nˆ	ÌKMMHÜH	ÈKˆKˆ™X]\™\ÎˆÂˆ	Ñœ™YZÛ]H8 %˜\™H›ÜˆYÚ\š\ÙH[ˆˆİÛ‰Ëˆ	ÍLHÚ[\™YØ[İØ^H\™XİÈˆÒTH8 %›ÈØ\ˆ™YYY	Ëˆ	Ô•È[šÈ
+ZÚ]ÚYØ\ŠHÈÛÛÙ[™È›ÜT•8 %Ú[™Ø\Ü™H˜Z[XØÙ\ÜÉËˆ	Õ\˜˜[ˆÚŞH\šÈ
+]™[ŠNˆÛÛ˜Xİ^šKÚYÈÛÛ[›š\Ë˜\ÚÙ]˜[Ş[K[ÙØH›ÛÛKØ][˜KLH›ÙÙÚ[™È˜XÚÉËˆ	Ó]™[ˆ[™ÛÜˆ˜YZ[Û‹Û›ÛÚÙ\‹X›H[›š\È
+ÈÛİ™\™Y[šÈœšYÙHÈ‰‘ˆX[
+L
+Èİ]]ÊIËˆ	Ô‰‘ˆ\™›Ü›Z[™È\ÈÙ[™H	ˆš]˜]HX\š[˜HXXÚÛXˆÚ][ˆHX\İ\œ[‰Ëˆ	ÕØ]\™œ›Û›ÛY[˜YH[Û™ÈHİ˜Z]Ùˆ›ÚÜ‰Ëˆ	Õ[š]š[š\Ú\Îˆ[X™\ˆXZ[ˆÛÜ‹[[Z[š][HÛ^™YÚ[™İÜË[ZZYÚ[\ËÛ\ÜÈ˜[ÛÛH˜Z[[™ÜÉËˆ“X[^\ÚXIÜÈ[Üİ]šY]ÙYÛÛ™È™[[\İ[™È8 %›İ™[ˆÜ›ÜÜËX›Ü™\ˆÛÛ[]]\ˆ[X[™‹ˆKˆİ]\Îˆ	Ó›İÈÙ[[™ÉËˆ[XYÙWİ\›ˆ	ÚÎ‹ËÜ™›X[^\ÚXK˜ÛÛKİÜXÛÛ[İ\ØYËÌŒ‹ÌKÌËšœÉËˆ[XYÙ\ÎˆÂˆÈ\›ˆ	ÚÎ‹ËÜ™›X[^\ÚXK˜ÛÛKİÜXÛÛ[İ\ØYËÌŒKÌLKÜ›Ú™Xİ×Ì—Ú[YÌKšœÉËØ\[Ûˆ	Ó™]ÈØ\ØHİZ]\È^\š[Ü‰ÈKˆÈ\›ˆ	ÚÎ‹ËÜ™›X[^\ÚXK˜ÛÛKİÜXÛÛ[İ\ØYËÌŒKÌLKÜ›Ú™Xİ×Ì—Ú[YÌ‹šœÉËØ\[Ûˆ	ÕØ]\™œ›Û[™Ú]HšY]ÉÈKˆÈ\›ˆ	ÚÎ‹ËÜ™›X[^\ÚXK˜ÛÛKİÜXÛÛ[İ\ØYËÌŒKÌLKÜ›Ú™Xİ×Ì—Ú[YÌËšœÉËØ\[Ûˆ	Ñ]™[ÜY[İ™\šY]ÉÈKˆÈ\›ˆ	ÚÎ‹ËÜ™›X[^\ÚXK˜ÛÛKİÜXÛÛ[İ\ØYËÌŒKÌLKÜ›Ú™Xİ×Ì×Ú[YÌKLKLLÍMKœ™ÉËØ\[Ûˆ	Ô•È[šÈÛÛ›™Xİ]š]IÈKˆÈ\›ˆ	ÚÎ‹ËÜ™›X[^\ÚXK˜ÛÛKİÜXÛÛ[İ\ØYËÌŒKÌLKÜ›Ú™Xİ×ÌÚ[YÌKšœÉËØ\[Ûˆ	Õ\˜˜[ˆÚŞHZ\İ\™H\šÈ8 %İÚ[[Z[™ÈÛÛ	ÈKˆÈ\›ˆ	ÚÎ‹ËÜ™›X[^\ÚXK˜ÛÛKİÜXÛÛ[İ\ØYËÌŒKÌLKÜ›Ú™Xİ×ÌÚ[YÌ‹šœÉËØ\[Ûˆ	ÑŞ[H[™š]™\ÜÈ˜XÚ[]Y\ÉÈKˆKˆX›\ÚYˆ	Õ•QIÂˆKˆÂˆÛYÎˆ	Üİ[[Y\‹\İZ]\ÉË\™XNˆ	ÒˆİÛ‰Ë›Ú™XİÛ˜[YNˆ	Ôİ[[Y\ˆİZ]\ÉËˆYÛ[™Nˆ	Ñœ™YZÛX[ZÙ^HİZ]\È[ˆHX\ÙˆˆİÛˆ8 %šXÙY™[İÈX\šÙ]]MK^YX\‹[Û[™ÛÜİ	ËˆšXÙWÜ˜[™ÙNˆ	Ñœ›ÛH“HNÉËˆ[\™Nˆ	Ñœ™YZÛ	ËˆÛÛ[]]WÛ›İNˆ	ÓZ[]\ÈÈˆÒTH0­ÈLZ[ˆÈˆÙ[˜[0­ÈØ[Ú[™È\İ[˜ÙHÈÚ]HÜ]X\™H	ˆÔÓÚ]IËˆ\ØÜš\[Ûˆ”İ[[Y\ˆİZ]\ÈÚ]È]˜[[ˆ[\˜[K›ÚÜˆ˜ZHİÛˆ8 %HÜšYÚ[˜[Ú]HÙ[™KÚ\™H]™\][™È\ÈØ[ØX›H[™›İ[™È\È\\ˆ[ˆ[ˆZ[]\È]Ø^KˆH›Ú™Xİ\È]™[ÜYHÛÛ››Ú\ÜÙ]\ˆ›Ü\Y\ÈÙˆšÚÜÙH˜XÚÈ™XÛÜ™[˜ÛY\ÈHÛÛ\]YY[™ÈZYÚÈİÛœÚ\[ˆ\ØZ˜^XK——•Ú]XZÙ\È\È›Ú™XİY™™\™[œ›ÛHİ\ˆˆİÛˆ][˜Ú\È\È]ÈšXÙHÚ[ˆH]™[Ü\ˆXÜ]Z\™Y\È[™MHYX\œÈYÛËÛ™È™Y›Ü™H›ÚÜˆ˜ZIÜÈ›Ü\HX\šÙ]™XXİYÈH•È[šÈ[››İ[˜Ù[Y[[™H”ËTÑVˆœ˜[Y]ÛÜšËˆ\ÈH™\İ[İ[[Y\ˆİZ]\È\ÈšXÙY]“HM8 $ÌKMH\ˆÜ]X\™H›Ûİ8 %]H[YHÚ[ˆÛÛ\\˜X›HÛÛ\]YÛÛ™ÛZ[š][\È[ˆHØ[YHÛÜœšYÜˆ\™H˜[œØXİ[™È]“HKL8 $ÌKÌÙ‹ˆ[İH\™H^Z[™È[ÈHÚ]HÙ[™H]H\ØÛİ[ÈH^\İ[™È™\Ø[HX\šÙ]˜XÚÙYHHœ™YZÛ]K——[™YH[š]\\È\™H\ÚYÛ™Y\›İ[™HX[Ù^HÛÛ˜Ù\8 %ÛÈØÚØX›KÙ[‹XÛÛZ[™YÜXÙ\ÈÚ][ˆHÚ[™ÛH[š]XXÚÚ]]ÈİÛˆ[˜[˜ÙHÚ\™H\XØX›Kˆ\ÈÚ]™\È^Y\œÈH›^Xš[]HÈ]™H[ˆÛ™HÙ^H[™™[Hİ\‹ÜˆX\ÙH›İÙ^\ÈÙ\\˜][HÈY™™\™[[˜[ËˆH›Ú™XİY›ÛÛK\™[[ZY[È˜[™ÙHœ›ÛH‹IHÈ	H\[™[™ÈÛˆ[š]\KÚYÛšYšXØ[HZXYÙˆ˜Y][Û˜[Ú[™ÛK[]ÛÛ™šYİ\˜][ÛœÈ[ˆHØ[YH\™XK——•HˆİÛˆØØ][ÛˆYX[œÈ[İ\ˆ[˜[È]™H[[YYX]HXØÙ\ÜÈÈ]™\][™È]š]™\È™[[[X[™[ˆ\ÈÛÜœšYÜˆ›ÚÜˆ˜ZHİ\İÛ\Ë[[ZYÜ˜][Ûˆ[™]X\˜[[™H
+ÒTJH\ÈZ[]\È]Ø^KXÚ[™È\ÈY™\ÜÈ\™XİH[ˆHÜ›ÜÜËX›Ü™\ˆÛÛ[]]\ˆØ]ÚY[ˆÚ]HÜ]X\™HX[ÔÓÚ]HX[ÜÜ][İ[[˜Z[Z[˜Z[™ˆÙ[˜[
+H[\˜Ú]H˜Z[\›Z[˜[
+H\™H[Ú][ˆHÚÜš]™HÜˆØ[ËˆH•È[šÈZÚ]ÚYØ\ˆİ][Û‹ÛÛ›™Xİ[™È›ÚÜˆ˜ZH\™XİHÈÚ[™Ø\Ü™IÜÈÛ\ÛÛ‹QX\İÛØ\İT•[™KÚ]È[ˆHØ[YH\˜˜[ˆÛ\İ\‹ˆ›Üˆ[˜[ÈÛÛ[]][™ÈÈÚ[™Ø\Ü™HÚ]İ]HØ\‹\ÈÜİÛÙH\È›ÈİXœİ]]H[ˆ›ÚÜˆ˜ZK——•H›Ú™XİÛÛY\ÈÚ]H\X[\›š\ÚXÚØYÙH8 %Z\˜ÛÛ‹Ø]\ˆX]\‹Ú]Ú[ˆØXš[™][™YÚ][ÛÜˆØÚÈ8 %™YXÚ[™ÈHš][İ]ÛÜİ[™[YH™Y›Ü™HH[š]Ø[ˆ™H™[Yİ]ˆHL	HØ[ˆX\™Ú[ˆ\È]˜Z[X›KÚ]›ÙÜ™\ÜÚ]™H[\™\İ^[Y[È\š[™ÈÛÛœİXİ[ÛˆÙY\[™ÈÛ[™ÈÛÜİÈİÈ[ˆHX\›HİYÙ\Ëˆ‹ˆ[š]İ\\ÎˆÂˆÈ\Nˆ	Õ\HH8 %X[Ù^H
+È™YÈÈ˜]
+IËÚ^™Nˆ	ÎLLˆÜH	ÈKˆÈ\Nˆ	Õ\Hˆ8 %ŠÌH™YÈˆ˜]	ËÚ^™Nˆ	ÎÜH	ÈKˆÈ\Nˆ	Õ\HÈ8 %X[Ù^H
+İY[È
+ÈH™YÈˆ˜]
+IËÚ^™Nˆ	ÍNNHÜH	ÈKˆKˆ™X]\™\ÎˆÂˆ	Ñœ™YZÛ]H[ˆHX\ÙˆˆİÛ‰Ëˆ	ÔšXÙY]“HM8 $ÌKMHÙˆ8 %™[İÈH™\Ø[HX\šÙ]
+“HKL8 $ÌKÌÙŠH[šÜÈÈ[™XÜ]Z\™YMHYX\œÈYÛÉËˆ	ÑX[Ù^H^[İ]XÜ›ÜÜÈ[\\È8 %]™H[ˆÛ™K™[Hİ\‹ÜˆX^[Z\ÙH›ÛÛK\™[[ZY[	Ëˆ	Ô›ÛÛK\™[[“ÒH›Ú™XİY]‹Ix $Î	H\[™[™ÈÛˆ[š]\IËˆ	ÓZ[]\ÈÈˆÒTH8 %Ú][ˆHÜ›ÜÜËX›Ü™\ˆÛÛ[]]\ˆ™[[Ø]ÚY[	Ëˆ	ÕØ[Ú[™È\İ[˜ÙHÈÚ]HÜ]X\™KÔÓÚ]HX[ÜÜ][İ[[˜Z[Z[˜Z[™ˆÙ[˜[	Ëˆ	Ô•È[šÈZÚ]ÚYØ\ˆİ][Ûˆ[ˆHØ[YH\˜˜[ˆÛÜœšYÜˆ8 %Ú[™Ø\Ü™H˜Z[XØÙ\ÜÈ›Üˆ[˜[ÉËˆ	ÎL	HØ[ˆX\™Ú[‹Œ‰H[\™\İÍK^YX\ˆ[\™H8 %İÈ[HØ\][™\]Z\™Y	Ëˆ	Ô\X[\›š\ÚXÚØYÙH[˜ÛYYˆZ\˜ÛÛ‹Ø]\ˆX]\‹Ú]Ú[ˆØXš[™]YÚ][ÛÜˆØÚÉËˆKˆİ]\Îˆ	Ó›İÈÙ[[™ÉËˆ[XYÙWİ\›ˆ	ÜİÜËÚ˜‹]İÛ‹Üİ[[Y\œİZ]\ËšœÉËˆ[XYÙ\Îˆ×KˆX›\ÚYˆ	Õ•QIÂˆKˆÂˆÛYÎˆ	Ø›ÙZZK\™\ÚY[˜Ù\ÉË\™XNˆ	Ò\ÚØ[™\ˆ]\šIË›Ú™XİÛ˜[YNˆ	Ğ›ÙZZH™\ÚY[˜Ù\ÉËˆYÛ[™Nˆ	Ò˜\[™\ÙH]™[Ü\ˆ0­ÈYY[šH0­È›È›Ü™ZYÛˆ^Y\ˆ™\İšXİ[ÛœÉËˆšXÙWÜ˜[™ÙNˆ	Ô“HNK8 $È“HNK	Ëˆ[\™Nˆ	ÓX\ÙZÛ	ËÛÛ[]]WÛ›İNˆ	ßZÛHÈÙXÛÛ™[šÈ
+X\ÊIËˆ\ØÜš\[Ûˆ›ÙZZH™\ÚY[˜Ù\È\È[ˆ‹][š]Ú[‹]İÙ\ˆÙ\šXÙY\\Y[[ˆYY[šK\ÚØ[™\ˆ]\šK]™[ÜYHÜ™YYÜ›İ\˜\[‹ˆ]\ÈÛ™HÙˆH™]È™]È][˜Ú\È[ˆYY[šHÚ]›ÈZ[š[][H\˜Ú\ÙHšXÙH›Üˆ›Ü™ZYÛˆ^Y\œËÜ™Y[”‘HÜ™Y[ˆÙ\YšXØ][Û‹[™H˜\[™\ÙK\]X[]Hš][İ]ˆİÙ\ˆH\È›İÈÙ[[™ÈÚ]‹X™Y›ÛÛKËX™Y›ÛÛK[™X[ZÙ^H[š]È]˜Z[X›Hœ›ÛH“HNKˆHKX™Y›ÛÛH[š]È\™H[HÛÛˆ‹ˆİ]\Îˆ	Ó›İÈÙ[[™ÉËˆ[XYÙWİ\›ˆ	ÜİÜËØ›ÙZZKĞY\šX[	LŒšY]ÉLŒKšœYÉËˆ›Ú™Xİİ\›ˆ	Ü›Ú™XİËØ›ÙZZK\™\ÚY[˜Ù\Ëš[	ËˆX›\ÚYˆ	Õ•QIÂˆK—NÂ‚‹ËÈY\™ÙHÚ]PÑRÓT—Ô“Ò‘PÕÈ
+ÚY]]HZÙ\Èš[Üš]JB˜\Ş[˜È[˜İ[ÛˆÙ]›Ú™XİÑ^[™Y
+
+HÂˆÛÛœİ›İÜÈH]ØZ]™]ÚÚY]
+ÒQUĞÓÓ‘’QËœ›Ú™XİĞÜİ•\›
+NÂˆYˆ
+›İÜÈ	‰ˆ›İÜË›[™İ
+HÂˆÛÛœİÚY]\İH›İÜË™š[\ŠˆOˆ‹œX›\ÚYOOH	Õ•QIÊNÂˆÛÛœİØØ[ÛYÜÈH™]ÈÙ]
+VS‘QÔ“Ò‘PÕË›X\
+OˆœÛYÊK™š[\Š›ÛÛX[ŠJNÂˆÛÛœİÚY]Û›HHÚY]\İ™š[\ŠˆOˆ[ØØ[ÛYÜËš\Ê‹œÛYÊJNÂˆ™]\›ˆË‹‹‘VS‘QÔ“Ò‘PÕË‹‹œÚY]Û›WNÂˆBˆ™]\›ˆVS‘QÔ“Ò‘PÕÎÂŸB‚‹ËÈ\]Y™[™\”›Ú™XİÈÈXØÙ\Ü[Û˜[[Z][™ÛÜšÈ›Üˆ[\™X\ÈÜˆÜXÚYšXÈ\™XB˜\Ş[˜È[˜İ[Ûˆ™[™\”›Ú™XİÊ\™XK\™Ù]Ù[XİÜ‹[Z]
+HÂˆÛÛœİ\™Ù]HØİ[Y[œ]Y\TÙ[XİÜŠ\™Ù]Ù[XİÜŠNÂˆYˆ
+]\™Ù]
+H™]\›ÂˆÛÛœİ[H]ØZ]Ù]›Ú™XİÑ^[™Y
+
+NÂˆ]\İH\™XHÈ[™š[\ŠOˆ˜\™XHOOH\™XJHˆ[ÂˆËÈYˆÚY]™]\›™Y]H]›İ[™È›Üˆ\È\™XK˜[˜XÚÈÈVS‘QÔ“Ò‘PÕÈ›Üˆ\È\™XBˆYˆ
+[\İ›[™İ	‰ˆ\™XJHÂˆ\İHVS‘QÔ“Ò‘PÕË™š[\ŠOˆ˜\™XHOOH\™XJNÂˆBˆYˆ
+[Z]
+H\İH\İœÛXÙJ[Z]
+NÂˆYˆ
+[\İ›[™İ
+HÂˆ\™Ù]š[›™\’SH	Ïİ[OH˜ÛÛÜ˜\ŠKZ[šË[]]Y
+NÈY[™ÎˆÈ“[Ü™H›Ú™XİÈÛÛZ[™ÈÛÛÛ‹Ü‰ÎÂˆ™]\›ÂˆBˆ\™Ù]š[›™\’SH\İ›X\
+Oˆ›Ú™XİØ\™[^[™Y
+
+JKš›Ú[Š	ÉÊNÂˆ[š]™]™X[
+
+NÂŸB‚‹ËÈ™[™\ˆÜXÚYšXÈ›Ú™XİÈHÛYÈ\œ˜^H
+›ÜˆÛY\YÙH™X]\™YÙXİ[ÛŠB˜\Ş[˜È[˜İ[Ûˆ™[™\‘™X]\™Y›Ú™XİÊÛYÜË\™Ù]Ù[XİÜŠHÂˆÛÛœİ\™Ù]HØİ[Y[œ]Y\TÙ[XİÜŠ\™Ù]Ù[XİÜŠNÂˆYˆ
+]\™Ù]
+H™]\›ÂˆÛÛœİ[H]ØZ]Ù]›Ú™XİÑ^[™Y
+
+NÂˆÛÛœİ\İHÛYÜË›X\
+ÈOˆ[™š[™
+OˆœÛYÈOOHÊJK™š[\Š›ÛÛX[ŠNÂˆYˆ
+[\İ›[™İ
+H™]\›Âˆ\™Ù]š[›™\’SH\İ›X\
+Oˆ›Ú™XİØ\™[^[™Y
+
+JKš›Ú[Š	ÉÊNÂˆ[š]™]™X[
+
+NÂŸB‚™[˜İ[Ûˆ›Ú™XİØ\™[^[™Y
+
+HÂˆÛÛœİ™ÈHš[XYÙWİ\›È˜XÚÙÜ›İ[™Z[XYÙN\›
+	ÉÜš[XYÙWİ\›IÊXˆ	ÉÎÂˆÛÛœİÛYÈHœÛYÈÛYÚYJœ›Ú™XİÛ˜[YJNÂˆÛÛœİ™YˆHœ›Ú™Xİİ\›Èœ›Ú™Xİİ\›ˆ
+ÛYÈÈ›Ú™Xİš[ÜÛYÏIÙ[˜ÛÙUT’PÛÛ\Û™[
+ÛYÊ_Xˆ	ÈÉÊNÂˆ™]\›ˆˆH™YH‰Ú™YŸHˆÛ\ÜÏHœ›Ú™XİXØ\™™]™X[ˆİ[OH‰Ø™ßHˆ]KX\™XOH‰Ü˜\™XH	ÉßH‚ˆÜ[ˆÛ\ÜÏHœ›Ú™Xİ\İ]\È‰Üœİ]\È	Ñ[œ]Z\™IßOÜÜ[‚ˆ]ˆÛ\ÜÏHœ›Ú™XİX›ÙH‚ˆ]ˆÛ\ÜÏHœ›Ú™Xİ[˜[YH‰Üœ›Ú™XİÛ˜[Y_OÙ]‚ˆ]ˆÛ\ÜÏHœ›Ú™Xİ\šXÙH‰ÜœšXÙWÜ˜[™ÙH	ÉßOÙ]‚ˆ]ˆÛ\ÜÏHœ›Ú™XİY\ØÈ‰ÜYÛ[™H	ÉßOÙ]‚ˆÜ[ˆÛ\ÜÏHœ›Ú™XİXİH•šY]È›Ú™XİÜÜ[‚ˆÙ]‚ˆØO˜ÂŸB‚‹ËÈ™[™\ˆ[\XÛ\ÈXÜ›ÜÜÈ[\™X\Â˜\Ş[˜È[˜İ[Ûˆ™[™\[\XÛ\Ê\™Ù]Ù[XİÜ‹[Z]
+HÂˆÛÛœİ\™Ù]HØİ[Y[œ]Y\TÙ[XİÜŠ\™Ù]Ù[XİÜŠNÂˆYˆ
+]\™Ù]
+H™]\›ÂˆÛÛœİ›İÜÈH]ØZ]™]ÚÚY]
+ÒQUĞÓÓ‘’QË˜\XÛ\ĞÜİ•\›
+NÂˆËÈ[Ø^\Èİ\Ú]ØØ[\XÛ\È]]™H™X[ÛÛ[[ˆ\[™ÚY][Û›HÛ™\ÂˆÛÛœİØØ[HSĞT•PÓTË™š[\ŠHOˆK˜›ÙHOOH	Ù^\İÉÈ	‰ˆK›[šÈ	‰ˆK›[šÈOOH	ÈÉÊNÂˆ]\İÂˆYˆ
+›İÜÈ	‰ˆ›İÜË›[™İ
+HÂˆÛÛœİÚY]\İH›İÜË™š[\ŠˆOˆ‹œX›\ÚYOOH	Õ•QIÈ	‰ˆ‹›[šÈ	‰ˆ‹›[šÈOOH	ÈÉÊNÂˆÛÛœİØØ[[šÜÈH™]ÈÙ]
+ØØ[›X\
+HOˆK›[šÊJNÂˆÛÛœİÚY]Û›HHÚY]\İ™š[\ŠˆOˆ[ØØ[[šÜËš\Ê‹›[šÊJNÂˆ\İHË‹‹›ØØ[‹‹œÚY]Û›WNÂˆH[ÙHÂˆ\İHØØ[ÂˆBˆYˆ
+[Z]
+H\İH\İœÛXÙJ[Z]
+NÂˆ\™Ù]š[›™\’SH\İ›X\
+HOˆ\XÛPØ\™[^[™Y
+JJKš›Ú[Š	ÉÊNÂˆ[š]™]™X[
+
+NÂŸB‚™[˜İ[Ûˆ\XÛPØ\™[^[™Y
+JHÂˆÛÛœİ\ĞÛÛ[HK˜›ÙH	‰ˆK˜›ÙKš[J
+K›[™İˆÂˆÛÛœİ\ÖšHØİ\œ™[[™ÈOOH	Şš	ÎÂˆÛÛœİ]HH
+\Öš	‰ˆK]WŞš
+HÈK]WŞšˆK]NÂˆÛÛœİİ[[X\HH
+\Öš	‰ˆKœİ[[X\WŞš
+HÈKœİ[[X\WŞšˆ
+Kœİ[[X\H	ÉÊNÂˆÛÛœİ\™XSX™[H\ÖšÈ
+T‘PWÖ’ØK˜\™XWHK˜\™XH	ùn ¹g.¹­'¹kçÉÊHˆ
+K˜\™XH	ÓX\šÙ][œÚYÚ	ÊNÂˆÛÛœİ[YÈHKš[XYÙWİ\›ˆÈ]ˆÛ\ÜÏH˜Ø\™Z[YÈˆİ[OH˜˜XÚÙÜ›İ[™Z[XYÙN\›
+	ÉØKš[XYÙWİ\›IÊNÈ˜XÚÙÜ›İ[™\Ú^™N˜Ûİ™\ÈÙ]˜ˆˆ]ˆÛ\ÜÏH˜Ø\™Z[YÈÙ]˜ÂˆÛÛœİ™YˆHK›[šÈ	‰ˆK›[šÈOOH	ÈÉÈÈK›[šÈˆ	ÈÉÎÂˆÛÛœİYÈH™YˆOOH	ÈÉÈÈ	ØIÈˆ	Ù]‰ÎÂˆÛÛœİ[šĞ]ˆH™YˆOOH	ÈÉÈÈ™YH‰Ú™YŸH˜ˆ	ÉÎÂˆÛÛœİÜXÜÈHKÜXÜÈ	ÉÎÂˆ™]\›ˆˆ	İYßH	Û[šĞ]ŸHÛ\ÜÏH˜Ø\™™]™X[	Ú\ĞÛÛ[È	ÉÈˆ	ØØ\™\XÙZÛ\‰ßHˆİ[OH^YXÛÜ˜][Û››Û™NÈˆ]K]ÜXÜÏH‰İÜXÜßHˆ]KX\™XOH‰ØK˜\™XH	ÉßH‚ˆ	Ú[YßBˆ]ˆÛ\ÜÏH˜Ø\™X›ÙH‚ˆ]ˆÛ\ÜÏH˜Ø\™Y^YXœ›İÈ‰Ø\™XSX™[OÙ]‚ˆÈÛ\ÜÏH˜Ø\™]]H‰İ]_OÚÏ‚ˆÛ\ÜÏH˜Ø\™Y^Ù\œ‰Üİ[[X\_OÜ‚ˆÜ[ˆÛ\ÜÏH˜Ø\™[[šÈ‰Ú\ĞÛÛ[È
+\ÖšÈ	úf!z+îù¦í9i&‰Èˆ	Ô™XY[Ü™IÊHˆ
+\ÖšÈ	ùclùl!¹£ª9aî‰Èˆ	ĞÛÛZ[™ÈÛÛÛ‰Ê_OÜÜ[‚ˆÙ]‚ˆÉİYßO˜ÂŸB‚‹ËÈKKKH˜]ˆ›ÜİÛˆ8 %ÛXÚËX˜\ÙYÙÙÛH
+\ÚİÜ
+È[Øš[JHKKKB™Øİ[Y[˜Y]™[\İ[™\Š	ÑÓPÛÛ[ØYY	Ë
+
+HOˆÂˆØİ[Y[œ]Y\TÙ[XİÜ[
+	Ë›˜]‹Y›ÜİÛ‹]ÙÙÛIÊK™›Ü‘XXÚ
+ÙÙÛHOˆÂˆÙÙÛK˜Y]™[\İ[™\Š	ØÛXÚÉËHOˆÂˆKœ™]™[Y˜][
+
+NÂˆÛÛœİ\™[HÙÙÛK˜ÛÜÙ\İ
+	Ë›˜]‹Y›ÜİÛ‰ÊNÂˆÛÛœİ\ÓÜ[ˆH\™[˜Û\ÜÓ\İ˜ÛÛZ[œÊ	Ú\Ë[Ü[‰ÊNÂˆËÈÛÜÙH[Ü[ˆ›ÜİÛœÈš\œİˆØİ[Y[œ]Y\TÙ[XİÜ[
+	Ë›˜]‹Y›ÜİÛ‹š\Ë[Ü[‰ÊK™›Ü‘XXÚ
+Oˆ˜Û\ÜÓ\İœ™[[İ™J	Ú\Ë[Ü[‰ÊJNÂˆYˆ
+Z\ÓÜ[ŠH\™[˜Û\ÜÓ\İ˜Y
+	Ú\Ë[Ü[‰ÊNÂˆJNÂˆJNÂ‚ˆËÈÛÜÙH›ÜİÛˆÚ[ˆÛXÚÚ[™Èİ]ÚYBˆØİ[Y[˜Y]™[\İ[™\Š	ØÛXÚÉËHOˆÂˆYˆ
+YK\™Ù]˜ÛÜÙ\İ
+	Ë›˜]‹Y›ÜİÛ‰ÊJHÂˆØİ[Y[œ]Y\TÙ[XİÜ[
+	Ë›˜]‹Y›ÜİÛ‹š\Ë[Ü[‰ÊK™›Ü‘XXÚ
+Oˆ˜Û\ÜÓ\İœ™[[İ™J	Ú\Ë[Ü[‰ÊJNÂˆBˆJNÂ‚ˆËÈÛÜÙH›ÜİÛˆÚ[ˆH[šÈ[œÚYH]\ÈÛXÚÙYˆØİ[Y[œ]Y\TÙ[XİÜ[
+	Ë›˜]‹[YYØK\[™[IÊK™›Ü‘XXÚ
+[šÈOˆÂˆ[šË˜Y]™[\İ[™\Š	ØÛXÚÉË
+
+HOˆÂˆØİ[Y[œ]Y\TÙ[XİÜ[
+	Ë›˜]‹Y›ÜİÛ‹š\Ë[Ü[‰ÊK™›Ü‘XXÚ
+Oˆ˜Û\ÜÓ\İœ™[[İ™J	Ú\Ë[Ü[‰ÊJNÂˆJNÂˆJNÂŸJNÂ‚‹ËÈ\]YÙ]›Ú™XİÈÈ\ÙH^[™Y]B˜ÛÛœİÛÜšYÚ[˜[Ù]›Ú™XİÈHÙ]›Ú™XİÎÂ˜\Ş[˜È[˜İ[ÛˆÙ]›Ú™XİÊ
+HÂˆ™]\›ˆÙ]›Ú™XİÑ^[™Y
+
+NÂŸB
