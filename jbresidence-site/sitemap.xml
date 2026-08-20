@@ -23,7 +23,7 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/articles.html</loc>
+    <loc>https://thejbresidence.com/articles</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -44,233 +44,276 @@
     <priority>0.9</priority>
   </url>
 
-  <!-- Articles -->
+  <!-- Articles: canonical extensionless URLs -->
   <url>
-    <loc>https://thejbresidence.com/articles/foreign-buyer-costs-johor-property-2026.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thejbresidence.com/articles/mm2h-malaysia-2026-complete-guide.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thejbresidence.com/articles/js-sez-johor-singapore-special-economic-zone-property-guide.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thejbresidence.com/articles/bandar-wawari-future-development-iskandar-puteri.html</loc>
+    <loc>https://thejbresidence.com/articles/3-things-before-buying-jb-town</loc>
+    <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/articles/forest-city-ghost-town-or-opportunity.html</loc>
+    <loc>https://thejbresidence.com/articles/bandar-wawari-future-development-iskandar-puteri</loc>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/articles/forest-city-golf-course-guide.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://thejbresidence.com/articles/forest-city-golf-villa-guide.html</loc>
+    <loc>https://thejbresidence.com/articles/foreign-buyer-costs-johor-property-2026</loc>
+    <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/articles/forest-city-highrise-living-2026.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://thejbresidence.com/articles/forest-city-island-lifestyle.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://thejbresidence.com/articles/forest-city-mm2h-sfz-guide.html</loc>
+    <loc>https://thejbresidence.com/articles/foreign-buyer-guide-johor-property</loc>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/articles/horizon-hills-vs-eco-botanic-vs-east-ledang.html</loc>
+    <loc>https://thejbresidence.com/articles/forest-city-ghost-town-or-opportunity</loc>
+    <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/articles/international-schools-iskandar-puteri-2026.html</loc>
+    <loc>https://thejbresidence.com/articles/forest-city-golf-course-guide</loc>
+    <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/articles/is-forest-city-worth-buying-2026.html</loc>
+    <loc>https://thejbresidence.com/articles/forest-city-golf-villa-guide</loc>
+    <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/articles/iskandar-puteri-landed-property-guide-2026.html</loc>
+    <loc>https://thejbresidence.com/articles/forest-city-highrise-living-2026</loc>
+    <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/articles/iskandar-puteri-new-launches-2026.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://thejbresidence.com/articles/iskandar-puteri-property-price-outlook-2026.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://thejbresidence.com/articles/iskandar-puteri-rental-market-2026.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://thejbresidence.com/articles/jb-town-rental-market-population.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://thejbresidence.com/articles/js-sez-iskandar-puteri-property-impact.html</loc>
+    <loc>https://thejbresidence.com/articles/forest-city-island-lifestyle</loc>
+    <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/articles/kota-iskandar-government-hub-property.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://thejbresidence.com/articles/medini-iskandar-2026.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://thejbresidence.com/articles/nusajaya-to-iskandar-puteri-history.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://thejbresidence.com/articles/retiring-iskandar-puteri-golf-healthcare.html</loc>
+    <loc>https://thejbresidence.com/articles/forest-city-mm2h-sfz-guide</loc>
+    <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/articles/second-link-upgrade-iskandar-puteri.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://thejbresidence.com/articles/3-things-before-buying-jb-town.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://thejbresidence.com/articles/rf-princess-cove-phase-3-good-buy.html</loc>
+    <loc>https://thejbresidence.com/articles/horizon-hills-resale-vs-new-launch-2026</loc>
+    <lastmod>2026-08-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/articles/summer-suites-jb-dual-key-investment.html</loc>
+    <loc>https://thejbresidence.com/articles/horizon-hills-vs-eco-botanic-vs-east-ledang</loc>
+    <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/articles/who-should-buy-landed-iskandar-puteri.html</loc>
+    <loc>https://thejbresidence.com/articles/international-schools-iskandar-puteri-2026</loc>
+    <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/articles/riveria-garden-wawari-ksl-worth-buying.html</loc>
+    <loc>https://thejbresidence.com/articles/is-forest-city-worth-buying-2026</loc>
+    <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/articles/horizon-hills-resale-vs-new-launch-2026.html</loc>
+    <loc>https://thejbresidence.com/articles/is-sunway-city-iskandar-puteri-worth-buying-2026</loc>
+    <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/articles/singaporean-buying-property-jb-guide.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thejbresidence.com/articles/malaysian-working-singapore-buy-jb-town-or-iskandar-puteri.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thejbresidence.com/articles/retiree-checklist-buying-johor-property.html</loc>
+    <loc>https://thejbresidence.com/articles/iskandar-puteri-landed-property-guide-2026</loc>
+    <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/articles/jb-condo-vs-landed-investment-2026.html</loc>
+    <loc>https://thejbresidence.com/articles/iskandar-puteri-new-launches-2026</loc>
+    <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/articles/foreign-buyer-guide-johor-property.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Sunway City Iskandar Puteri articles -->
-  <url>
-    <loc>https://thejbresidence.com/articles/is-sunway-city-iskandar-puteri-worth-buying-2026.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thejbresidence.com/articles/sunway-city-vs-horizon-hills-vs-eco-botanic.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thejbresidence.com/articles/schools-sunway-city-iskandar-puteri-families.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thejbresidence.com/articles/sunway-international-school-iskandar-puteri.html</loc>
+    <loc>https://thejbresidence.com/articles/iskandar-puteri-property-price-outlook-2026</loc>
+    <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/articles/sunway-city-iskandar-puteri-township-explained.html</loc>
+    <loc>https://thejbresidence.com/articles/iskandar-puteri-rental-market-2026</loc>
+    <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/articles/sunway-city-iskandar-puteri-greenest-township.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://thejbresidence.com/articles/sunway-city-iskandar-puteri-retirees-guide.html</loc>
+    <loc>https://thejbresidence.com/articles/jb-condo-vs-landed-investment-2026</loc>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/articles/signature-home-sunway-city-iskandar-puteri.html</loc>
+    <loc>https://thejbresidence.com/articles/jb-town-rental-market-population</loc>
+    <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/articles/sunway-city-iskandar-puteri-js-sez-investors.html</loc>
+    <loc>https://thejbresidence.com/articles/js-sez-iskandar-puteri-property-impact</loc>
+    <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/articles/second-link-sunway-city-vs-forest-city.html</loc>
+    <loc>https://thejbresidence.com/articles/js-sez-johor-singapore-special-economic-zone-property-guide</loc>
+    <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/kota-iskandar-government-hub-property</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/malaysian-working-singapore-buy-jb-town-or-iskandar-puteri</loc>
+    <lastmod>2026-07-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/medini-iskandar-2026</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/mm2h-malaysia-2026-complete-guide</loc>
+    <lastmod>2026-07-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/nusajaya-to-iskandar-puteri-history</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/retiree-checklist-buying-johor-property</loc>
+    <lastmod>2026-07-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/retiring-iskandar-puteri-golf-healthcare</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/rf-princess-cove-phase-3-good-buy</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/riveria-garden-wawari-ksl-worth-buying</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/schools-sunway-city-iskandar-puteri-families</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/second-link-sunway-city-vs-forest-city</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/second-link-upgrade-iskandar-puteri</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/signature-home-sunway-city-iskandar-puteri</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/singaporean-buying-property-jb-guide</loc>
+    <lastmod>2026-07-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/summer-suites-jb-dual-key-investment</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/sunway-city-iskandar-puteri-greenest-township</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/sunway-city-iskandar-puteri-js-sez-investors</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/sunway-city-iskandar-puteri-retirees-guide</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/sunway-city-iskandar-puteri-township-explained</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/sunway-city-vs-horizon-hills-vs-eco-botanic</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/sunway-international-school-iskandar-puteri</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thejbresidence.com/articles/who-should-buy-landed-iskandar-puteri</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 
 </urlset>

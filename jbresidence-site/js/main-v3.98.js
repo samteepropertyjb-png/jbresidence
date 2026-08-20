@@ -1142,7 +1142,10 @@ function articleCardHtmlExtended(a) {
   const img = a.image_url
     ? `<div class="card-img" style="background-image:url('${a.image_url}'); background-size:cover;"></div>`
     : `<div class="card-img"></div>`;
-  const href = a.link && a.link !== '#' ? a.link : '#';
+  // Production uses extensionless canonical article URLs. Keep local data
+  // compatible with the HTML filenames while avoiding a redirect for users
+  // and crawlers when cards are rendered.
+  const href = a.link && a.link !== '#' ? a.link.replace(/\.html$/, '') : '#';
   const tag = href !== '#' ? 'a' : 'div';
   const linkAttr = href !== '#' ? `href="${href}"` : '';
   const topics = a.topics || '';
