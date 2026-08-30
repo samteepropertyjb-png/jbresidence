@@ -8,17 +8,17 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/forest-city.html</loc>
+    <loc>https://thejbresidence.com/forest-city</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/iskandar-puteri.html</loc>
+    <loc>https://thejbresidence.com/iskandar-puteri</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/jb-town.html</loc>
+    <loc>https://thejbresidence.com/jb-town</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -28,21 +28,31 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/projects.html</loc>
+    <loc>https://thejbresidence.com/projects</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thejbresidence.com/projects/bodaiju-residences.html</loc>
+    <loc>https://thejbresidence.com/projects/bodaiju-residences</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://thejbresidence.com/about-sam-tee.html</loc>
+    <loc>https://thejbresidence.com/about-sam-tee</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
+
+  <!-- Project pages: final extensionless canonical URLs -->
+  <url><loc>https://thejbresidence.com/projects/horizon-hills</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://thejbresidence.com/projects/eco-botanic</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://thejbresidence.com/projects/east-ledang</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://thejbresidence.com/projects/rf-princess-cove</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://thejbresidence.com/projects/summer-suites</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://thejbresidence.com/projects/riveria-garden-wawari</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://thejbresidence.com/projects/forest-city-golf-villa</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://thejbresidence.com/projects/forest-city-high-rise</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 
   <!-- Articles: canonical extensionless URLs -->
   <url>

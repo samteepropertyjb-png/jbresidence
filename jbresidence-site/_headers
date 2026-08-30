@@ -1,0 +1,6 @@
+/project
+  X-Robots-Tag: noindex, follow
+
+/articles/_shared
+  X-Robots-Tag: noindex, nofollow
+
