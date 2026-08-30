@@ -113,31 +113,31 @@ h1, h2, h3, h4 {
   box-shadow: 0 2px 24px rgba(0,0,0,0.25);
 }
 
-/* The homepage opens with a lighter, more welcoming navigation treatment. */
+/* Give the bright homepage hero a high-contrast navigation treatment. */
 .home-page .nav {
-  background: rgba(255, 255, 255, 0.94);
-  box-shadow: 0 1px 20px rgba(10, 27, 46, 0.08);
+  background: rgba(10, 27, 46, 0.97);
+  box-shadow: 0 2px 22px rgba(4, 15, 27, 0.24);
   backdrop-filter: blur(12px);
 }
 
 .home-page .nav.scrolled {
-  background: rgba(255, 255, 255, 0.98);
-  box-shadow: 0 3px 24px rgba(10, 27, 46, 0.12);
+  background: rgba(10, 27, 46, 0.99);
+  box-shadow: 0 3px 24px rgba(4, 15, 27, 0.3);
 }
 
-.home-page .nav-brand { color: var(--navy-900); }
-.home-page .nav-links a { color: rgba(10, 27, 46, 0.76); }
+.home-page .nav-brand { color: var(--white); }
+.home-page .nav-links a { color: rgba(255, 255, 255, 0.84); }
 .home-page .nav-links a:hover,
 .home-page .nav-links a.active {
-  color: var(--gold-500);
-  border-bottom-color: var(--gold-500);
+  color: var(--gold-400);
+  border-bottom-color: var(--gold-400);
 }
 .home-page .lang-toggle {
-  border-color: rgba(10, 27, 46, 0.2);
-  background: rgba(255, 255, 255, 0.72);
-  color: var(--navy-900);
+  border-color: rgba(255, 255, 255, 0.34);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--white);
 }
-.home-page .nav-toggle { color: var(--navy-900); }
+.home-page .nav-toggle { color: var(--white); }
 
 .home-page .nav-links.open a { color: rgba(255, 255, 255, 0.86); }
 .home-page .nav-links.open a:hover,
