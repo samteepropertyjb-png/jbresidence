@@ -113,6 +113,39 @@ h1, h2, h3, h4 {
   box-shadow: 0 2px 24px rgba(0,0,0,0.25);
 }
 
+/* The homepage opens with a lighter, more welcoming navigation treatment. */
+.home-page .nav {
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 1px 20px rgba(10, 27, 46, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.home-page .nav.scrolled {
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 3px 24px rgba(10, 27, 46, 0.12);
+}
+
+.home-page .nav-brand { color: var(--navy-900); }
+.home-page .nav-links a { color: rgba(10, 27, 46, 0.76); }
+.home-page .nav-links a:hover,
+.home-page .nav-links a.active {
+  color: var(--gold-500);
+  border-bottom-color: var(--gold-500);
+}
+.home-page .lang-toggle {
+  border-color: rgba(10, 27, 46, 0.2);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--navy-900);
+}
+.home-page .nav-toggle { color: var(--navy-900); }
+
+.home-page .nav-links.open a { color: rgba(255, 255, 255, 0.86); }
+.home-page .nav-links.open a:hover,
+.home-page .nav-links.open a.active {
+  color: var(--gold-400);
+  border-bottom-color: var(--gold-400);
+}
+
 .nav-brand {
   font-family: var(--font-display);
   font-size: 19px;
@@ -205,6 +238,43 @@ h1, h2, h3, h4 {
     rgba(10,27,46,0.46) 40%,
     rgba(10,27,46,0.90) 100%
   );
+}
+
+/* Keep the copy grounded on the left while letting the property feel sunlit. */
+.home-hero::before {
+  background:
+    linear-gradient(90deg, rgba(8, 30, 45, 0.64) 0%, rgba(8, 30, 45, 0.34) 44%, rgba(8, 30, 45, 0.08) 78%),
+    linear-gradient(180deg, rgba(255, 210, 128, 0.10) 0%, rgba(10, 27, 46, 0.04) 48%, rgba(8, 30, 45, 0.58) 100%);
+}
+
+.home-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 78% 18%, rgba(255, 220, 150, 0.24), transparent 38%);
+}
+
+.home-hero .hero-content {
+  z-index: 3;
+  text-shadow: 0 2px 18px rgba(5, 20, 31, 0.22);
+}
+
+.home-hero-portrait {
+  position: absolute;
+  z-index: 2;
+  right: max(3vw, calc((100vw - 1440px) / 2));
+  bottom: -73%;
+  height: 155%;
+  width: auto;
+  object-fit: contain;
+  object-position: bottom center;
+  filter: drop-shadow(-18px 18px 24px rgba(6, 24, 36, 0.24));
+  pointer-events: none;
+}
+
+@media (max-width: 980px) {
+  .home-hero-portrait { display: none; }
 }
 
 .hero-content {
