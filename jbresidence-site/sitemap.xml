@@ -56,6 +56,12 @@
 
   <!-- Articles: canonical extensionless URLs -->
   <url>
+    <loc>https://thejbresidence.com/articles/estuari-township-iskandar-puteri-guide</loc>
+    <lastmod>2026-09-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://thejbresidence.com/articles/3-things-before-buying-jb-town</loc>
     <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
