@@ -885,6 +885,12 @@ function initArticleTranslateBtn() {
 const ALL_ARTICLES = [
   // Newest first
   { title: 'RTS Link Has Entered Testing: Which Johor Bahru Properties Could Benefit?', title_zh: '新柔捷运进入测试阶段：新山哪些房地产可能真正受益？', summary: 'What the testing phase means, which central-JB homes have genuine station access, and why RTS does not guarantee rental returns.', summary_zh: '测试阶段意味着什么、哪些新山市中心住宅真正方便前往车站，以及为何RTS并不保证租金回报。', body: 'exists', image_url: 'photos/jb-town/RTS1.jpg', link: '/articles/rts-link-testing-johor-bahru-property-2026', area: 'JB Town', topics: 'jb-town,buying-guide,js-sez' },
+  { title: 'Medini Condo Guide 2026: Prices, Lifestyle, Rental Demand and Who It Suits', title_zh: 'Medini公寓2026指南：价格、生活方式、租赁需求与适合人群', summary: 'A practical guide to Medini condo prices, nearby amenities, rental demand, short-stay considerations and the buyers this area may suit.', summary_zh: '实用分析Medini公寓价格、周边设施、租赁需求、短租考量，以及这个地区适合哪些买家。', body: 'exists', image_url: 'photos/iskandar-puteri/legoland.jpg', link: '/articles/medini-condo-guide-2026', area: 'Iskandar Puteri', topics: 'iskandar-puteri,buying-guide' },
+  { title: 'Is a Medini Condo a Good First Home for Young Buyers in 2026?', title_zh: '2026年Medini公寓适合年轻买家作为第一套房吗？', summary: 'How a Medini condo can work as a first home and possible future rental property without treating it as a guaranteed investment.', summary_zh: '分析Medini公寓如何作为第一套自住房及未来出租选择，同时避免把它当成保证回报的投资。', body: 'exists', image_url: 'photos/iskandar-puteri/legoland.jpg', link: '/articles/medini-condo-first-home-young-buyers', area: 'Iskandar Puteri', topics: 'iskandar-puteri,buying-guide' },
+  { title: 'Medini Condo vs Iskandar Puteri Landed Property: Which Should Young Buyers Choose?', title_zh: 'Medini公寓与依斯干达公主城有地住宅：年轻买家该选哪一个？', summary: 'A practical comparison of entry cost, space, maintenance, rental options and future flexibility for younger property buyers.', summary_zh: '为年轻买家比较入场成本、空间、维护费、出租选择及未来换房弹性。', body: 'exists', image_url: 'photos/iskandar-puteri/legoland.jpg', link: '/articles/medini-condo-vs-iskandar-puteri-landed', area: 'Iskandar Puteri', topics: 'iskandar-puteri,buying-guide' },
+  { title: 'Medini vs JB City Centre Condo in 2026: Which Offers Better Investment Value?', title_zh: '2026年Medini与新山市中心公寓：哪个更具投资价值？', summary: 'Compare purchase price, tenant profiles, short-stay potential, holding costs and realistic net rental returns in both locations.', summary_zh: '比较两个地区的购买价格、租客类型、短租潜力、持有成本及实际净租金回报。', body: 'exists', image_url: 'photos/iskandar-puteri/legoland.jpg', link: '/articles/medini-vs-jb-city-centre-condo-investment', area: 'Iskandar Puteri', topics: 'iskandar-puteri,jb-town,buying-guide' },
+  { title: 'Forest City Golf Course: Asia Top 100 and What It Means for Property Buyers', title_zh: '森林城市高尔夫球场：亚洲百强排名对房产买家意味着什么？', summary: 'What Forest City Golf Resort’s two internationally ranked courses may mean for lifestyle buyers, golf-villa owners and long-term demand.', summary_zh: '分析森林城市两座国际排名球场，对生活型买家、高尔夫别墅业主及长期需求可能带来的意义。', body: 'exists', image_url: 'photos/forest-city/golf-1.png', link: '/articles/forest-city-golf-course-guide', area: 'Forest City', topics: 'forest-city,golf' },
+  { title: 'Iskandar Puteri Property Price Outlook 2026: What the Data Actually Shows', title_zh: '依斯干达公主城2026房价展望：数据实际说明什么？', summary: 'Transaction evidence, price-per-square-foot trends and a realistic outlook for Iskandar Puteri property without marketing hype.', summary_zh: '从成交资料、每平方尺价格趋势及实际市场情况，分析依斯干达公主城房产前景。', body: 'exists', image_url: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?q=80&w=1600&auto=format&fit=crop', link: '/articles/iskandar-puteri-property-price-outlook-2026', area: 'Iskandar Puteri', topics: 'iskandar-puteri,buying-guide' },
   { title: 'Foreign Buyer Costs in Johor 2026: 8% MOT Duty, 3% State Levy and a RM1 Million Example', title_zh: '2026年外国买家柔佛置业成本：8%转让印花税、3%州政府征费及RM100万实例', summary: 'What foreign buyers must budget beyond the purchase price — the new 8% residential transfer duty, Johor\'s 3% foreign-interest approval charge, and a clear RM1 million calculation.', summary_zh: '外国买家在房价之外必须预留的费用——新的8%住宅转让印花税、柔佛3%外国权益批准费，以及清晰的RM100万计算实例。', body: 'exists', image_url: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800&auto=format&fit=crop', link: '/articles/foreign-buyer-costs-johor-property-2026', area: 'General', topics: 'buying-guide' },
   { title: 'MM2H Malaysia 2026: Complete Guide to the Malaysia My Second Home Programme', title_zh: 'MM2H马来西亚2026：马来西亚第二家园计划完整指南', summary: 'Three tiers (Platinum, Gold, Silver), financial requirements, the 90-day rule, Forest City SFZ track, and who actually qualifies — the complete guide for 2026.', summary_zh: '三个等级（白金、黄金、白银）、财务要求、90天规定、森林城市SFZ通道，以及谁真正符合资格——2026年完整指南。', body: 'exists', image_url: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=800&auto=format&fit=crop', link: '/articles/mm2h-malaysia-2026-complete-guide', area: 'General', topics: 'mm2h,buying-guide' },
   { title: 'JS-SEZ: What the Johor-Singapore Special Economic Zone Actually Means for Property Buyers', title_zh: 'JS-SEZ：柔新特别经济区对房产买家意味着什么', summary: 'Which zones are included, the 15% flat income tax for knowledge workers, which Johor areas benefit most from corporate relocations, and whether the opportunity is already priced in.', summary_zh: '涵盖区域、知识工作者15%统一所得税、哪些柔佛地区从企业迁入中受益最多，以及机会是否已被市场定价。', body: 'exists', image_url: 'https://images.unsplash.com/photo-1518563172008-e56c5dfbaef6?q=80&w=800&auto=format&fit=crop', link: '/articles/js-sez-johor-singapore-special-economic-zone-property-guide', area: 'General', topics: 'js-sez,buying-guide' },
@@ -1127,13 +1133,22 @@ async function renderAllArticles(targetSelector, limit) {
   const target = document.querySelector(targetSelector);
   if (!target) return;
   const rows = await fetchSheet(SHEET_CONFIG.articlesCsvUrl);
-  // Always start with local articles that have real content, then append Sheet-only ones
-  const local = ALL_ARTICLES.filter(a => a.body === 'exists' && a.link && a.link !== '#');
+  // Merge both local article catalogues. Older area pages use PLACEHOLDER_ARTICLES,
+  // while newer guides live in ALL_ARTICLES. Normalising paths prevents duplicate cards.
+  const normaliseArticleLink = link => (link || '').replace(/^\//, '').replace(/\.html$/, '');
+  const areaArticles = Object.entries(PLACEHOLDER_ARTICLES).flatMap(([area, articles]) =>
+    articles.map(article => ({ ...article, area: article.area || area }))
+  );
+  const local = [...ALL_ARTICLES, ...areaArticles]
+    .filter(a => a.body === 'exists' && a.link && a.link !== '#')
+    .filter((article, index, list) =>
+      list.findIndex(item => normaliseArticleLink(item.link) === normaliseArticleLink(article.link)) === index
+    );
   let list;
   if (rows && rows.length) {
     const sheetList = rows.filter(r => r.published === 'TRUE' && r.link && r.link !== '#');
-    const localLinks = new Set(local.map(a => a.link));
-    const sheetOnly = sheetList.filter(r => !localLinks.has(r.link));
+    const localLinks = new Set(local.map(a => normaliseArticleLink(a.link)));
+    const sheetOnly = sheetList.filter(r => !localLinks.has(normaliseArticleLink(r.link)));
     list = [...local, ...sheetOnly];
   } else {
     list = local;
