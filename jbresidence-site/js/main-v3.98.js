@@ -861,7 +861,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function initArticleTranslateBtn() {
   const artWrap = document.querySelector('.art-wrap');
-  if (!artWrap) return;
+  if (!artWrap || artWrap.classList.contains('native-bilingual')) return;
   const bar = document.createElement('div');
   bar.className = 'translate-bar';
   bar.innerHTML = `
@@ -880,6 +880,7 @@ function initArticleTranslateBtn() {
 // ---- Extended placeholder articles (all areas) ----
 const ALL_ARTICLES = [
   // Newest first
+  { title: 'RTS Link Has Entered Testing: Which Johor Bahru Properties Could Benefit?', title_zh: '新柔捷运进入测试阶段：新山哪些房地产可能真正受益？', summary: 'What the testing phase means, which central-JB homes have genuine station access, and why RTS does not guarantee rental returns.', summary_zh: '测试阶段意味着什么、哪些新山市中心住宅真正方便前往车站，以及为何RTS并不保证租金回报。', body: 'exists', image_url: 'photos/jb-town/RTS1.jpg', link: '/articles/rts-link-testing-johor-bahru-property-2026', area: 'JB Town', topics: 'jb-town,buying-guide,js-sez' },
   { title: 'Estuari Township Iskandar Puteri: An Honest Guide to Gardens, Greens & Parkhomes', title_zh: 'Estuari Township依斯干达公主城：Gardens、Greens与Parkhomes真实指南', summary: 'A practical guide to Estuari Township, its landed homes, value-for-space advantage, low-density plan, location and the trade-offs buyers need to accept.', summary_zh: '从有地住宅、空间性价比、低密度规划、地点到买家必须接受的取舍，全面了解Estuari Township。', body: 'exists', image_url: 'photos/estuari/estuari-township-aerial.jpg', link: 'articles/estuari-township-iskandar-puteri-guide.html', area: 'Iskandar Puteri', topics: 'iskandar-puteri,project,buying-guide' },
   { title: 'Horizon Mall & Horizon Hills: Will the New Commercial Hub Affect Property Prices?', title_zh: 'Horizon Mall与Horizon Hills：新商业中心会影响房价吗？', summary: 'A local property market view on how Horizon Mall and Horizon Square may affect convenience, housing demand, property liquidity, traffic and prices in Horizon Hills.', summary_zh: '从本地房地产角度观察Horizon Mall与Horizon Square如何影响便利性、住房需求、房产流动性、交通与价格。', body: 'exists', image_url: 'photos/horizon-hills/hh-club.jpg', link: 'articles/horizon-mall-horizon-hills-property-prices.html', area: 'Iskandar Puteri', topics: 'iskandar-puteri,buying-guide,golf' },
   { title: 'Foreign Buyer Costs in Johor 2026: 8% MOT Duty, 3% State Levy and a RM1 Million Example', title_zh: '2026年外国买家柔佛置业成本：8%转让印花税、3%州政府征费及RM100万实例', summary: 'What foreign buyers must budget beyond the purchase price — the new 8% residential transfer duty, Johor\'s 3% foreign-interest approval charge, and a clear RM1 million calculation.', summary_zh: '外国买家在房价之外必须预留的费用——新的8%住宅转让印花税、柔佛3%外国权益批准费，以及清晰的RM100万计算实例。', body: 'exists', image_url: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800&auto=format&fit=crop', link: 'articles/foreign-buyer-costs-johor-property-2026.html', area: 'General', topics: 'buying-guide' },

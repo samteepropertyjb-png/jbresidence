@@ -865,7 +865,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function initArticleTranslateBtn() {
   const artWrap = document.querySelector('.art-wrap');
-  if (!artWrap) return;
+  if (!artWrap || artWrap.classList.contains('native-bilingual')) return;
   const bar = document.createElement('div');
   bar.className = 'translate-bar';
   bar.innerHTML = `
@@ -884,6 +884,7 @@ function initArticleTranslateBtn() {
 // ---- Extended placeholder articles (all areas) ----
 const ALL_ARTICLES = [
   // Newest first
+  { title: 'RTS Link Has Entered Testing: Which Johor Bahru Properties Could Benefit?', title_zh: '新柔捷运进入测试阶段：新山哪些房地产可能真正受益？', summary: 'What the testing phase means, which central-JB homes have genuine station access, and why RTS does not guarantee rental returns.', summary_zh: '测试阶段意味着什么、哪些新山市中心住宅真正方便前往车站，以及为何RTS并不保证租金回报。', body: 'exists', image_url: 'photos/jb-town/RTS1.jpg', link: '/articles/rts-link-testing-johor-bahru-property-2026', area: 'JB Town', topics: 'jb-town,buying-guide,js-sez' },
   { title: 'Foreign Buyer Costs in Johor 2026: 8% MOT Duty, 3% State Levy and a RM1 Million Example', title_zh: '2026年外国买家柔佛置业成本：8%转让印花税、3%州政府征费及RM100万实例', summary: 'What foreign buyers must budget beyond the purchase price — the new 8% residential transfer duty, Johor\'s 3% foreign-interest approval charge, and a clear RM1 million calculation.', summary_zh: '外国买家在房价之外必须预留的费用——新的8%住宅转让印花税、柔佛3%外国权益批准费，以及清晰的RM100万计算实例。', body: 'exists', image_url: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800&auto=format&fit=crop', link: '/articles/foreign-buyer-costs-johor-property-2026', area: 'General', topics: 'buying-guide' },
   { title: 'MM2H Malaysia 2026: Complete Guide to the Malaysia My Second Home Programme', title_zh: 'MM2H马来西亚2026：马来西亚第二家园计划完整指南', summary: 'Three tiers (Platinum, Gold, Silver), financial requirements, the 90-day rule, Forest City SFZ track, and who actually qualifies — the complete guide for 2026.', summary_zh: '三个等级（白金、黄金、白银）、财务要求、90天规定、森林城市SFZ通道，以及谁真正符合资格——2026年完整指南。', body: 'exists', image_url: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=800&auto=format&fit=crop', link: '/articles/mm2h-malaysia-2026-complete-guide', area: 'General', topics: 'mm2h,buying-guide' },
   { title: 'JS-SEZ: What the Johor-Singapore Special Economic Zone Actually Means for Property Buyers', title_zh: 'JS-SEZ：柔新特别经济区对房产买家意味着什么', summary: 'Which zones are included, the 15% flat income tax for knowledge workers, which Johor areas benefit most from corporate relocations, and whether the opportunity is already priced in.', summary_zh: '涵盖区域、知识工作者15%统一所得税、哪些柔佛地区从企业迁入中受益最多，以及机会是否已被市场定价。', body: 'exists', image_url: 'https://images.unsplash.com/photo-1518563172008-e56c5dfbaef6?q=80&w=800&auto=format&fit=crop', link: '/articles/js-sez-johor-singapore-special-economic-zone-property-guide', area: 'General', topics: 'js-sez,buying-guide' },
