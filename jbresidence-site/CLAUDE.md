@@ -186,3 +186,4 @@ git push origin v2.1
 6. Return complete working files — no code snippets
 7. Test that all internal links are correct before pushing
 8. Increment version number in footer on every push (v2.2, v2.3, etc.)
+9. Article header metadata may show the publication year only (for example, `2026`). Never show a publication month at the top of an article. Months may still be mentioned naturally inside article content when relevant.
