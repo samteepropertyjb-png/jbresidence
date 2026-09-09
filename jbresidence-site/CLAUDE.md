@@ -178,7 +178,7 @@ git push origin v2.1
 ```
 
 ## Rules
-1. Always work from the latest files in the repo — run `git pull` first
+1. Always work from the newest version. Before editing, fetch and compare local and remote history. If the remote is newer (including articles created from Sam's phone), sync it first. If both sides contain changes, preserve both and merge carefully; never overwrite newer remote work with an older local copy.
 2. Never migrate to WordPress
 3. Never create separate HTML files for each project — use project.html?slug=
 4. Always update ALL pages when changing nav or footer
@@ -187,3 +187,4 @@ git push origin v2.1
 7. Test that all internal links are correct before pushing
 8. Increment version number in footer on every push (v2.2, v2.3, etc.)
 9. Article header metadata may show the publication year only (for example, `2026`). Never show a publication month at the top of an article. Months may still be mentioned naturally inside article content when relevant.
+10. Published editorial content must not link readers to a developer, news outlet, government website, property portal, or any other third-party official webpage. External sources may be used privately for research and fact-checking, but source URLs must not appear in the public article body or structured data. Public links are limited to The JB Residence pages, Sam Tee's own YouTube channel, and direct lead/contact actions such as WhatsApp. Required technical services such as analytics and web fonts are not editorial links.
