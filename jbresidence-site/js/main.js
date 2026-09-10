@@ -17,7 +17,12 @@ function initWhatsappConversionTracking() {
     if (!link) return;
 
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ event: 'whatsapp_click' });
+    const sendToGoogleAnalytics = function () {
+      window.dataLayer.push(arguments);
+    };
+    sendToGoogleAnalytics('event', 'whatsapp_click', {
+      send_to: 'G-326ZP9VNEX'
+    });
   });
 }
 
