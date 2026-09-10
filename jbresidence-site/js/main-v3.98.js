@@ -10,6 +10,17 @@ const SHEET_CONFIG = {
 
 const WHATSAPP_NUMBER = '601156348518'; // update to your active WhatsApp number, digits only with country code
 
+// ---- Analytics: one site-wide WhatsApp conversion event ----
+function initWhatsappConversionTracking() {
+  document.addEventListener('click', event => {
+    const link = event.target.closest('a[href*="wa.me/"], a[href*="api.whatsapp.com/"]');
+    if (!link) return;
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'whatsapp_click' });
+  });
+}
+
 // ---- Nav scroll state ----
 function initNav() {
   const nav = document.querySelector('.nav');
@@ -1183,6 +1194,8 @@ function articleCardHtmlExtended(a) {
 
 // ---- Nav dropdown — click-based toggle (desktop + mobile) ----
 document.addEventListener('DOMContentLoaded', () => {
+  initWhatsappConversionTracking();
+
   document.querySelectorAll('.nav-dropdown-toggle').forEach(toggle => {
     toggle.addEventListener('click', e => {
       e.preventDefault();
