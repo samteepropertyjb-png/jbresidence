@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Box vs Box Fighting</title>
+<style>
+:root{
+  --bg:#0b0f13;--panel:#172028;--line:#344550;--text:#f6f7f9;
+  --muted:#9aa9b5;--red:#e53b37;--black:#111;--green:#2bc65f;--gold:#ffd24a;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--text)}
+body{display:flex;justify-content:center;align-items:center;padding:8px}
+#game{width:min(100%,720px);height:min(100%,900px);display:grid;grid-template-rows:auto 1fr auto;gap:8px}
+.top{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:10px}
+.row{display:flex;align-items:center;gap:8px}
+.side{flex:1}
+.n{display:flex;justify-content:space-between;font-weight:800;font-size:13px;margin-bottom:4px}
+.bar{height:15px;background:#3a4248;border-radius:99px;overflow:hidden}
+.hp{height:100%;width:100%;background:linear-gradient(90deg,#20b653,#5de280);transition:width .15s}
+.timer{min-width:74px;text-align:center;font-size:24px;font-weight:900;background:#0e1419;border:1px solid #354650;border-radius:12px;padding:9px 5px}
+.sub{text-align:center;color:var(--muted);font-size:12px;margin-top:6px}
+
+.arena{position:relative;overflow:hidden;border-radius:18px;border:1px solid #384a55;background:linear-gradient(#182732 0 67%,#2c3f34 67%);box-shadow:inset 0 0 50px #0008}
+.arena:after{content:"";position:absolute;left:0;right:0;top:67%;height:3px;background:#7da07855}
+.shadow{position:absolute;width:54px;height:13px;border-radius:50%;background:#0007;bottom:15%;transform:translateX(-50%)}
+
+.fighter{
+  position:absolute;bottom:18%;width:58px;height:58px;border-radius:8px;border:4px solid #eee;
+  box-shadow:0 6px 0 #0005,0 10px 18px #0008;transform:translateX(-50%);
+}
+#player{background:var(--red)}
+#cpu{background:var(--black)}
+.face{position:absolute;top:15px;width:20px;height:25px}
+#player .face{right:5px}
+#cpu .face{left:5px}
+.eye{position:absolute;top:1px;width:5px;height:7px;border-radius:50%;background:#fff}
+.eye.a{left:1px}.eye.b{right:1px}
+.mouth{position:absolute;bottom:1px;width:14px;height:5px;border-radius:0 0 8px 8px;background:#fff}
+#player .mouth{right:0}#cpu .mouth{left:0}
+.glove{position:absolute;top:21px;width:25px;height:15px;border-radius:8px;border:3px solid #eee;background:inherit}
+#player .glove{right:-23px}
+#cpu .glove{left:-23px}
+
+.punchP{animation:punchP .15s ease}
+.punchC{animation:punchC .15s ease}
+.hurtP{animation:hurtP .16s ease}
+.hurtC{animation:hurtC .16s ease}
+@keyframes punchP{50%{transform:translateX(-50%) translateX(14px)}}
+@keyframes punchC{50%{transform:translateX(-50%) translateX(-14px)}}
+@keyframes hurtP{50%{filter:brightness(2);transform:translateX(-50%) translateX(-8px)}}
+@keyframes hurtC{50%{filter:brightness(2);transform:translateX(-50%) translateX(8px)}}
+.pop{position:absolute;z-index:8;font-weight:1000;font-size:25px;color:var(--gold);text-shadow:0 2px #000;animation:pop .5s forwards}
+@keyframes pop{0%{opacity:0;transform:scale(.5)}35%{opacity:1;transform:scale(1.25)}100%{opacity:0;transform:translateY(-35px)}}
+
+.overlay{position:absolute;inset:0;background:#0009;z-index:20;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(3px)}
+.card{width:min(88%,400px);padding:22px;background:#121a20;border:1px solid #40515d;border-radius:20px;text-align:center}
+.card h1{margin:0 0 7px;font-size:30px}.card p{color:#aab7c0;line-height:1.45}
+.start{width:100%;border:0;border-radius:14px;background:var(--gold);padding:14px;font-size:18px;font-weight:900}
+
+.controls{display:grid;grid-template-columns:1.45fr .9fr;gap:10px;padding-bottom:env(safe-area-inset-bottom)}
+.movePad{
+  display:grid;grid-template-columns:1fr 1fr;min-height:82px;border-radius:20px;overflow:hidden;
+  border:2px solid #4b5c68;background:#1d2931;box-shadow:0 7px 0 #070a0d;
+}
+.moveHalf{border:0;background:transparent;color:#fff;font-size:25px;font-weight:900;touch-action:none}
+.moveHalf:first-child{border-right:1px solid #44545f}
+.moveHalf:active,.moveHalf.active{background:#31414b}
+.hit{
+  min-height:82px;border-radius:20px;border:2px solid #6c4f20;background:linear-gradient(#d35036,#b72f25);
+  color:#fff;font-size:22px;font-weight:1000;box-shadow:0 7px 0 #5d1712;touch-action:manipulation
+}
+.hit:active{transform:translateY(5px);box-shadow:0 2px 0 #5d1712}
+.hint{text-align:center;color:#8fa0ac;font-size:11px;margin-top:5px}
+</style>
+</head>
+<body>
+<div id="game">
+  <div class="top">
+    <div class="row">
+      <div class="side">
+        <div class="n"><span>YOU 🔴</span><span id="pText">100 HP</span></div>
+        <div class="bar"><div id="pHP" class="hp"></div></div>
+      </div>
+      <div class="timer"><span id="time">60</span>s</div>
+      <div class="side">
+        <div class="n"><span>CPU ⚫</span><span id="cText">100 HP</span></div>
+        <div class="bar"><div id="cHP" class="hp"></div></div>
+      </div>
+    </div>
+    <div class="sub">LEVEL <b id="lvl">1</b> · move close enough, then HIT</div>
+  </div>
+
+  <div class="arena" id="arena">
+    <div id="pShadow" class="shadow"></div>
+    <div id="cShadow" class="shadow"></div>
+
+    <div id="player" class="fighter">
+      <div class="face"><div class="eye a"></div><div class="eye b"></div><div class="mouth"></div></div>
+      <div class="glove"></div>
+    </div>
+    <div id="cpu" class="fighter">
+      <div class="face"><div class="eye a"></div><div class="eye b"></div><div class="mouth"></div></div>
+      <div class="glove"></div>
+    </div>
+
+    <div id="overlay" class="overlay">
+      <div class="card">
+        <h1>BOX vs BOX</h1>
+        <p>Use the single direction pad to run left or right. Get close to the black box and press <b>HIT</b>.</p>
+        <p>60 seconds. Highest HP wins, or win by KO.</p>
+        <button id="start" class="start">START LEVEL 1</button>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="controls">
+      <div class="movePad" aria-label="Direction control">
+        <button id="left" class="moveHalf">◀</button>
+        <button id="right" class="moveHalf">▶</button>
+      </div>
+      <button id="hit" class="hit">👊 HIT</button>
+    </div>
+    <div class="hint">Hold ◀ / ▶ to run. The boxes face each other automatically.</div>
+  </div>
+</div>
+
+<script>
+(()=>{
+const $=id=>document.getElementById(id);
+const arena=$("arena"), player=$("player"), cpu=$("cpu"), pShadow=$("pShadow"), cShadow=$("cShadow");
+const overlay=$("overlay"), hit=$("hit"), left=$("left"), right=$("right");
+let lvl=1,pHP=100,cHP=100,time=60,playing=false;
+let px=.24,cx=.76,moveDir=0,last=0,timerId=null,cpuHitCooldown=0,playerHitCooldown=0;
+
+function clamp(x,a,b){return Math.max(a,Math.min(b,x))}
+function dist(){return Math.abs(cx-px)}
+function render(){
+  const W=arena.clientWidth;
+  player.style.left=(px*W)+"px"; cpu.style.left=(cx*W)+"px";
+  pShadow.style.left=(px*W)+"px"; cShadow.style.left=(cx*W)+"px";
+  $("pHP").style.width=clamp(pHP,0,100)+"%";
+  $("cHP").style.width=clamp(cHP,0,100)+"%";
+  $("pText").textContent=Math.max(0,Math.round(pHP))+" HP";
+  $("cText").textContent=Math.max(0,Math.round(cHP))+" HP";
+  $("time").textContent=time;$("lvl").textContent=lvl;
+}
+function anim(el,cls){el.classList.remove("punchP","punchC","hurtP","hurtC");void el.offsetWidth;el.classList.add(cls);setTimeout(()=>el.classList.remove(cls),180)}
+function pop(txt,x){
+  const e=document.createElement("div");e.className="pop";e.textContent=txt;
+  e.style.left=(x*arena.clientWidth-20)+"px";e.style.top="42%";arena.appendChild(e);setTimeout(()=>e.remove(),520)
+}
+function playerHit(){
+  if(!playing||playerHitCooldown>0)return;
+  playerHitCooldown=.34;anim(player,"punchP");
+  if(dist()<.155){
+    const dmg=Math.round(9+Math.random()*5);
+    cHP-=dmg;anim(cpu,"hurtC");pop("-"+dmg,cx);
+    if(cHP<=0)return finish(true,"KO!");
+  }else pop("MISS",px);
+  render();
+}
+function cpuHit(){
+  if(cpuHitCooldown>0||!playing)return;
+  cpuHitCooldown=Math.max(.38,.78-(lvl-1)*.035);anim(cpu,"punchC");
+  if(dist()<.16){
+    const dmg=Math.round(5+(lvl-1)*.6+Math.random()*4);
+    pHP-=dmg;anim(player,"hurtP");pop("-"+dmg,px);
+    if(pHP<=0)return finish(false,"KO!");
+  }
+  render();
+}
+function step(t){
+  if(!last)last=t;
+  const dt=Math.min(.033,(t-last)/1000);last=t;
+  if(playing){
+    playerHitCooldown=Math.max(0,playerHitCooldown-dt);
+    cpuHitCooldown=Math.max(0,cpuHitCooldown-dt);
+
+    const pSpeed=.34;
+    px+=moveDir*pSpeed*dt;
+
+    const d=cx-px;
+    const abs=Math.abs(d);
+    const cpuSpeed=Math.min(.39,.20+(lvl-1)*.018);
+    let dir=0;
+    if(abs>.13) dir=d>0?-1:1;
+    else if(abs<.095 && Math.random()<.018) dir=d>0?1:-1;
+    cx+=dir*cpuSpeed*dt;
+
+    px=clamp(px,.07,.93);cx=clamp(cx,.07,.93);
+
+    if(Math.abs(cx-px)<.075){
+      const mid=(cx+px)/2;
+      if(cx>=px){px=mid-.038;cx=mid+.038}else{cx=mid-.038;px=mid+.038}
+    }
+
+    if(abs<.155 && Math.random() < (0.018 + lvl*.0015)) cpuHit();
+    render();
+  }
+  requestAnimationFrame(step);
+}
+function start(){
+  pHP=100;cHP=100;time=60;px=.24;cx=.76;moveDir=0;playing=true;last=0;
+  overlay.style.display="none";clearInterval(timerId);
+  timerId=setInterval(()=>{if(!playing)return;time--;render();if(time<=0){
+    if(pHP>cHP)finish(true,"TIME!");
+    else if(cHP>pHP)finish(false,"TIME!");
+    else finish(null,"DRAW");
+  }},1000);
+  render();
+}
+function finish(win,reason){
+  if(!playing)return;playing=false;clearInterval(timerId);moveDir=0;
+  pHP=Math.max(0,pHP);cHP=Math.max(0,cHP);render();
+  let title,body,button;
+  if(win===true){title="🏆 YOU WIN";body=`${reason}  You: ${Math.round(pHP)} HP · CPU: ${Math.round(cHP)} HP`;lvl++;button="NEXT LEVEL";}
+  else if(win===false){title="💥 CPU WINS";body=`${reason}  You: ${Math.round(pHP)} HP · CPU: ${Math.round(cHP)} HP`;button="RETRY LEVEL "+lvl;}
+  else{title="🤝 DRAW";body=`Both have ${Math.round(pHP)} HP`;button="RETRY LEVEL "+lvl;}
+  overlay.innerHTML=`<div class="card"><h1>${title}</h1><p>${body}</p><p>${win===true?"Black Box is faster and stronger next level.":"Move in, hit, then move away."}</p><button id="again" class="start">${button}</button></div>`;
+  overlay.style.display="flex";$("again").onclick=start;
+}
+function bindMove(btn,dir){
+  const down=e=>{e.preventDefault();moveDir=dir;btn.classList.add("active")};
+  const up=e=>{e.preventDefault();if(moveDir===dir)moveDir=0;btn.classList.remove("active")};
+  btn.addEventListener("pointerdown",down);btn.addEventListener("pointerup",up);
+  btn.addEventListener("pointercancel",up);btn.addEventListener("pointerleave",up);
+}
+bindMove(left,-1);bindMove(right,1);
+hit.addEventListener("pointerdown",e=>{e.preventDefault();playerHit()});
+$("start").onclick=start;
+window.addEventListener("keydown",e=>{
+  if(e.key==="ArrowLeft")moveDir=-1;
+  if(e.key==="ArrowRight")moveDir=1;
+  if(e.key===" "||e.key==="Enter")playerHit();
+});
+window.addEventListener("keyup",e=>{if(e.key==="ArrowLeft"&&moveDir===-1)moveDir=0;if(e.key==="ArrowRight"&&moveDir===1)moveDir=0});
+window.addEventListener("resize",render);
+render();requestAnimationFrame(step);
+})();
+</script>
+</body>
+</html>
