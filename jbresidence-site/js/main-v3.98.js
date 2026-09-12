@@ -896,6 +896,7 @@ function initArticleTranslateBtn() {
 // ---- Extended placeholder articles (all areas) ----
 const ALL_ARTICLES = [
   // Newest first
+  { title: 'Can Singaporeans Retire in Johor Bahru? A Practical 2026 Guide', title_zh: '新加坡人适合在新山退休吗？2026年实用指南', summary: 'An honest lifestyle-first guide to healthcare, transport, residency, budget and which JB area may suit a Singaporean retiree.', summary_zh: '从生活方式出发，诚实分析医疗、交通、居留、预算，以及新山不同地区是否适合新加坡退休人士。', body: 'exists', image_url: 'photos/jb-town/jb-to-sg.jpg', link: '/articles/can-singaporeans-retire-in-johor-bahru', area: 'General', topics: 'retirement,buying-guide,mm2h,jb-town,iskandar-puteri,forest-city' },
   { title: 'What Landed Property Can RM1 Million Buy in Iskandar Puteri in 2026?', title_zh: 'RM1 Million在依斯干达公主城可以买到什么有地住宅？', summary: 'A buyer-focused comparison of Estuari ParkHomes 2 and KSL Riveria Garden by space, location, schools, density and Singapore access.', summary_zh: '从空间、地点、国际学校、密度与新加坡通勤角度，比较Estuari ParkHomes 2和KSL Riveria Garden。', body: 'exists', image_url: 'photos/estuari/estuari-township-aerial.jpg', link: '/articles/rm1-million-landed-property-iskandar-puteri', area: 'Iskandar Puteri', topics: 'iskandar-puteri,buying-guide' },
   { title: 'Ascent Park Iskandar Puteri Review: Price, Layout, Pros and Cons', title_zh: 'Ascent Park依斯干达公主城评测：价格、户型、优点与考量', summary: 'An independent buyer-focused review of Ascent Park, including current prices, 25-foot-wide layouts, foreign buyer eligibility and who the project may suit.', summary_zh: '从买家角度分析Ascent Park目前价格、25尺宽户型、外国买家资格，以及这个项目适合哪类买家。', body: 'exists', image_url: 'photos/ascent-park/ascent-park-show-unit-living-kitchen.jpg', link: '/articles/ascent-park-iskandar-puteri-review', area: 'Iskandar Puteri', topics: 'iskandar-puteri,buying-guide' },
   { title: 'Can Foreigners Buy Property Below RM1 Million in Johor Bahru?', title_zh: '外国人可以在新山购买RM1 million以下的房产吗？', summary: 'Three possible routes for foreign buyers: selected approved new projects, Medini and Forest City — plus what to check before paying a booking fee.', summary_zh: '外国买家的三种可能路线：获得批准的新项目、Medini和Forest City，以及支付订金前必须确认的事项。', body: 'exists', image_url: 'photos/jb-town/jb-bay.jpg', link: '/articles/foreigner-buy-johor-property-below-rm1-million', area: 'General', topics: 'buying-guide' },
@@ -1167,6 +1168,10 @@ async function renderAllArticles(targetSelector, limit) {
   }
   if (limit) list = list.slice(0, limit);
   target.innerHTML = list.map(a => articleCardHtmlExtended(a)).join('');
+  const activeTopic = document.querySelector('.topic-filter-btn.active')?.dataset.filter;
+  if (target.id === 'all-articles' && activeTopic && activeTopic !== 'all' && typeof filterArticleCards === 'function') {
+    filterArticleCards(activeTopic);
+  }
   initReveal();
 }
 
