@@ -140,7 +140,7 @@ const PLACEHOLDER_PROJECTS = [
     slug: 'horizon-hills', area: 'Iskandar Puteri', project_name: 'Horizon Hills',
     tagline: 'Gated golf community, mature landscaping', price_range: 'RM 2.5M – RM 6M',
     tenure: 'Freehold', commute_note: '~15 min to Second Link',
-    description: "Horizon Hills is one of Iskandar Puteri's most established landed townships, built around an 18-hole golf course with 24-hour guarded security across its precincts. It's a common shortlist entry for families relocating from Singapore and for retirees prioritising lifestyle infrastructure over proximity to the city centre.",
+    description: "Horizon Hills is one of Iskandar Puteri's most established landed townships, built around an 18-hole golf course with 24-hour guarded security across its precincts. It's a common shortlist entry for families relocating from Singapore and for retirees prioritising lifestyle infrastructure over proximity to the city centre.\n\nIt may suit households that want a guarded landed environment, golf and mature landscaping, and that can support a higher purchase budget. It may be less suitable for buyers seeking a low entry price, compact high-rise ownership or a home within walking distance of JB city-centre transport links. Compare the exact precinct, house condition, renovation needs and daily route before deciding.",
     status: 'Now Selling',
     image_url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1200&auto=format&fit=crop',
     published: 'TRUE'
@@ -149,7 +149,7 @@ const PLACEHOLDER_PROJECTS = [
     slug: 'eco-botanic', area: 'Iskandar Puteri', project_name: 'Eco Botanic',
     tagline: 'Eco-themed township, strong family amenities', price_range: 'RM 1.8M – RM 4.5M',
     tenure: 'Freehold', commute_note: '~20 min to Second Link',
-    description: "Eco Botanic is a nature-themed township with extensive parks, lakes, and family-oriented amenities. It draws buyers looking for a balance between greenery and connectivity, with schools and retail options developing steadily around it.",
+    description: "Eco Botanic is a nature-themed township with extensive parks, lakes, and family-oriented amenities. It draws buyers looking for a balance between greenery and connectivity, with schools and retail options developing steadily around it.\n\nIt may suit families that value a planned township environment and outdoor space within the Iskandar Puteri corridor. It may be less suitable when the shortest possible trip to central Johor Bahru or the lowest purchase budget is the first priority. Buyers should compare the precise phase, traffic pattern, maintenance obligations and total ownership cost.",
     status: 'Now Selling',
     image_url: 'https://images.unsplash.com/photo-1592595896551-12b371d546d5?q=80&w=1200&auto=format&fit=crop',
     published: 'TRUE'
@@ -158,7 +158,7 @@ const PLACEHOLDER_PROJECTS = [
     slug: 'east-ledang', area: 'Iskandar Puteri', project_name: 'East Ledang',
     tagline: 'Premium gated enclave, larger plot sizes', price_range: 'RM 2M – RM 5M',
     tenure: 'Freehold', commute_note: '~25 min to Second Link',
-    description: "East Ledang is a premium gated enclave known for larger plot sizes and a quieter, more exclusive feel than some of its neighbouring townships. Popular with upgrading families wanting more space without moving further from the city.",
+    description: "East Ledang is a premium gated enclave known for larger plot sizes and a quieter, more exclusive feel than some of its neighbouring townships. It is often considered by upgrading families that want more land and privacy within Iskandar Puteri.\n\nIt may suit buyers who value space, a lower-density setting and a freehold landed home. It may be less suitable for buyers prioritising compact maintenance, a lower entry price or city-centre walkability. Compare the individual property's condition, security arrangement and driving routes with nearby alternatives.",
     status: 'Now Selling',
     image_url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop',
     published: 'TRUE'
@@ -992,7 +992,7 @@ const EXTENDED_PROJECTS = [
     slug: 'forest-city-golf-villa', area: 'Forest City', project_name: 'Forest City Golf Villa',
     tagline: 'Private landed villa on the golf course', price_range: 'RM 1.5M – RM 3.5M',
     tenure: 'Strata', commute_note: '~30 min to Second Link',
-    description: "The Forest City Golf Villa (V120) is a two-storey landed strata property set directly on the golf course, with a private garden, rooftop terrace, and a 5-year golf membership included.",
+    description: "The Forest City Golf Villa (V120) is a two-storey landed strata property set directly on the golf course, with a private garden, rooftop terrace, and a 5-year golf membership included. The format combines landed-style private space with a managed resort environment.\n\nIt may suit golfers, retirees or families who value outdoor space and a quieter resort setting more than city-centre access. It may be less suitable for buyers who require an individual land title, make frequent trips into central Johor Bahru or want mature everyday retail immediately outside the community. Compare ongoing strata charges, actual unit condition and travel patterns before committing.",
     status: 'Now Selling',
     image_url: 'photos/villa-garden-exterior.jpg',
     published: 'TRUE'
@@ -1001,7 +1001,7 @@ const EXTENDED_PROJECTS = [
     slug: 'forest-city-high-rise', area: 'Forest City', project_name: 'Forest City High Rise',
     tagline: 'Sea-view apartments, resort facilities', price_range: 'RM 400K – RM 1.5M',
     tenure: 'Strata', commute_note: '~30 min to Second Link',
-    description: "Forest City's high-rise apartments offer sea views, resort-style pools, and island living at price points that are hard to match this close to Singapore.",
+    description: "Forest City's high-rise apartments offer sea views, resort-style pools and an island environment across a range of unit sizes and price points. The lifestyle is distinct from a mainland Johor Bahru condominium.\n\nThey may suit buyers who value views, resort facilities and a quieter setting more than city-centre convenience. They may be less suitable for households that need frequent access to central Johor Bahru, prefer individual land titles or want mature mainland amenities immediately outside the development. Compare the specific tower, occupancy, maintenance record and actual travel time rather than judging the whole area as one product.",
     status: 'Now Selling',
     image_url: 'fc-pool.jpg',
     published: 'TRUE'

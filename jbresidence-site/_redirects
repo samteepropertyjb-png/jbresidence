@@ -1,0 +1,13 @@
+# Preserve signals from the former WordPress/Astra URL structure.
+/wp-content/themes/astra/articles/index.html                                  / 301
+/wp-content/themes/astra/articles/about-sam-tee.html                          /about-sam-tee 301
+/wp-content/themes/astra/articles/articles.html                               /articles 301
+/wp-content/themes/astra/articles/projects.html                               /projects 301
+/wp-content/themes/astra/articles/iskandar-puteri.html                        /iskandar-puteri 301
+/wp-content/themes/astra/articles/jb-town.html                                /jb-town 301
+/wp-content/themes/astra/articles/forest-city.html                            /forest-city 301
+/wp-content/themes/astra/articles/second-link-sunway-city-vs-forest-city.html /articles/second-link-sunway-city-vs-forest-city 301
+/wp-content/themes/astra/articles/horizon-hills-vs-eco-botanic-vs-east-ledang.html /articles/horizon-hills-vs-eco-botanic-vs-east-ledang 301
+/wp-content/themes/astra/articles/articles/articles.html                      /articles 301
+/wp-content/themes/astra/articles/articles/*                                  /articles/:splat 301
+/articles/articles.html                                                        /articles 301
