@@ -969,6 +969,71 @@ footer {
   margin-top: 14px;
 }
 
+/* ---------- Project WhatsApp CTA ---------- */
+
+.project-whatsapp-cta {
+  background: var(--navy-900);
+  color: var(--white);
+  padding: 72px 0;
+  text-align: center;
+}
+
+.project-whatsapp-cta .section-title { color: var(--white); }
+.project-whatsapp-cta .section-sub { color: rgba(255,255,255,0.68); }
+
+.project-cta-flow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  max-width: 860px;
+  margin: 30px auto;
+  text-align: left;
+}
+
+.project-cta-step {
+  padding: 18px;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: var(--radius);
+  background: rgba(255,255,255,0.04);
+}
+
+.project-cta-step strong {
+  display: block;
+  color: var(--gold-400);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.project-cta-step span {
+  display: block;
+  color: rgba(255,255,255,0.76);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.project-wa-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #25D366;
+  color: #062713;
+  padding: 15px 28px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.project-wa-btn:hover { transform: translateY(-2px); background: #4ade80; }
+
+@media (max-width: 700px) {
+  .project-cta-flow { grid-template-columns: 1fr; }
+  .project-whatsapp-cta { padding: 56px 0; }
+}
+
 /* ---------- Profile split section ---------- */
 
 @media (max-width: 860px) {

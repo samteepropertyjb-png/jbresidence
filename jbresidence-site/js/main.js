@@ -195,29 +195,28 @@ const PLACEHOLDER_PROJECTS = [
   },
   {
     slug: 'summer-suites', area: 'JB Town', project_name: 'Summer Suites',
-    tagline: 'Freehold dual-key suites in the heart of JB Town — priced below market at 15-year-old land cost',
-    price_range: 'From RM 580K',
+    tagline: 'Freehold serviced apartments near the JB CIQ and RTS corridor',
+    price_range: 'Brochure price RM 620K–RM 1.068M',
     tenure: 'Freehold',
-    commute_note: 'Minutes to JB CIQ · 10 min to JB Sentral · Walking distance to City Square & KSL City',
-    description: "Summer Suites sits at Jalan Tenteram, Johor Bahru Town — the original city centre, where everything is walkable and nothing is further than ten minutes away. The project is developed by Connoisseur Properties Sdn Bhd, whose track record includes the completed Ledang Heights township in Nusajaya.\n\nWhat makes this project different from other JB Town launches is its price point. The developer acquired this land 15 years ago, long before Johor Bahru's property market reacted to the RTS Link announcement and the JS-SEZ framework. As a result, Summer Suites is priced at RM 968–1,095 per square foot — at a time when comparable completed condominiums in the same corridor are transacting at RM 1,100–1,300 psf. You are buying into the city centre at a discount to the existing resale market, backed by a freehold title.\n\nAll three unit types are designed around the Dual Key concept — two lockable, self-contained spaces within a single unit, each with its own entrance where applicable. This gives buyers the flexibility to live in one key and rent the other, or lease both keys separately to different tenants. The projected room-rental yields range from 6.5% to 8% depending on unit type, significantly ahead of traditional single-let configurations in the same area.\n\nThe JB Town location means your tenants have immediate access to everything that drives rental demand in this corridor: Johor Bahru Customs, Immigration and Quarantine (CIQ) is minutes away, placing this address directly in the cross-border commuter catchment. City Square mall, KSL City Mall, Hospital Sultanah Aminah, and JB Sentral (the intercity rail terminal) are all within a short drive or walk. The RTS Link Bukit Chagar station, connecting Johor Bahru directly to Singapore's Thomson-East Coast MRT line, sits in the same urban cluster. For tenants commuting to Singapore without a car, this postcode has no substitute in Johor Bahru.\n\nThe project comes with a partial furnish package — aircon, water heater, kitchen cabinet, and digital door lock — reducing the fit-out cost and time before a unit can be rented out. A 90% loan margin is available, with progressive interest payments during construction keeping holding costs low in the early stages.",
+    commute_note: 'Covered route to RTS and CIQ within 850m (brochure claim)',
+    description: "Summer Suites (Residensi Bukit Meldrum) is a 748-unit freehold serviced apartment in the JB city-centre corridor, with brochure unit sizes from 599 to 912 sq ft and estimated completion in June 2029. Type A is a 3-bedroom dual-key layout, Type B is a conventional 2+1-bedroom home, and Type C is a compact dual-studio layout. The brochure describes a covered route to the RTS and CIQ within 850 metres. Its suitability depends on whether the city-centre location and layout flexibility match the buyer's own-stay or investment plan.",
     unit_types: [
       { type: 'Type A — Dual Key (3 bed / 3 bath)', size: '912 sq ft' },
       { type: 'Type B — 2+1 bed / 2 bath', size: '808 sq ft' },
-      { type: 'Type C — Dual Key (Studio + 1 bed / 2 bath)', size: '599 sq ft' },
+      { type: 'Type C — Dual Studio / 2 bath', size: '599 sq ft' },
     ],
     features: [
-      'Freehold title in the heart of JB Town',
-      'Priced at RM 968–1,095 psf — below the resale market (RM 1,100–1,300 psf) thanks to land acquired 15 years ago',
-      'Dual Key layout across all types — live in one, rent the other, or maximise room-rental yield',
-      'Room-rental ROI projected at 6.5%–8% depending on unit type',
-      'Minutes to JB CIQ — within the cross-border commuter rental catchment',
-      'Walking distance to City Square, KSL City Mall, Hospital Sultanah Aminah, and JB Sentral',
-      'RTS Link Bukit Chagar station in the same urban corridor — Singapore rail access for tenants',
-      '90% loan margin, 4.2% interest, 35-year tenure — low entry capital required',
-      'Partial furnish package included: aircon, water heater, kitchen cabinet, digital door lock',
+      'Freehold serviced apartment in Bukit Meldrum, JB Town',
+      '748 units with estimated completion in June 2029',
+      'Type A: 912 sq ft, 3 bedrooms, 3 bathrooms, dual key',
+      'Type B: 808 sq ft, 2+1 bedrooms, 2 bathrooms',
+      'Type C: 599 sq ft, dual studio, 2 bathrooms',
+      'Brochure selling prices from RM 620,000 to RM 1,068,000',
+      'Brochure-described covered route to the RTS and CIQ within 850 metres',
+      '20 listed facilities including pool, gym, co-working and family spaces',
     ],
     status: 'Now Selling',
-    image_url: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?q=80&w=1200&auto=format&fit=crop',
+    image_url: 'photos/jb-town/summersuites.jpg',
     published: 'TRUE'
   },
   {
@@ -350,7 +349,7 @@ async function renderProjectPage(forcedSlug) {
   const areaSlugMap = { 'Iskandar Puteri': '/iskandar-puteri', 'JB Town': '/jb-town', 'Forest City': '/forest-city' };
   const areaHref = areaSlugMap[p.area] || '/';
   const descParagraphs = (p.description || '').split('\n\n').filter(Boolean).map(t => `<p style="color: var(--ink-muted); margin-bottom: 16px;">${t}</p>`).join('');
-  const waMsg = encodeURIComponent(`Hi Sam, I'm interested in ${p.project_name}.`);
+  const waMsg = encodeURIComponent(`Hi Sam, I'm interested in ${p.project_name}. Please share the latest promotion, price and available units.`);
   const heroImage = /^https?:\/\//.test(p.image_url || '') || (p.image_url || '').startsWith('/')
     ? (p.image_url || '')
     : `/${p.image_url || ''}`;
@@ -444,36 +443,17 @@ async function renderProjectPage(forcedSlug) {
       </div>
     </section>` : ''}
 
-    <section class="on-offwhite">
+    <section class="project-whatsapp-cta">
       <div class="wrap">
-        <div style="text-align: center; margin-bottom: 40px;">
-          <div class="eyebrow reveal" style="justify-content:center; display:flex;">Interested in ${p.project_name}</div>
-          <h2 class="section-title reveal" style="margin-top: 8px;">Send your details, I'll follow up directly</h2>
-          <p class="section-sub reveal" style="margin: 14px auto 0; text-align: center;">A short note on your budget and timeline helps me bring you the right listings, not just any listings.</p>
+        <div class="eyebrow reveal" style="justify-content:center; display:flex; color:var(--gold-400);">Latest ${p.project_name} Update</div>
+        <h2 class="section-title reveal" style="margin-top:8px;">PM me for the latest promotion, price and available units</h2>
+        <p class="section-sub reveal" style="margin:14px auto 0; text-align:center; max-width:680px;">Message me on WhatsApp. I’ll share the current information first, understand whether you are buying for own stay or investment, and arrange a viewing only if the project fits your needs.</p>
+        <div class="project-cta-flow reveal">
+          <div class="project-cta-step"><strong>Step 1</strong><span>Receive the latest promotion, price and available-unit list.</span></div>
+          <div class="project-cta-step"><strong>Step 2</strong><span>Share your budget, purpose and preferred layout.</span></div>
+          <div class="project-cta-step"><strong>Step 3</strong><span>Compare options or arrange a viewing if it is suitable.</span></div>
         </div>
-        <form class="enquiry-form reveal" action="https://formspree.io/f/mgojdzww" method="POST">
-          <input type="hidden" name="project" value="${p.project_name}">
-          <div class="form-row">
-            <div class="field">
-              <label for="pf-name">Name</label>
-              <input type="text" id="pf-name" name="name" required>
-            </div>
-            <div class="field">
-              <label for="pf-phone">Phone / WhatsApp <span style="font-weight:400; color:var(--ink-muted); font-size:0.85em;">(include country code)</span></label>
-              <input type="tel" id="pf-phone" name="phone" placeholder="e.g. +601156348518" required>
-            </div>
-          </div>
-          <div class="field">
-            <label for="pf-email">Email</label>
-            <input type="email" id="pf-email" name="email" required>
-          </div>
-          <div class="field">
-            <label for="pf-message">Message</label>
-            <textarea id="pf-message" name="message" placeholder="Tell me about your budget, timeline, and what you're looking for..."></textarea>
-          </div>
-          <button type="submit" class="btn btn-gold form-submit">Send enquiry</button>
-          <p class="form-note">Or skip the form — <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${waMsg}" target="_blank" rel="noopener" style="color: var(--navy-900); font-weight: 600;">message me directly on WhatsApp</a>.</p>
-        </form>
+        <a class="project-wa-btn reveal" href="https://wa.me/${WHATSAPP_NUMBER}?text=${waMsg}" target="_blank" rel="noopener">PM Sam on WhatsApp</a>
       </div>
     </section>`;
 
@@ -1051,26 +1031,25 @@ const EXTENDED_PROJECTS = [
   },
   {
     slug: 'summer-suites', area: 'JB Town', project_name: 'Summer Suites',
-    tagline: 'Freehold dual-key suites in the heart of JB Town — priced below market at 15-year-old land cost',
-    price_range: 'From RM 580K',
+    tagline: 'Freehold serviced apartments near the JB CIQ and RTS corridor',
+    price_range: 'Brochure price RM 620K–RM 1.068M',
     tenure: 'Freehold',
-    commute_note: 'Minutes to JB CIQ · 10 min to JB Sentral · Walking distance to City Square & KSL City',
-    description: "Summer Suites sits at Jalan Tenteram, Johor Bahru Town — the original city centre, where everything is walkable and nothing is further than ten minutes away. The project is developed by Connoisseur Properties Sdn Bhd, whose track record includes the completed Ledang Heights township in Nusajaya.\n\nWhat makes this project different from other JB Town launches is its price point. The developer acquired this land 15 years ago, long before Johor Bahru's property market reacted to the RTS Link announcement and the JS-SEZ framework. As a result, Summer Suites is priced at RM 968–1,095 per square foot — at a time when comparable completed condominiums in the same corridor are transacting at RM 1,100–1,300 psf. You are buying into the city centre at a discount to the existing resale market, backed by a freehold title.\n\nAll three unit types are designed around the Dual Key concept — two lockable, self-contained spaces within a single unit, each with its own entrance where applicable. This gives buyers the flexibility to live in one key and rent the other, or lease both keys separately to different tenants. The projected room-rental yields range from 6.5% to 8% depending on unit type, significantly ahead of traditional single-let configurations in the same area.\n\nThe JB Town location means your tenants have immediate access to everything that drives rental demand in this corridor: Johor Bahru Customs, Immigration and Quarantine (CIQ) is minutes away, placing this address directly in the cross-border commuter catchment. City Square mall, KSL City Mall, Hospital Sultanah Aminah, and JB Sentral (the intercity rail terminal) are all within a short drive or walk. The RTS Link Bukit Chagar station, connecting Johor Bahru directly to Singapore's Thomson-East Coast MRT line, sits in the same urban cluster. For tenants commuting to Singapore without a car, this postcode has no substitute in Johor Bahru.\n\nThe project comes with a partial furnish package — aircon, water heater, kitchen cabinet, and digital door lock — reducing the fit-out cost and time before a unit can be rented out. A 90% loan margin is available, with progressive interest payments during construction keeping holding costs low in the early stages.",
+    commute_note: 'Covered route to RTS and CIQ within 850m (brochure claim)',
+    description: "Summer Suites (Residensi Bukit Meldrum) is a 748-unit freehold serviced apartment in the JB city-centre corridor, with brochure unit sizes from 599 to 912 sq ft and estimated completion in June 2029. Type A is a 3-bedroom dual-key layout, Type B is a conventional 2+1-bedroom home, and Type C is a compact dual-studio layout. The brochure describes a covered route to the RTS and CIQ within 850 metres. Its suitability depends on whether the city-centre location and layout flexibility match the buyer's own-stay or investment plan.",
     unit_types: [
       { type: 'Type A — Dual Key (3 bed / 3 bath)', size: '912 sq ft' },
       { type: 'Type B — 2+1 bed / 2 bath', size: '808 sq ft' },
-      { type: 'Type C — Dual Key (Studio + 1 bed / 2 bath)', size: '599 sq ft' },
+      { type: 'Type C — Dual Studio / 2 bath', size: '599 sq ft' },
     ],
     features: [
-      'Freehold title in the heart of JB Town',
-      'Priced at RM 968–1,095 psf — below the resale market (RM 1,100–1,300 psf) thanks to land acquired 15 years ago',
-      'Dual Key layout across all types — live in one, rent the other, or maximise room-rental yield',
-      'Room-rental ROI projected at 6.5%–8% depending on unit type',
-      'Minutes to JB CIQ — within the cross-border commuter rental catchment',
-      'Walking distance to City Square, KSL City Mall, Hospital Sultanah Aminah, and JB Sentral',
-      'RTS Link Bukit Chagar station in the same urban corridor — Singapore rail access for tenants',
-      '90% loan margin, 4.2% interest, 35-year tenure — low entry capital required',
-      'Partial furnish package included: aircon, water heater, kitchen cabinet, digital door lock',
+      'Freehold serviced apartment in Bukit Meldrum, JB Town',
+      '748 units with estimated completion in June 2029',
+      'Type A: 912 sq ft, 3 bedrooms, 3 bathrooms, dual key',
+      'Type B: 808 sq ft, 2+1 bedrooms, 2 bathrooms',
+      'Type C: 599 sq ft, dual studio, 2 bathrooms',
+      'Brochure selling prices from RM 620,000 to RM 1,068,000',
+      'Brochure-described covered route to the RTS and CIQ within 850 metres',
+      '20 listed facilities including pool, gym, co-working and family spaces',
     ],
     status: 'Now Selling',
     image_url: 'photos/jb-town/summersuites.jpg',
