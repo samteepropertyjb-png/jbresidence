@@ -976,11 +976,11 @@ const EXTENDED_PROJECTS = [
   },
   {
     slug: 'forest-city-golf-villa', area: 'Forest City', project_name: 'Forest City Golf Villa',
-    tagline: 'Private landed villa on the golf course', price_range: 'RM 1.5M – RM 3.5M',
-    tenure: 'Strata', commute_note: '~30 min to Second Link',
-    description: "The Forest City Golf Villa (V120) is a two-storey landed strata property set directly on the golf course, with a private garden, rooftop terrace, and a 5-year golf membership included. The format combines landed-style private space with a managed resort environment.\n\nIt may suit golfers, retirees or families who value outdoor space and a quieter resort setting more than city-centre access. It may be less suitable for buyers who require an individual land title, make frequent trips into central Johor Bahru or want mature everyday retail immediately outside the community. Compare ongoing strata charges, actual unit condition and travel patterns before committing.",
+    tagline: 'Completed freehold homes inside the golf resort', price_range: 'V120 RM 1.5M · V160 RM 1.8M',
+    tenure: 'Freehold Strata', commute_note: '~5 km to Second Link corridor',
+    description: "Forest City Golf Villa offers two completed landed-style layouts inside Forest City Golf Resort. V120 has 2 bedrooms, 2 bathrooms and approximately 2,034 sq ft, while V160 has 3 bedrooms, 3 bathrooms and approximately 2,917 sq ft. Both combine indoor living with private garden and open-terrace space.\n\nIt may suit golfers, Singapore-based buyers using the Second Link, and second-home or retirement buyers who prefer a quiet environment and are comfortable driving for daily needs.",
     status: 'Now Selling',
-    image_url: 'photos/villa-garden-exterior.jpg',
+    image_url: 'photos/forest-city/forest-city-site-2.jpg',
     published: 'TRUE'
   },
   {
