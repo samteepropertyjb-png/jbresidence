@@ -1107,12 +1107,21 @@ async function getProjectsExtended() {
   return localProjects;
 }
 
+// Keep established subsale townships available as guides, but omit them from
+// the active project catalogue.
+const PROJECT_LISTING_EXCLUDED_SLUGS = new Set([
+  'horizon-hills',
+  'eco-botanic',
+  'east-ledang'
+]);
+
 // Updated renderProjects to accept optional limit and work for all areas or specific area
 async function renderProjects(area, targetSelector, limit) {
   const target = document.querySelector(targetSelector);
   if (!target) return;
   const all = await getProjectsExtended();
-  let list = area ? all.filter(p => p.area === area) : all;
+  let list = all.filter(p => !PROJECT_LISTING_EXCLUDED_SLUGS.has(p.slug));
+  if (area) list = list.filter(p => p.area === area);
   // If Sheet returned data but nothing for this area, fall back to EXTENDED_PROJECTS for this area
   if (!list.length && area) {
     list = EXTENDED_PROJECTS.filter(p => p.area === area);
