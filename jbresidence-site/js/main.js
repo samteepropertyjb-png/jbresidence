@@ -984,10 +984,10 @@ const EXTENDED_PROJECTS = [
     published: 'TRUE'
   },
   {
-    slug: 'forest-city-high-rise', area: 'Forest City', project_name: 'Forest City High Rise',
-    tagline: 'Sea-view apartments, resort facilities', price_range: 'RM 400K – RM 1.5M',
-    tenure: 'Strata', commute_note: '~30 min to Second Link',
-    description: "Forest City's high-rise apartments offer sea views, resort-style pools and an island environment across a range of unit sizes and price points. The lifestyle is distinct from a mainland Johor Bahru condominium.\n\nThey may suit buyers who value views, resort facilities and a quieter setting more than city-centre convenience. They may be less suitable for households that need frequent access to central Johor Bahru, prefer individual land titles or want mature mainland amenities immediately outside the development. Compare the specific tower, occupancy, maintenance record and actual travel time rather than judging the whole area as one product.",
+    slug: 'forest-city-high-rise', area: 'Forest City', project_name: 'Forest City High-Rise',
+    tagline: 'Completed waterfront apartments with resort facilities', price_range: 'RM577,252 – RM2,697,700',
+    tenure: 'Freehold Strata', commute_note: 'Second Link corridor',
+    description: "Forest City High-Rise offers six current choices from a 517 sq ft 1+1-room unit to a 1,841 sq ft four-room home. Prices supplied for this page range from RM577,252 to RM2,697,700.\n\nY225, Y076 and Y221 are practical starting choices for many MM2H applicants. The project may suit buyers who value a completed waterfront resort environment and are comfortable driving for their daily routine.",
     status: 'Now Selling',
     image_url: 'fc-pool.jpg',
     published: 'TRUE'
