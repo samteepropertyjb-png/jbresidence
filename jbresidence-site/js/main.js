@@ -350,7 +350,7 @@ async function renderProjectPage(forcedSlug) {
   const areaSlugMap = { 'Iskandar Puteri': '/iskandar-puteri', 'JB Town': '/jb-town', 'Forest City': '/forest-city' };
   const areaHref = areaSlugMap[p.area] || '/';
   const descParagraphs = (p.description || '').split('\n\n').filter(Boolean).map(t => `<p style="color: var(--ink-muted); margin-bottom: 16px;">${t}</p>`).join('');
-  const waMsg = encodeURIComponent(`Hi Sam, I'm interested in ${p.project_name}. Please share the latest promotion, price and available units.`);
+  const waMsg = encodeURIComponent(`Hi Sam, I'm interested in ${p.project_name}. Please share the latest available units and sales package.`);
   const heroImage = /^https?:\/\//.test(p.image_url || '') || (p.image_url || '').startsWith('/')
     ? (p.image_url || '')
     : `/${p.image_url || ''}`;
@@ -447,10 +447,10 @@ async function renderProjectPage(forcedSlug) {
     <section class="project-whatsapp-cta">
       <div class="wrap">
         <div class="eyebrow reveal" style="justify-content:center; display:flex; color:var(--gold-400);">Latest ${p.project_name} Update</div>
-        <h2 class="section-title reveal" style="margin-top:8px;">PM me for the latest promotion, price and available units</h2>
+        <h2 class="section-title reveal" style="margin-top:8px;">Ask for the latest available units and sales package</h2>
         <p class="section-sub reveal" style="margin:14px auto 0; text-align:center; max-width:680px;">Message me on WhatsApp. I’ll share the current information first, understand whether you are buying for own stay or investment, and arrange a viewing only if the project fits your needs.</p>
         <div class="project-cta-flow reveal">
-          <div class="project-cta-step"><strong>Step 1</strong><span>Receive the latest promotion, price and available-unit list.</span></div>
+          <div class="project-cta-step"><strong>Step 1</strong><span>Receive the latest available-unit list and sales package.</span></div>
           <div class="project-cta-step"><strong>Step 2</strong><span>Share your budget, purpose and preferred layout.</span></div>
           <div class="project-cta-step"><strong>Step 3</strong><span>Compare options or arrange a viewing if it is suitable.</span></div>
         </div>
@@ -950,7 +950,7 @@ const EXTENDED_PROJECTS = [
   {
     slug: 'riveria-garden-wawari', area: 'Iskandar Puteri', project_name: 'Riveria Garden @ Wawari',
     tagline: 'KSL freehold riverside township — 627 acres along Sungai Melayu, minutes from EduCity',
-    price_range: 'Enquire for latest Terrace & Cluster prices',
+    price_range: 'Terrace from RM 1M · Cluster from RM 1.5M',
     tenure: 'Freehold',
     commute_note: 'Minutes to Tuas Checkpoint via Second Link Expressway',
     description: "Riveria Garden @ Wawari is KSL Holdings' flagship township project in Iskandar Puteri — a 627-acre freehold master-planned community built along the scenic Sungai Melayu riverfront. It is one of the largest freehold landed developments to launch in Iskandar Puteri in recent years, positioned at the quieter, greener end of the district near EduCity and the Tuas Checkpoint corridor.\n\nTwo product types are available. Riveria Garden Terrace offers 20' x 70' land and 2,219 sq ft built-up. Riveria Garden Cluster steps up to a wider 32' x 70' land and 2,592 sq ft built-up. Both types carry freehold individual land titles.\n\nThe township is built around three core ideas. First, individual freehold land titles on every unit — not strata, not leasehold. Second, a riverside setting: the development faces Sungai Melayu, with landscaped riverfront promenades designed as the centrepiece of daily community life. Third, a scaled amenities programme anchored by The Wawari Club — a full-facility club with co-working lounges, sports courts, gymnasium, and swimming facilities, plus dedicated jogging and cycling tracks throughout the community.\n\nConnectivity is a key part of the proposition. The site sits within reach of the Iskandar Coastal Highway, the Second Link Expressway (Tuas), and the Pasir Gudang-Perling Highway — giving residents multiple route options to Singapore and JB Town. EduCity, with its cluster of international schools and university campuses, is nearby, making this a natural choice for families who prioritise education infrastructure. Gleneagles Hospital Medini is also within the broader Iskandar Puteri catchment.\n\nAs a new KSL township, Riveria Garden represents a primary market purchase — progressive payment schedule, developer warranty, and new-launch specifications. The freehold title, generous built-up sizes, and riverside positioning place it in a compelling segment for buyers who want more space than a typical JB Town high-rise at a more accessible price than the established Horizon Hills or Eco Botanic resale market.",
