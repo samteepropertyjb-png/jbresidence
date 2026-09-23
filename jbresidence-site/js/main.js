@@ -950,21 +950,20 @@ const EXTENDED_PROJECTS = [
   {
     slug: 'riveria-garden-wawari', area: 'Iskandar Puteri', project_name: 'Riveria Garden @ Wawari',
     tagline: 'KSL freehold riverside township — 627 acres along Sungai Melayu, minutes from EduCity',
-    price_range: 'From RM 900K (Terrace) · From RM 1.32M net (Cluster)',
+    price_range: 'Enquire for latest Terrace & Cluster prices',
     tenure: 'Freehold',
     commute_note: 'Minutes to Tuas Checkpoint via Second Link Expressway',
-    description: "Riveria Garden @ Wawari is KSL Holdings' flagship township project in Iskandar Puteri — a 627-acre freehold master-planned community built along the scenic Sungai Melayu riverfront. It is one of the largest freehold landed developments to launch in Iskandar Puteri in recent years, positioned at the quieter, greener end of the district near EduCity and the Tuas Checkpoint corridor.\n\nTwo product types are available. The Double Storey Terrace offers 20' x 70' land and a massive 2,219 sq ft built-up, priced from RM 900K — making it one of the most generously sized terrace entries in this price band in Iskandar Puteri. The Elora Double Storey Cluster House steps up to a wider 32' x 70' land and 2,592 sq ft built-up, at a net price from approximately RM 1.32M (north-facing intermediate) to RM 1.34M (south-facing intermediate). Both types carry freehold individual land titles.\n\nThe township is built around three core ideas. First, individual freehold land titles on every unit — not strata, not leasehold. Second, a riverside setting: the development faces Sungai Melayu, with landscaped riverfront promenades designed as the centrepiece of daily community life. Third, a scaled amenities programme anchored by The Wawari Club — a full-facility club with co-working lounges, sports courts, gymnasium, and swimming facilities, plus dedicated jogging and cycling tracks throughout the community.\n\nConnectivity is a key part of the proposition. The site sits within reach of the Iskandar Coastal Highway, the Second Link Expressway (Tuas), and the Pasir Gudang-Perling Highway — giving residents multiple route options to Singapore and JB Town. EduCity, with its cluster of international schools and university campuses, is nearby, making this a natural choice for families who prioritise education infrastructure. Gleneagles Hospital Medini is also within the broader Iskandar Puteri catchment.\n\nAs a new KSL township, Riveria Garden represents a primary market purchase — progressive payment schedule, developer warranty, and new-launch specifications. The freehold title, generous built-up sizes, and riverside positioning place it in a compelling segment for buyers who want more space than a typical JB Town high-rise at a more accessible price than the established Horizon Hills or Eco Botanic resale market.",
+    description: "Riveria Garden @ Wawari is KSL Holdings' flagship township project in Iskandar Puteri — a 627-acre freehold master-planned community built along the scenic Sungai Melayu riverfront. It is one of the largest freehold landed developments to launch in Iskandar Puteri in recent years, positioned at the quieter, greener end of the district near EduCity and the Tuas Checkpoint corridor.\n\nTwo product types are available. Riveria Garden Terrace offers 20' x 70' land and 2,219 sq ft built-up. Riveria Garden Cluster steps up to a wider 32' x 70' land and 2,592 sq ft built-up. Both types carry freehold individual land titles.\n\nThe township is built around three core ideas. First, individual freehold land titles on every unit — not strata, not leasehold. Second, a riverside setting: the development faces Sungai Melayu, with landscaped riverfront promenades designed as the centrepiece of daily community life. Third, a scaled amenities programme anchored by The Wawari Club — a full-facility club with co-working lounges, sports courts, gymnasium, and swimming facilities, plus dedicated jogging and cycling tracks throughout the community.\n\nConnectivity is a key part of the proposition. The site sits within reach of the Iskandar Coastal Highway, the Second Link Expressway (Tuas), and the Pasir Gudang-Perling Highway — giving residents multiple route options to Singapore and JB Town. EduCity, with its cluster of international schools and university campuses, is nearby, making this a natural choice for families who prioritise education infrastructure. Gleneagles Hospital Medini is also within the broader Iskandar Puteri catchment.\n\nAs a new KSL township, Riveria Garden represents a primary market purchase — progressive payment schedule, developer warranty, and new-launch specifications. The freehold title, generous built-up sizes, and riverside positioning place it in a compelling segment for buyers who want more space than a typical JB Town high-rise at a more accessible price than the established Horizon Hills or Eco Botanic resale market.",
     unit_types: [
-      { type: 'Double Storey Terrace', size: '20\' x 70\' land · 2,219 sq ft built-up · From RM 900K' },
-      { type: 'Elora Double Storey Cluster (North)', size: '32\' x 70\' land · 2,592 sq ft · Net from RM 1,318,408' },
-      { type: 'Elora Double Storey Cluster (South)', size: '32\' x 70\' land · 2,592 sq ft · Net from RM 1,338,428' },
+      { type: 'Riveria Garden Terrace', size: '20\' x 70\' land · 2,219 sq ft built-up' },
+      { type: 'Riveria Garden Cluster', size: '32\' x 70\' land · 2,592 sq ft built-up' },
     ],
     features: [
       'Freehold individual land titles — not strata, not leasehold',
       '627-acre master-planned township by KSL Holdings Berhad',
       'Riverfront setting along Sungai Melayu — landscaped promenade',
-      'Terrace: 20\' x 70\' land, 2,219 sq ft built-up, from RM 900K',
-      'Elora Cluster: 32\' x 70\' land, 2,592 sq ft built-up, net from RM 1.32M',
+      'Riveria Garden Terrace: 20\' x 70\' land, 2,219 sq ft built-up',
+      'Riveria Garden Cluster: 32\' x 70\' land, 2,592 sq ft built-up',
       'The Wawari Club: co-working lounge, sports courts, gym, swimming facilities',
       'Dedicated jogging and cycling tracks throughout the community',
       'Gated and guarded 24-hour security',
@@ -973,7 +972,7 @@ const EXTENDED_PROJECTS = [
       'Within the Iskandar Puteri JS-SEZ growth corridor',
     ],
     status: 'Now Selling',
-    image_url: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1200&auto=format&fit=crop',
+    image_url: 'photos/riveria-garden/terrace-exterior.jpg',
     published: 'TRUE'
   },
   {
