@@ -1006,7 +1006,7 @@ const EXTENDED_PROJECTS = [
     commute_note: 'Future access road towards Bandar Wawari',
     description: "A new landed-home choice for buyers who already like Puteri Harbour. Estuari ParkHomes 2 offers family-sized terrace layouts, while Estuari Greens offers wider 40' x 80' semi-detached homes. The neighbourhood is still maturing, with a future access road shown towards Bandar Wawari.",
     unit_types: [
-      { type: 'Estuari ParkHomes 2', size: '22\' x 70\' / 22\' x 75\' · about 2,276–2,921 sq ft' },
+      { type: 'Estuari ParkHomes 2', size: '22\' x 75\' · about 2,369–2,439 sq ft · 4 bed / 4 bath' },
       { type: 'Estuari Greens', size: '40\' x 80\' · about 3,065–3,150 sq ft' },
     ],
     features: [
