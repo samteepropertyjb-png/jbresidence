@@ -948,6 +948,29 @@ const ALL_ARTICLES = [
 // ---- Extended placeholder projects with data-area for filtering ----
 const EXTENDED_PROJECTS = [
   {
+    slug: 'ascent-park', area: 'Iskandar Puteri', project_name: 'Ascent Park',
+    tagline: 'Two-storey terrace homes with a wider 25-foot frontage',
+    price_range: '25×60 from RM 1.155M · 25×70 from RM 1.353M',
+    tenure: 'Freehold Strata',
+    commute_note: 'Bandar Wawari · Iskandar Puteri',
+    description: "Ascent Park offers two-storey terrace homes in Bandar Wawari with 25-foot-wide layouts. The 25' x 60' homes start from RM 1,155,000, while the larger 25' x 70' homes start from RM 1,353,000. It may suit families who prefer a broader living and dining area and are comfortable with a growing, car-dependent township.",
+    unit_types: [
+      { type: '2-Storey Terrace — 25\' × 60\'', size: 'Approx. 2,282–2,315 sq ft · 4 bedrooms' },
+      { type: '2-Storey Terrace — 25\' × 70\'', size: 'Approx. 2,761 sq ft · 4 bedrooms' },
+    ],
+    features: [
+      '25-foot-wide terrace-home frontage',
+      'Two-storey residential choices only',
+      'Freehold strata tenure',
+      'Four-bedroom family layouts',
+      'Bandar Wawari location near the Iskandar Puteri education corridor',
+    ],
+    status: 'Now Selling',
+    image_url: 'photos/ascent-park/ascent-park-show-unit-living-kitchen.jpg',
+    project_url: '/projects/ascent-park',
+    published: 'TRUE'
+  },
+  {
     slug: 'riveria-garden-wawari', area: 'Iskandar Puteri', project_name: 'Riveria Garden @ Wawari',
     tagline: 'KSL freehold riverside township — 627 acres along Sungai Melayu, minutes from EduCity',
     price_range: 'Terrace from RM 1M · Cluster from RM 1.5M',
