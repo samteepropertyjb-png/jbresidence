@@ -100,6 +100,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .article-figure { margin:30px 0; }
   .article-figure img { display:block; width:100%; height:auto; border-radius:8px; }
   .article-figure figcaption { margin-top:8px; color:#5C5B57; font-size:.78rem; line-height:1.5; }
+  .article-video { margin:32px 0 38px; }
+  .article-video-frame { position:relative; overflow:hidden; width:100%; padding-top:56.25%; border-radius:8px; background:#0A1B2E; box-shadow:0 12px 30px rgba(10,27,46,.14); }
+  .article-video-frame iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+  .article-video-note { margin:10px 0 0; color:#5C5B57; font-size:.82rem; line-height:1.55; }
+  .article-video-note a { color:#1A5F8A; font-weight:600; }
   .review-table-wrap { overflow-x:auto; margin:18px 0 32px; }
   .review-table { width:100%; min-width:560px; border-collapse:separate; border-spacing:0; border:1px solid #dedbd4; border-radius:8px; overflow:hidden; }
   .review-table th { padding:13px 14px; background:#0A1B2E; color:#fff; text-align:left; font-size:.86rem; }
@@ -108,6 +113,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .source-note { font-size:.84rem; color:#5C5B57; }
   @media (max-width:640px) {
     .answer-box, .buyer-alert { padding:16px; margin:20px 0 25px; }
+    .article-video { margin:26px -4px 32px; }
+    .article-video-frame { border-radius:6px; }
     .fact-grid { grid-template-columns:1fr; gap:10px; margin:22px 0 28px; }
     .fact-card { padding:14px 15px; }
     .article-figure { margin:24px -4px; }
@@ -166,6 +173,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="buyer-alert">
     <strong>Important for foreign buyers:</strong> The current Ascent Park residential release cannot be purchased by foreigners. This is the present project sales condition, not a statement that foreigners cannot buy property anywhere in Iskandar Puteri. Eligibility should always be checked again before paying a booking fee because a future release may have different conditions.
   </div>
+
+  <section class="article-video" aria-labelledby="ascent-park-video-title">
+    <h2 id="ascent-park-video-title">Watch the Ascent Park House Tour</h2>
+    <p>See the actual show unit and hear who this landed project may — or may not — suit before comparing the layouts and prices below.</p>
+    <div class="article-video-frame">
+      <iframe src="https://www.youtube-nocookie.com/embed/5xNlvQ5dKuk?start=196&amp;rel=0" title="Ascent Park House Tour - Is now the right time to buy?" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+    <p class="article-video-note">The video starts from the Ascent Park segment at 3:16. <a href="https://youtu.be/5xNlvQ5dKuk?t=196" target="_blank" rel="noopener">Watch it on YouTube</a>.</p>
+  </section>
 
   <h2>Ascent Park at a Glance</h2>
   <div class="fact-grid" aria-label="Ascent Park project facts">
