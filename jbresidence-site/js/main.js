@@ -976,6 +976,28 @@ const EXTENDED_PROJECTS = [
     published: 'TRUE'
   },
   {
+    slug: 'estuari-greens-parkhomes', area: 'Iskandar Puteri', project_name: 'Estuari Greens & ParkHomes 2',
+    tagline: 'New freehold landed choices in Puteri Harbour',
+    price_range: 'Terrace from RM 1M · Semi-D from RM 1.9M',
+    tenure: 'Freehold Individual Title',
+    commute_note: 'Future access road towards Bandar Wawari',
+    description: "A new landed-home choice for buyers who already like Puteri Harbour. Estuari ParkHomes 2 offers family-sized terrace layouts, while Estuari Greens offers wider 40' x 80' semi-detached homes. The neighbourhood is still maturing, with a future access road shown towards Bandar Wawari.",
+    unit_types: [
+      { type: 'Estuari ParkHomes 2', size: '22\' x 70\' / 22\' x 75\' · about 2,276–2,921 sq ft' },
+      { type: 'Estuari Greens', size: '40\' x 80\' · about 3,065–3,150 sq ft' },
+    ],
+    features: [
+      'Freehold individual land titles',
+      'Terrace and semi-detached choices',
+      'Family-sized 4-bedroom layouts',
+      'Near Estuari Sports Centre',
+      'Future access road towards Bandar Wawari',
+    ],
+    status: 'Now Selling',
+    image_url: 'photos/estuari/estuari-greens-semid.jpg',
+    published: 'TRUE'
+  },
+  {
     slug: 'forest-city-golf-villa', area: 'Forest City', project_name: 'Forest City Golf Villa',
     tagline: 'Completed freehold homes inside the golf resort', price_range: 'V120 RM 1.5M · V160 RM 1.8M',
     tenure: 'Freehold Strata', commute_note: '~5 km to Second Link corridor',
