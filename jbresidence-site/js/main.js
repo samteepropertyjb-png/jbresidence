@@ -166,6 +166,32 @@ const PLACEHOLDER_PROJECTS = [
     published: 'TRUE'
   },
   {
+    slug: 'ctc-skyone', area: 'JB Town', project_name: 'CTC SkyOne',
+    tagline: 'Freehold city-centre homes about 300m from Bukit Chagar RTS',
+    price_range: 'Enquire for current pricing',
+    tenure: 'Freehold Commercial Strata',
+    commute_note: 'Approximately 300m to Bukit Chagar RTS',
+    description: "CTC SkyOne is a 1,605-unit freehold serviced apartment development on Jalan Bukit Chagar. Its three towers offer standard layouts from 463 to 1,270 sq ft and penthouses from 1,626 to 1,646 sq ft, with dual-key and triple-key concepts. The main attraction is the stated approximately 300-metre walking distance to Bukit Chagar RTS; the main trade-offs are the high unit count, commercial-strata title and the need to verify the exact walking route, monthly costs and current unit pricing.",
+    unit_types: [
+      { type: 'Types A-C', size: '463-549 sq ft · 1+1 rooms / 2 baths' },
+      { type: 'Type E', size: '710 sq ft · 3 bedrooms / 3 baths' },
+      { type: 'Type F', size: '893 sq ft · 4 bedrooms / 3 baths' },
+      { type: 'Type G', size: '1,270 sq ft · 3 bedrooms / 3 baths' },
+    ],
+    features: [
+      'Freehold serviced apartment under HDA',
+      'Approximately 300m to Bukit Chagar RTS',
+      'Three towers with 1,605 residential units',
+      'Dual-key and triple-key layout concepts',
+      '22 ground-level retail units',
+      'Facilities level on Level 12',
+    ],
+    status: 'Now Selling',
+    image_url: 'photos/ctc-skyone/ctc-skyone-hero.jpg',
+    project_url: '/projects/ctc-skyone',
+    published: 'TRUE'
+  },
+  {
     slug: 'rf-princess-cove', area: 'JB Town', project_name: 'R&F Princess Cove – Phase 3',
     tagline: 'Border-adjacent high-rise with direct RTS Link connectivity to Singapore',
     price_range: 'Enquire for pricing',
@@ -1037,6 +1063,32 @@ const EXTENDED_PROJECTS = [
     description: "Forest City High-Rise offers six current choices from a 517 sq ft 1+1-room unit to a 1,841 sq ft four-room home. Prices supplied for this page range from RM577,252 to RM2,697,700.\n\nY225, Y076 and Y221 are practical starting choices for many MM2H applicants. The project may suit buyers who value a completed waterfront resort environment and are comfortable driving for their daily routine.",
     status: 'Now Selling',
     image_url: 'fc-pool.jpg',
+    published: 'TRUE'
+  },
+  {
+    slug: 'ctc-skyone', area: 'JB Town', project_name: 'CTC SkyOne',
+    tagline: 'Freehold city-centre homes about 300m from Bukit Chagar RTS',
+    price_range: 'Enquire for current pricing',
+    tenure: 'Freehold Commercial Strata',
+    commute_note: 'Approximately 300m to Bukit Chagar RTS',
+    description: "CTC SkyOne is a 1,605-unit freehold serviced apartment development on Jalan Bukit Chagar. Its three towers offer standard layouts from 463 to 1,270 sq ft and penthouses from 1,626 to 1,646 sq ft, with dual-key and triple-key concepts. The main attraction is the stated approximately 300-metre walking distance to Bukit Chagar RTS; the main trade-offs are the high unit count, commercial-strata title and the need to verify the exact walking route, monthly costs and current unit pricing.",
+    unit_types: [
+      { type: 'Types A-C', size: '463-549 sq ft · 1+1 rooms / 2 baths' },
+      { type: 'Type E', size: '710 sq ft · 3 bedrooms / 3 baths' },
+      { type: 'Type F', size: '893 sq ft · 4 bedrooms / 3 baths' },
+      { type: 'Type G', size: '1,270 sq ft · 3 bedrooms / 3 baths' },
+    ],
+    features: [
+      'Freehold serviced apartment under HDA',
+      'Approximately 300m to Bukit Chagar RTS',
+      'Three towers with 1,605 residential units',
+      'Dual-key and triple-key layout concepts',
+      '22 ground-level retail units',
+      'Facilities level on Level 12',
+    ],
+    status: 'Now Selling',
+    image_url: 'photos/ctc-skyone/ctc-skyone-hero.jpg',
+    project_url: '/projects/ctc-skyone',
     published: 'TRUE'
   },
   {

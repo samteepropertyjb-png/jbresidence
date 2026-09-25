@@ -29,7 +29,7 @@
   </url>
   <url>
     <loc>https://thejbresidence.com/projects</loc>
-    <lastmod>2026-09-12</lastmod>
+    <lastmod>2026-09-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -47,6 +47,7 @@
   </url>
 
   <!-- Project pages: final extensionless canonical URLs -->
+  <url><loc>https://thejbresidence.com/projects/ctc-skyone</loc><lastmod>2026-09-25</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://thejbresidence.com/projects/eco-botanic</loc><lastmod>2026-09-12</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://thejbresidence.com/projects/east-ledang</loc><lastmod>2026-09-12</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://thejbresidence.com/projects/rf-princess-cove</loc><lastmod>2026-09-23</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
