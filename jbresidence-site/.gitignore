@@ -1,0 +1,2 @@
+# Local assistant permissions; never part of the website deployment.
+.claude/settings.local.json
