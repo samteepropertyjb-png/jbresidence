@@ -115,6 +115,7 @@ const PLACEHOLDER_ARTICLES = {
     { title: 'Placeholder article 5 — Johor Bahru Town', summary: '', body: '', image_url: '' }
   ],
   'Iskandar Puteri': [
+    { title: 'How Much Household Income Do You Need for a RM1.1M–RM1.4M Landed Home?', title_zh: 'Iskandar Puteri有地房RM1.1M–RM1.4M，家庭月入多少才买得起？', summary: 'A young-family affordability guide using a 90% loan, 35-year tenure, about 4% interest and a 60% DSR illustration.', summary_zh: '以90%贷款、35年、约4%利率及60% DSR为示例，比较RM1.1M–RM1.4M有地房的首付、月供与家庭收入参考。', body: 'exists', image_url: 'photos/horizon-hills/hh-2.jpg', link: '/articles/iskandar-puteri-landed-property-salary' },
     { title: 'Bandar Wawari: Iskandar Puteri\'s Next 3,000-Acre Township', summary: 'A 3,000-acre joint-development by six major developers is taking shape in Taman Wawari — here\'s the scale, the road access story, and what 13,000+ surrounding units mean for buyers.', body: 'exists', image_url: 'photos/wawari-aerial-map.jpg', link: '/articles/bandar-wawari-future-development-iskandar-puteri' },
     { title: 'JS-SEZ and Iskandar Puteri: What the Special Economic Zone Actually Means for Property', summary: 'Tax incentives, approved zones, which precincts benefit most — and whether the JS-SEZ hype is already priced in.', body: 'exists', image_url: 'photos/horizon-hills/hh-2.jpg', link: '/articles/js-sez-iskandar-puteri-property-impact' },
     { title: 'Kota Iskandar: Johor\'s New Administrative Capital and What It Means for Property', summary: 'Government ministries, the new High Court complex, civil servant population — how a purpose-built government hub creates long-term residential demand.', body: 'exists', image_url: 'photos/horizon-hills/img1-1-min.jpg', link: '/articles/kota-iskandar-government-hub-property' },
@@ -907,6 +908,7 @@ function initArticleTranslateBtn() {
 
 // ---- Extended placeholder articles (all areas) ----
 const ALL_ARTICLES = [
+  { title: 'How Much Household Income Do You Need for a RM1.1M–RM1.4M Landed Home in Iskandar Puteri?', title_zh: 'Iskandar Puteri有地房RM1.1M–RM1.4M，家庭月入多少才买得起？', summary: 'A young-family affordability guide using a 90% loan, 35-year tenure, about 4% interest and a 60% DSR illustration.', summary_zh: '以90%贷款、35年、约4%利率及60% DSR为示例，比较RM1.1M–RM1.4M有地房的首付、月供与家庭收入参考。', body: 'exists', image_url: 'photos/horizon-hills/hh-2.jpg', link: '/articles/iskandar-puteri-landed-property-salary', area: 'Iskandar Puteri', topics: 'iskandar-puteri,buying-guide' },
   { title: 'Is Ascent Park Overpriced at RM1.3 Million? A Comparison with Estuari and KSL Riveria', title_zh: 'Ascent Park双层排屋卖RM1.3 million以上，算贵吗？', summary: 'Why Ascent Park costs more than Estuari ParkHomes 2 and KSL Riveria Garden: home size, prime location and the planned Ascent Hub.', summary_zh: '从房屋尺寸、国际学校走廊的地点定位与Ascent Hub商业配套，分析Ascent Park为什么比Estuari及KSL Riveria贵。', body: 'exists', image_url: 'photos/ascent-park/ascent-park-show-unit-living-kitchen.jpg', link: '/articles/is-ascent-park-overpriced-estuari-ksl-riveria', area: 'Iskandar Puteri', topics: 'iskandar-puteri,buying-guide' },
   // Newest first
   { title: 'Is Forest City Really Empty? What the Network School Closure Actually Means', title_zh: '森林城市真的没人了吗？Network School结束后的真实现况', summary: 'Network School has closed, but Forest City itself remains active. A local look at its beach, family events, commercial activity and the gap between weekend footfall and long-term demand.', summary_zh: 'Network School的计划结束，不代表森林城市停止运作。从本地家庭活动、沙滩、商业街与实际生活情况，看森林城市目前更完整的面貌。', body: 'exists', image_url: 'photos/forest-city/fc-island.png', link: '/articles/forest-city-network-school-current-situation', area: 'Forest City', topics: 'forest-city,buying-guide,other' },
@@ -1337,3 +1339,5 @@ const _originalGetProjects = getProjects;
 async function getProjects() {
   return getProjectsExtended();
 }
+
+
