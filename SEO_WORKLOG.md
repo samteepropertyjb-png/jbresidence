@@ -82,3 +82,16 @@ At the next Search Console review, compare impressions, position, CTR and downst
 
 ### Next task
 Audit the remaining recorded ranking articles in the master-task order. Preserve strong-performing Ascent Park and Horizon Hills comparison intent; prioritise search-intent and CTR improvements for the Singaporean buyer guide and Riveria Garden page.
+
+## 2026-09-30 — Singaporean Buyer Guide Improvement
+
+### Content role
+Decision / Trust content for Singapore-linked buyers considering either JB Town or Iskandar Puteri.
+
+### What changed
+- Updated the title, meta description, H1 and catalogue card to answer the main search question directly: whether Singaporeans can buy property in Johor Bahru.
+- Removed hard-coded foreign-purchase thresholds, financing ratios, tax bands, ABSD conclusions and RTS timing that require case-specific or current legal confirmation.
+- Added a clear pre-booking checklist and internal paths to the JB Town and Iskandar Puteri hubs.
+
+### Next action
+At the next Search Console review, compare CTR and position against the baseline of 246 impressions, 1 click and average position 6.82. Continue with Riveria Garden, then review the strong-performing Ascent Park and Horizon Hills comparison pages for small, justified improvements only.
