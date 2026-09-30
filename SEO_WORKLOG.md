@@ -125,3 +125,10 @@ Review Ascent Park and the two established-area comparisons for small discovery 
 
 ### Next measurement
 At the next Search Console review, watch CTR, position and onward clicks for the Singaporean buyer guide, Riveria Garden, International Schools, both township comparisons and Bandar Wawari. Recheck changing project, school, transport and regulatory facts before future copy changes.
+
+## 2026-09-30 — Technical SEO, Speed and Security Baseline
+
+- Added `WEBSITE_MAINTENANCE.md` as the persistent technical runbook, with confirmed repository facts, verification gaps, monthly and post-deployment checks, performance guidance and future-form security requirements.
+- Confirmed sitemap paths resolve locally, `robots.txt` permits crawling and source scans found no public credentials or HTTP subresources.
+- Added safe response headers for MIME sniffing, referrer handling, device permissions and framing. CSP, HSTS, hosting, DNS, analytics and cache policy remain intentionally unchanged pending live-provider verification.
+- Largest image assets are 4–15 MB Forest City files. This is an optimisation opportunity requiring visual and live-usage review before conversion.
