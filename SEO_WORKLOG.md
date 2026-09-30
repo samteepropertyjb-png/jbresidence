@@ -108,3 +108,20 @@ Commercial / Decision content for buyers comparing a developing township with es
 
 ### Next action
 Review Ascent Park and the two established-area comparisons for small discovery and CTA improvements without changing their winning intent.
+
+## 2026-09-30 — Remaining Ranking-Article Audits
+
+### Ascent Park review — Commercial / Money
+- Audited and kept without copy changes. It already answers project questions, links to its project page and provides relevant internal discovery. Its 18 clicks from 251 impressions justify preserving the existing search intent.
+
+### Horizon Hills vs Eco Botanic vs East Ledang — Trust / Decision
+- Preserved the comparison and added a restrained route to the Iskandar Puteri buyer hub. No project was forced into the article.
+
+### Bandar Wawari future development — Trust / Authority
+- Preserved the discovery article and added a cautious hub path reminding readers to distinguish delivered conditions from future plans.
+
+### Sunway City vs Horizon Hills vs Eco Botanic — Trust / Decision
+- Preserved the no-universal-winner comparison intent and added a route to wider Iskandar Puteri decision guides.
+
+### Next measurement
+At the next Search Console review, watch CTR, position and onward clicks for the Singaporean buyer guide, Riveria Garden, International Schools, both township comparisons and Bandar Wawari. Recheck changing project, school, transport and regulatory facts before future copy changes.
