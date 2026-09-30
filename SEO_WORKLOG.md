@@ -95,3 +95,16 @@ Decision / Trust content for Singapore-linked buyers considering either JB Town 
 
 ### Next action
 At the next Search Console review, compare CTR and position against the baseline of 246 impressions, 1 click and average position 6.82. Continue with Riveria Garden, then review the strong-performing Ascent Park and Horizon Hills comparison pages for small, justified improvements only.
+
+## 2026-09-30 — Riveria Garden Wawari Improvement
+
+### Content role
+Commercial / Decision content for buyers comparing a developing township with established Iskandar Puteri areas.
+
+### What changed
+- Preserved the Riveria Garden / Bandar Wawari search intent and URL.
+- Removed unsupported promises about price growth, rental demand, infrastructure and developer execution.
+- Added a contextual internal link to the Bandar Wawari guide and reframed the article around present-day liveability, delivery risk and buyer fit.
+
+### Next action
+Review Ascent Park and the two established-area comparisons for small discovery and CTA improvements without changing their winning intent.
