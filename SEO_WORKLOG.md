@@ -132,3 +132,20 @@ At the next Search Console review, watch CTR, position and onward clicks for the
 - Confirmed sitemap paths resolve locally, `robots.txt` permits crawling and source scans found no public credentials or HTTP subresources.
 - Added safe response headers for MIME sniffing, referrer handling, device permissions and framing. CSP, HSTS, hosting, DNS, analytics and cache policy remain intentionally unchanged pending live-provider verification.
 - Largest image assets are 4–15 MB Forest City files. This is an optimisation opportunity requiring visual and live-usage review before conversion.
+
+## 2026-09-30 — JB Town Buyer-Education Article Batch
+
+### Published pages
+- `/articles/jb-1-bedroom-vs-2-plus-1-bedroom-guide` — Evergreen layout-decision guide for singles and couples. It compares real daily use, work-from-home needs, future flexibility and the cost of unused space; it does not treat either layout as the universal winner.
+- `/articles/rf-princess-cove-ciq-buyer-guide` — CIQ-oriented buyer guide. It explains compact layouts, the mall/commercial setting and why the location may matter to frequent Causeway users, while clearly setting out when those advantages may not matter.
+- `/articles/foreign-buyer-ciq-rts-condo-checklist` — Foreign-buyer pre-booking checklist. It separates eligibility, all-in costs, travel pattern, density and layout. It avoids project-specific foreign thresholds and tells readers to confirm the exact unit, state approval/levy and legal treatment.
+
+### Discovery and conversion paths
+- Added all three articles to the site article catalogue under JB Town, so `/jb-town` now surfaces them as part of the existing content hub.
+- Added contextual internal links among the new guides and to existing CIQ/RTS, R&F, Summer Suites, JB Town, Iskandar Puteri and foreign-buyer content.
+- Each article includes one family- or buyer-focused, low-pressure WhatsApp CTA.
+
+### Fact handling
+- No R&F phase-specific bridge, shuttle frequency, walking-distance or routing claims were added.
+- No project-specific foreign-buyer minimum price was added.
+- The 8% foreign transfer-duty reference is qualified to the stated 2026 HASiL context; readers are directed to obtain transaction-specific legal confirmation. State approval and levy amounts are not stated as fixed figures.

@@ -195,6 +195,19 @@ body {
   padding: 56px 24px 80px;
 }
 
+.art-wrap figure { margin: 0 0 38px; }
+.art-wrap figure img { display: block; width: 100%; height: auto; border-radius: 8px; box-shadow: 0 8px 24px rgba(10,27,46,.12); }
+.art-wrap figcaption { margin-top: 9px; font-size: .78rem; color: var(--ink-light); line-height: 1.45; }
+.table-wrap { overflow-x: auto; margin: 0 0 32px; border: 1px solid #c5dce8; border-radius: 7px; background: #fff; }
+.art-wrap table { width: 100%; border-collapse: collapse; font-size: .88rem; line-height: 1.55; }
+.art-wrap th, .art-wrap td { padding: 14px; vertical-align: top; text-align: left; border-bottom: 1px solid #dcebf2; }
+.art-wrap th { background: #e8f4fa; color: var(--navy); font-weight: 700; }
+.art-wrap tr:last-child td { border-bottom: 0; }
+.soft-cta { margin-top: 52px; padding: 30px; background: #0A1B2E; border-radius: 8px; color: #fff; }
+.soft-cta h2 { color: #fff; margin-top: 0; }
+.soft-cta p { color: rgba(255,255,255,.85); }
+.soft-cta a { display: inline-block; margin-top: 4px; padding: 12px 18px; background: #C9933A; color: #fff; border-radius: 4px; font-size: .85rem; font-weight: 700; text-decoration: none; }
+
 /* Lead paragraph */
 .art-lead {
   font-family: var(--font-display);
