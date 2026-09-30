@@ -198,6 +198,7 @@ body {
 .art-wrap figure { margin: 0 0 38px; }
 .art-wrap figure img { display: block; width: 100%; height: auto; border-radius: 8px; box-shadow: 0 8px 24px rgba(10,27,46,.12); }
 .art-wrap figcaption { margin-top: 9px; font-size: .78rem; color: var(--ink-light); line-height: 1.45; }
+.art-wrap .layout-option-figure { max-width: 620px; margin: 26px auto 34px; }
 .table-wrap { overflow-x: auto; margin: 0 0 32px; border: 1px solid #c5dce8; border-radius: 7px; background: #fff; }
 .art-wrap table { width: 100%; border-collapse: collapse; font-size: .88rem; line-height: 1.55; }
 .art-wrap th, .art-wrap td { padding: 14px; vertical-align: top; text-align: left; border-bottom: 1px solid #dcebf2; }
