@@ -54,3 +54,17 @@ JB Town signals noted:
 3. Improve the highest-value existing pages first.
 4. Research JB Town High-Rise content gaps before creating new articles.
 5. At the next ~2-week review, append the new GSC snapshot and compare changes against this baseline.
+
+## 2026-09-30 — International Schools Article Improvement
+
+### What changed
+- Improved `/articles/international-schools-iskandar-puteri-2026` rather than creating a competing page. The page retains its international-school focus and URL.
+- Replaced unsupported or inaccurate local-school, accreditation, distance and fee claims with cautious school information and a prompt to confirm fees, admissions and transport directly with each school.
+- Added family decision sections on where to live, rent versus buy, and relevant internal property comparisons. Internal links point to established area, landed-property and project pages only.
+- Added a soft CTA for families planning a move around their child&rsquo;s education.
+
+### Why
+Search Console showed this page at 184 impressions, average position 13.73, with no clicks. It is a striking-distance page. The update better matches the family decision journey while protecting the existing international-school intent.
+
+### Next action
+At the next Search Console review, compare impressions, position, CTR and downstream project/WhatsApp activity with the 2026-09-30 baseline. Recheck school fees, availability, admissions and transport before making future factual updates.
