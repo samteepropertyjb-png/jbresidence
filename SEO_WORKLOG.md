@@ -68,3 +68,17 @@ Search Console showed this page at 184 impressions, average position 13.73, with
 
 ### Next action
 At the next Search Console review, compare impressions, position, CTR and downstream project/WhatsApp activity with the 2026-09-30 baseline. Recheck school fees, availability, admissions and transport before making future factual updates.
+
+## 2026-09-30 — Master SEO/GEO Foundation and Area Hubs
+
+### Completed
+- Added permanent Git sync, Singapore-linked buyer audience, content-role and area-hub rules to the project guidance.
+- Reworked `/iskandar-puteri` into a clearer buyer-content hub with real routes for landed homes, area comparison, family/school decisions, Singapore-linked buyers and condo-versus-landed decisions.
+- Reworked `/jb-town` into a clearer buyer-content hub with real routes for purchase checks, CIQ/RTS commuter decisions, city project reviews and JB Town versus Iskandar Puteri.
+
+### Content roles
+- `/iskandar-puteri` and `/jb-town`: content-discovery hubs, not listing portals.
+- International schools: Trust / Authority + family-relocation bridge; completed in the preceding commit.
+
+### Next task
+Audit the remaining recorded ranking articles in the master-task order. Preserve strong-performing Ascent Park and Horizon Hills comparison intent; prioritise search-intent and CTR improvements for the Singaporean buyer guide and Riveria Garden page.

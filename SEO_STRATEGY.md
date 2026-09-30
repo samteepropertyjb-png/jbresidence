@@ -18,6 +18,20 @@ SEO/GEO Article -> Organic/AI traffic -> CTA -> Project Page -> WhatsApp -> Enqu
 7. **Research before production.** Do not invent keywords. Validate content opportunities using Google Search Console, Google Trends/related demand signals, live SERPs/competition and commercial relevance.
 8. **Simple English.** Default to clear secondary-school-level English. Short sentences, common words, useful headings and tables. Do not use complex language just to sound professional. Write for real buyers first; do not keyword-stuff.
 
+## Primary Commercial Audience
+Singapore-based and Singapore-linked buyers are a primary commercial audience. When it matches the reader's real question, cover cross-border travel, family relocation, international schools, Second Link, CIQ, RTS, landed versus condo living, foreign-buyer eligibility, budget and ownership horizon. Do not force Singapore or transport terms into unrelated content.
+
+## Content Roles
+Give each article one primary role before changing it:
+- **Trust / Authority:** answer a useful question, build confidence and lead naturally to another guide or area hub.
+- **Decision / Comparison:** help readers narrow real choices and move to the most useful next guide, hub or project page.
+- **Commercial / Money:** support readers researching a specific property or project; stronger availability or WhatsApp CTAs are appropriate only after useful decision information.
+
+Not every ranking article needs to be monetised. Every article needs a clear purpose.
+
+## Area Hubs
+`/iskandar-puteri` and `/jb-town` are content-discovery hubs, not property portals. They should group existing buyer guides, comparisons, lifestyle information and genuinely relevant projects so a reader can continue from an article to the next useful decision. Keep the layout easy to scan on mobile and use only real pages.
+
 ## Fact-Check Rule
 Any factual claim that can change or materially affect a buyer's decision must be checked before publishing. Examples:
 - project price, rebate and availability

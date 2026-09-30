@@ -19,3 +19,6 @@ Before doing any SEO, GEO, article writing, article improvement, internal-link w
 6. Preserve historical GSC baselines so future reviews can compare performance over time.
 
 If an instruction conflicts with a newer explicit instruction from Sam, follow Sam's newest instruction and update the strategy/worklog when the change is intended to be permanent.
+
+## Git Sync Rule
+Before SEO or website work, check the branch and working tree, then safely fetch and reconcile with `origin/main`. Preserve local work, never force-push, and never discard changes to make a pull easier. Review, commit and push each completed logical unit so GitHub remains the source of truth.
