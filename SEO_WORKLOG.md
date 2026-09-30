@@ -148,4 +148,16 @@ At the next Search Console review, watch CTR, position and onward clicks for the
 ### Fact handling
 - No R&F phase-specific bridge, shuttle frequency, walking-distance or routing claims were added.
 - No project-specific foreign-buyer minimum price was added.
-- The 8% foreign transfer-duty reference is qualified to the stated 2026 HASiL context; readers are directed to obtain transaction-specific legal confirmation. State approval and levy amounts are not stated as fixed figures.
+- The 8% foreign transfer-duty reference is qualified to the stated 2026 HASiL context; readers are directed to obtain transaction-specific legal confirmation. The new checklist does not state a fixed state approval or levy amount.
+
+## 2026-10-01 — CIQ / Foreign-Buyer Fact and Visual Maintenance
+
+### What changed
+- Replaced the supplied Article 2 and Article 3 images with Sam's final assets, using the normal responsive article-image treatment, correct intrinsic dimensions, descriptive alt text, and matching OG/schema/catalogue references.
+- Removed unverified R&F phase-to-CIQ distance, sheltered-route, bridge, shuttle and RTS-operational claims from the live project data and affected buyer pages. The copy now asks buyers to test the selected-tower route themselves.
+- Updated RTS wording to the official scheduled passenger-operation date of 1 January 2027, with a reminder that scheduled infrastructure must be checked again before a purchase decision.
+- Corrected older foreign-buyer pages that still showed the old progressive foreign stamp-duty table or presented project-specific below-threshold eligibility and price examples as general rules.
+- Retained the verified distinction between property price, Johor foreign-interest approval / levy, federal transfer stamp duty, and legal or other applicable costs. The Johor 3% and RM30,000 standard minimum remain described only in the dedicated costs guide and in their stated official context; RM50,000 is not presented as a universal foreign-buyer fee.
+
+### Ongoing check
+- Before quoting any project-level foreign eligibility, consent amount, walking route, shuttle, or operational transport timing, confirm the exact unit or service from current official documentation and the buyer's conveyancing lawyer.
