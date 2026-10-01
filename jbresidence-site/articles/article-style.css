@@ -205,8 +205,8 @@ body {
 .art-wrap th { background: #e8f4fa; color: var(--navy); font-weight: 700; }
 .art-wrap tr:last-child td { border-bottom: 0; }
 .soft-cta { margin-top: 52px; padding: 30px; background: #0A1B2E; border-radius: 8px; color: #fff; }
-.soft-cta h2 { color: #fff; margin-top: 0; }
-.soft-cta p { color: rgba(255,255,255,.85); }
+.art-wrap .soft-cta h2 { color: #fff; margin-top: 0; }
+.art-wrap .soft-cta p { color: rgba(255,255,255,.88); }
 .soft-cta a { display: inline-block; margin-top: 4px; padding: 12px 18px; background: #C9933A; color: #fff; border-radius: 4px; font-size: .85rem; font-weight: 700; text-decoration: none; }
 
 /* Lead paragraph */
