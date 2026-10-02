@@ -174,3 +174,17 @@ MM2H and Forest City are established site topics and relevant discovery paths fo
 
 ### Next action
 Measure clicks from `/sam-tee` to the MM2H guide, Forest City hub and WhatsApp. Recheck changing programme and foreign-purchase facts before adding detailed claims to the landing page.
+
+## 2026-10-02 — Sam Tee Buyer Guide Download
+
+### What changed
+- Published the approved seven-page Johor buyer guide as a first-party website download.
+- Replaced the `/sam-tee` coming-soon label with a tracked download CTA.
+- Aligned the guide preview and bullet points with Sam's buyer-first positioning: understand the buyer, choose the area and route, then shortlist before viewing.
+
+### Verification
+- Confirmed the CTA downloads the PDF on desktop and remains visible on mobile.
+- Confirmed the PDF contains seven pages and its final WhatsApp CTA contains a real WhatsApp link.
+
+### Next action
+Measure buyer-guide download clicks and subsequent WhatsApp enquiries before changing the CTA placement or copy.
