@@ -161,3 +161,16 @@ At the next Search Console review, watch CTR, position and onward clicks for the
 
 ### Ongoing check
 - Before quoting any project-level foreign eligibility, consent amount, walking route, shuttle, or operational transport timing, confirm the exact unit or service from current official documentation and the buyer's conveyancing lawyer.
+
+## 2026-10-02 — Sam Tee Landing Page: MM2H and Forest City Coverage
+
+### What changed
+- Expanded `/sam-tee` to state that Sam assists local and foreign property buyers, including buyers comparing homes around MM2H needs.
+- Added MM2H / foreign-buyer guidance first and Forest City second in the main service cards, using existing internal guides and real Forest City photography.
+- Added careful scope language: Sam helps with property planning and comparison, while changing immigration, legal, tax, eligibility and unit-specific matters should be confirmed with the relevant qualified professionals.
+
+### Why
+MM2H and Forest City are established site topics and relevant discovery paths for international buyers. The landing page previously under-represented these services.
+
+### Next action
+Measure clicks from `/sam-tee` to the MM2H guide, Forest City hub and WhatsApp. Recheck changing programme and foreign-purchase facts before adding detailed claims to the landing page.
