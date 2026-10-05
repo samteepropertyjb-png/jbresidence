@@ -1,2 +1,5 @@
 # Local assistant permissions; never part of the website deployment.
 .claude/settings.local.json
+
+# Local-only Google API runtime. OAuth credentials are stored outside this repository.
+.analytics-venv/
