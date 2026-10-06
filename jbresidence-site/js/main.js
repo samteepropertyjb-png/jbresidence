@@ -981,6 +981,28 @@ const ALL_ARTICLES = [
 // ---- Extended placeholder projects with data-area for filtering ----
 const EXTENDED_PROJECTS = [
   {
+    slug: 'verte-medini', area: 'Iskandar Puteri', project_name: 'Verte Medini Residence',
+    tagline: 'New Medini apartments with five layouts from 614 to 935 sq ft',
+    price_range: 'From RM 379,000', tenure: 'Medini Private Lease Scheme',
+    commute_note: 'Medini · Iskandar Puteri',
+    description: "Verte Medini Residence is a four-tower residential development in Medini, Iskandar Puteri. It offers five layout types from a 614 sq ft dual-key home to a 935 sq ft three-bedroom home. Gross SPA price guidance starts from RM379,000; ask for the current dated chart because tower, level, orientation and availability can change the exact price.",
+    unit_types: [
+      { type: 'Type C / C1', size: '643 sq ft · 2 bedrooms / 1 bathroom · from RM379,000' },
+      { type: 'Type B', size: '614 sq ft · dual key / 2 bathrooms · from RM393,000' },
+      { type: 'Type D', size: '819 sq ft · 3 bedrooms / 2 bathrooms · from RM484,000' },
+      { type: 'Type A / A1', size: '935 sq ft · 3 bedrooms / 2 bathrooms · from RM586,000' },
+      { type: 'Type E', size: '861 sq ft · duplex, 2+1 bedrooms / 2 bathrooms · from RM618,000' },
+    ],
+    features: [
+      'Four apartment towers with 1,106 homes on 4.32 acres',
+      'Residential title under Medini Private Lease Scheme',
+      'Target completion Q4 2028 to Q1 2029',
+      'Planned Level 8 facilities',
+      'Ask for current Low Down Payment Package terms and eligibility',
+    ],
+    status: 'Now Selling', image_url: '', project_url: '/projects/verte-medini', published: 'TRUE'
+  },
+  {
     slug: 'ascent-park', area: 'Iskandar Puteri', project_name: 'Ascent Park',
     tagline: 'Two-storey terrace homes with a wider 25-foot frontage',
     price_range: '25×60 from RM 1.155M · 25×70 from RM 1.353M',
