@@ -1000,7 +1000,7 @@ const EXTENDED_PROJECTS = [
       'Planned Level 8 facilities',
       'Ask for current Low Down Payment Package terms and eligibility',
     ],
-    status: 'Now Selling', image_url: '', project_url: '/projects/verte-medini', published: 'TRUE'
+    status: 'Now Selling', image_url: 'photos/verte-medini/hero-exterior-day.webp', project_url: '/projects/verte-medini', published: 'TRUE'
   },
   {
     slug: 'ascent-park', area: 'Iskandar Puteri', project_name: 'Ascent Park',

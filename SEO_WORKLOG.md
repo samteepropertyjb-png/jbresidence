@@ -10,6 +10,10 @@ This file is the running memory for SEO/GEO work. Add a dated entry after each m
 - Kept the Low Down Payment Package as a private WhatsApp enquiry point with `T&C apply`; the page does not publish rebates, legal-fee offers, down-payment mechanics, financing process or other sales-package details.
 - Used no Sales Kit images, floor plans or project renderings because the supplied brief restricts copying/publishing its materials.
 
+### 2026-10-06 update — approved project visuals
+- Sam explicitly authorised use of the supplied Sales Kit images. Replaced the text-only presentation with approved architectural renderings in the hero and gallery, plus five floor-plan images.
+- Compressed the supplied visuals to WebP for the website and used the official Verte Medini site only as a layout reference; The JB Residence retains its own design, navigation and copy.
+
 ### Fact handling
 - Core project specifications and layout/price guidance were cross-checked against the supplied Quick Fact and Project Brief materials, plus the user-supplied project reference page on 6 October 2026.
 - Exact price, availability, completion timing, financing, foreign-buyer eligibility and package terms remain explicitly subject to current developer-issued documents and confirmation.
