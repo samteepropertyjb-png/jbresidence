@@ -207,3 +207,23 @@ Measure clicks from `/sam-tee` to the MM2H guide, Forest City hub and WhatsApp. 
 
 ### Next action
 Measure buyer-guide download clicks and subsequent WhatsApp enquiries before changing the CTA placement or copy.
+
+## 2026-10-07 — Aethera Residences vs CTC SkyOne Draft
+
+### Content role
+Decision / Comparison content for buyers who have already narrowed their search to a condo within walking distance of Bukit Chagar RTS.
+
+### Draft direction
+- Open by separating Walk-to-CIQ projects (R&F Princess Cove and Summer Suites) from Walk-to-RTS projects (Aethera Residences and CTC SkyOne), then keep the main article focused on Aethera versus SkyOne.
+- Compare the practical walking route, proposed covered link, project scale, conventional versus multi-key layouts, retail setting, own-stay fit and rental flexibility.
+- Keep distance and bridge wording conditional until the final route and current project documents are confirmed.
+- Link only to relevant first-party guides and Project Pages, with a low-pressure comparison CTA.
+
+### Status and next action
+The English website draft was created locally but not added to the article catalogue, sitemap, Git history or live site. Sam should review the personal viewpoint and factual wording before publication work begins.
+
+### Date-display decision
+Sam does not want publication dates shown on article pages because the planned publishing volume could make the website look bulk-produced. Keep accurate dates in Article structured data and the sitemap, without adding hidden page text. If policy, tax, price, transport status or another changing fact needs a date for safe interpretation, state it naturally beside that fact.
+
+### Publication approval
+Sam approved publication on 7 October 2026. The article was added to the article catalogue, the non-JavaScript guide directory and the sitemap, with internal routes to both Project Pages and the broader CIQ-versus-RTS guide.
