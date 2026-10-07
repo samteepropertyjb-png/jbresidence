@@ -1192,6 +1192,33 @@ const EXTENDED_PROJECTS = [
     project_url: '/projects/bodaiju-residences',
     published: 'TRUE'
   },
+  {
+    slug: 'aethera-residences', area: 'JB Town', project_name: 'Aethera Residences',
+    tagline: 'Freehold city residence with an estimated 400m covered walk to Bukit Chagar RTS',
+    price_range: 'Enquire for latest units & prices',
+    tenure: 'Freehold · Commercial under HDA',
+    commute_note: 'Estimated 400m covered walk to Bukit Chagar RTS',
+    description: "Aethera Residences is a freehold serviced residence on Jalan Tun Abdul Razak in Johor Bahru. The project is within the Ibrahim International Business District and its central feature is a proposed covered link bridge with an estimated 400-metre walk to the Bukit Chagar RTS station. It offers layouts from 639 sq ft homes to larger duplex units. Buyers should verify the final bridge route, current unit availability, prices and project documentation for their selected unit.",
+    unit_types: [
+      { type: 'Types A / A1 / A2', size: '639 sq ft · 2 bedrooms / selected study variation' },
+      { type: 'Type B', size: '693 sq ft · 2 bedrooms · 2 bathrooms' },
+      { type: 'Type C', size: '904 sq ft · 3 bedrooms · 2 bathrooms' },
+      { type: 'Types D / D1', size: '1,033 sq ft · 3 bedrooms · dual-key' },
+      { type: 'Type E', size: '1,315 sq ft · 3 bedrooms · 2 bathrooms' },
+      { type: 'Types F / G', size: '2,358-2,547 sq ft · 4-bedroom duplex' },
+    ],
+    features: [
+      'Freehold serviced residence on Jalan Tun Abdul Razak',
+      'Estimated 400m covered walk to Bukit Chagar RTS',
+      'Located within the Ibrahim International Business District',
+      '786 homes with layouts from 639 to 2,547 sq ft',
+      'Commercial title under HDA',
+    ],
+    status: 'Now Selling',
+    image_url: 'photos/aethera-residences/aethera-jb-town-rts-location.jpg',
+    project_url: '/projects/aethera-residences',
+    published: 'TRUE'
+  },
 ];
 
 // Merge with PLACEHOLDER_PROJECTS (sheet data takes priority)
