@@ -227,3 +227,11 @@ Sam does not want publication dates shown on article pages because the planned p
 
 ### Publication approval
 Sam approved publication on 7 October 2026. The article was added to the article catalogue, the non-JavaScript guide directory and the sitemap, with internal routes to both Project Pages and the broader CIQ-versus-RTS guide.
+
+## 2026-10-13 — Foreigner Housing Loan Guide
+
+- Published a Trust / Authority article at `/articles/foreigner-housing-loan-malaysia`, following Sam's approved topic and two buyer profiles. Live SERP research confirmed the question is covered by competing foreign-buyer guides; no search-volume claim was made.
+- Verified BNM non-resident borrowing and investment/remittance rules, CIMB HomeFlexi foreign-applicant documents and UOB Malaysia Intelligent Home Loan eligibility against official pages. The requested 50%–80% range is explicitly indicative, not a published universal bank rule or guaranteed offer. Other overseas income is not described as prohibited, and cash purchase is not described as legally required.
+- Sam explicitly requested official references for this article, authorizing its BNM/CIMB/UOB external links as a page-specific exception to the default internal-only policy. The closing invitation uses the existing Facebook contact URL.
+- Reused the static article template, existing imagery, navigation, footer and tracking; added Article/Breadcrumb metadata, catalogue entry, direct directory link and sitemap entry. No dependencies or unrelated page edits.
+- Next action: compare this page's Search Console visibility and enquiries with the existing foreign-buyer cluster at the next review. Recheck bank terms before changing indicative margins.
