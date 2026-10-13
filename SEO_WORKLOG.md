@@ -235,3 +235,9 @@ Sam approved publication on 7 October 2026. The article was added to the article
 - Sam explicitly requested official references for this article, authorizing its BNM/CIMB/UOB external links as a page-specific exception to the default internal-only policy. The closing invitation uses the existing Facebook contact URL.
 - Reused the static article template, existing imagery, navigation, footer and tracking; added Article/Breadcrumb metadata, catalogue entry, direct directory link and sitemap entry. No dependencies or unrelated page edits.
 - Next action: compare this page's Search Console visibility and enquiries with the existing foreign-buyer cluster at the next review. Recheck bank terms before changing indicative margins.
+
+## 2026-10-13 — Housing Loan Article Link Correction
+
+- At Sam's request, removed the public Official references section and its four third-party links. Official fact-check evidence remains recorded in the preceding worklog entry.
+- Removed the foreign-buyer overview invitation from this article pending Sam's confirmation that the overview content is ready. This does not delete or change the existing overview page.
+- Next action: restore a contextual overview link only after Sam confirms that content is ready for readers.
