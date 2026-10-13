@@ -256,3 +256,12 @@ Sam approved publication on 7 October 2026. The article was added to the article
 
 - Removed "through Facebook" from the closing invitation per Sam's marked screenshot; "contact Sam Tee" remains linked to the same approved Facebook contact page.
 - Next action: keep the closing invitation concise when maintaining this guide.
+
+## 2026-10-13 — Four First Checks for Foreign Buyers
+
+- Created the approved Trust / Authority introductory guide at `/articles/4-things-foreigners-should-know-before-buying-jb-property` with 428 English words, the supplied opening and closing, four question headings and one contextual link per topic plus the comprehensive guide link.
+- Confirmed all five existing targets return HTTP 200 before publication, including the REN verification article. Reused their actual routes without duplicating their detailed content.
+- SERP review confirmed competing Johor foreign-buyer guides covering eligibility, costs and financing; this page is deliberately a short navigation entry into the established education cluster. No demand/search-volume estimates were invented.
+- Checked general facts against Johor land-office foreign-acquisition guidance, HASiL stamp-duty information, BNM non-resident borrowing, CIMB application requirements and the verified LPPEH public-directory workflow. Avoided stating tax rates, guaranteed financing or universal below-threshold eligibility.
+- Reused existing article styling, navigation, imagery and footer; added Article/Breadcrumb metadata, catalogue, direct directory and sitemap entries. The new article loads GTM once. No dependencies, FAQ or promotional banner/CTA were added, and supporting articles were not changed.
+- Next action: review discovery of the four supporting guides from this introduction and Search Console visibility; keep the five linked destinations current.
