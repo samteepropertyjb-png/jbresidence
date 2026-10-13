@@ -241,3 +241,13 @@ Sam approved publication on 7 October 2026. The article was added to the article
 - At Sam's request, removed the public Official references section and its four third-party links. Official fact-check evidence remains recorded in the preceding worklog entry.
 - Removed the foreign-buyer overview invitation from this article pending Sam's confirmation that the overview content is ready. This does not delete or change the existing overview page.
 - Next action: restore a contextual overview link only after Sam confirms that content is ready for readers.
+
+## 2026-10-13 — Property Professional Verification Guide
+
+- Published the approved Trust / Authority guide at `/articles/verify-property-agent-malaysia`, preserving Sam's five-step structure and actual screenshots. Search results confirmed existing REN-verification guides and buyer questions; no search volume was invented.
+- Verified the official `https://lpeph.gov.my/search-listing` portal and its embedded `https://bis.lpeph.gov.my/search` public form without login. Both REN 80322 and business phone 01156348518 returned TEE JIA JINQ (SAM TEE), PROPNEX REALTY SDN BHD (E (1) 1800/2), Active (2026).
+- Clarified REN versus registered Estate Agent, one search criterion at a time, and that active registration does not authenticate a listing or payment instructions. Step 5 tells readers to confirm agency numbers against official records rather than trusting a Google AI summary; the provided screenshot remains an illustrative example.
+- Converted all five originals to lossless WebP without cropping or altering pixels, reducing their combined size from about 1.56 MB to 0.91 MB. Kept original files intact; images have intrinsic dimensions, alt text, captions and full-size links for mobile inspection.
+- Added Article/Breadcrumb structured data, evergreen metadata, catalogue and non-JavaScript directory entries, sitemap, Facebook invitation and contextual links in both directions with the existing foreign-buyer overview. Sam's new request explicitly authorizes these overview links and the official LPPEH public links; the prior loan article remains unchanged.
+- Static validation and Playwright/installed Edge checks cover metadata, internal links/assets, five ordered screenshots, full-size image interaction, desktop/mobile layout, menu, catalogue and overview backlink. There is no repository build command or test suite and no new dependency.
+- Next action: review visibility and enquiries in the foreign-buyer education cluster; refresh status/contact examples when updating the guide, and retain the instruction to run a fresh official search.
