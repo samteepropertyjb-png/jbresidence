@@ -265,3 +265,8 @@ Sam approved publication on 7 October 2026. The article was added to the article
 - Checked general facts against Johor land-office foreign-acquisition guidance, HASiL stamp-duty information, BNM non-resident borrowing, CIMB application requirements and the verified LPPEH public-directory workflow. Avoided stating tax rates, guaranteed financing or universal below-threshold eligibility.
 - Reused existing article styling, navigation, imagery and footer; added Article/Breadcrumb metadata, catalogue, direct directory and sitemap entries. The new article loads GTM once. No dependencies, FAQ or promotional banner/CTA were added, and supporting articles were not changed.
 - Next action: review discovery of the four supporting guides from this introduction and Search Console visibility; keep the five linked destinations current.
+
+## 2026-10-13 — Four First Checks WhatsApp Invitation
+
+- Sam requested a WhatsApp CTA on the latest four-point introduction, superseding the initial instruction to omit promotional CTAs for this page. Added a low-pressure invitation to discuss budget and plans after the article, matching the existing light-background/gold-button treatment.
+- Uses the existing 601156348518 contact number and a contextual prefilled enquiry. Next action: observe enquiries from this introductory guide before changing the placement.
