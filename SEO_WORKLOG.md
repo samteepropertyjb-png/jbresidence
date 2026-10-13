@@ -251,3 +251,8 @@ Sam approved publication on 7 October 2026. The article was added to the article
 - Added Article/Breadcrumb structured data, evergreen metadata, catalogue and non-JavaScript directory entries, sitemap, Facebook invitation and contextual links in both directions with the existing foreign-buyer overview. Sam's new request explicitly authorizes these overview links and the official LPPEH public links; the prior loan article remains unchanged.
 - Static validation and Playwright/installed Edge checks cover metadata, internal links/assets, five ordered screenshots, full-size image interaction, desktop/mobile layout, menu, catalogue and overview backlink. There is no repository build command or test suite and no new dependency.
 - Next action: review visibility and enquiries in the foreign-buyer education cluster; refresh status/contact examples when updating the guide, and retain the instruction to run a fresh official search.
+
+## 2026-10-13 — Verification Guide Contact Wording
+
+- Removed "through Facebook" from the closing invitation per Sam's marked screenshot; "contact Sam Tee" remains linked to the same approved Facebook contact page.
+- Next action: keep the closing invitation concise when maintaining this guide.
