@@ -279,3 +279,5 @@ Sam approved publication on 7 October 2026. The article was added to the article
 - Added Chinese language metadata, Article/Breadcrumb structured data, visible buyer questions and answers, author identity, contextual internal area links, article catalogue/directory entries and sitemap. Retained existing GTM and shared WhatsApp tracking with a contextual Chinese enquiry.
 - Browser plugin unavailable; used bundled Playwright with installed Edge. Desktop 1440x1000 and mobile 390x844 checks passed: meaningful Chinese page, one H1, no horizontal overflow, mobile menu interaction, article catalogue rendering, no runtime errors, screenshots reviewed. Schema JSON, sitemap XML and local links/assets validated.
 - Next action: confirm production URL after deployment, then monitor Search Console discovery and enquiries; indexing and AI citations remain unverified until observed.
+
+- Production verification: installed Edge returned HTTP 200 for the published URL and confirmed the approved Chinese title, H1 and WhatsApp CTA. Basic non-browser requests received HTTP 403; browser access succeeded.
