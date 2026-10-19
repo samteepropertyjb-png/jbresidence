@@ -270,3 +270,12 @@ Sam approved publication on 7 October 2026. The article was added to the article
 
 - Sam requested a WhatsApp CTA on the latest four-point introduction, superseding the initial instruction to omit promotional CTAs for this page. Added a low-pressure invitation to discuss budget and plans after the article, matching the existing light-background/gold-button treatment.
 - Uses the existing 601156348518 contact number and a contextual prefilled enquiry. Next action: observe enquiries from this introductory guide before changing the placement.
+
+## 2026-10-19 — Chinese Lifestyle and Home Fit Article
+
+- Published Sam's approved Chinese personal-viewpoint article at `/articles/jb-property-lifestyle-ciq-rts-vs-iskandar-puteri`. Role: Trust / Authority, helping readers compare lifestyle fit rather than declaring a universal best condo or district.
+- Preserved the approved discussion of CIQ/RTS condos, Iskandar Puteri landed homes, individual preferences, life stages, ownership responsibilities and everyday routes. No prices, distances, return forecasts or transport opening dates added.
+- Live SERP review during drafting identified related city-centre condo, condo-versus-landed and neighbourhood-choice content. This article focuses on personal daily-life fit; no search-volume or AI-citation guarantees made.
+- Added Chinese language metadata, Article/Breadcrumb structured data, visible buyer questions and answers, author identity, contextual internal area links, article catalogue/directory entries and sitemap. Retained existing GTM and shared WhatsApp tracking with a contextual Chinese enquiry.
+- Browser plugin unavailable; used bundled Playwright with installed Edge. Desktop 1440x1000 and mobile 390x844 checks passed: meaningful Chinese page, one H1, no horizontal overflow, mobile menu interaction, article catalogue rendering, no runtime errors, screenshots reviewed. Schema JSON, sitemap XML and local links/assets validated.
+- Next action: confirm production URL after deployment, then monitor Search Console discovery and enquiries; indexing and AI citations remain unverified until observed.
