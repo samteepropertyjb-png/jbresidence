@@ -1198,6 +1198,15 @@ const EXTENDED_PROJECTS = [
     published: 'TRUE'
   },
   {
+    slug: 'mbw-bay', area: 'JB Town', project_name: 'MBW Bay · Florian Residences Tower 1–3',
+    tagline: 'Freehold serviced apartments in the Danga Bay corridor',
+    price_range: 'Enquire for current Tower 1–3 prices', tenure: 'Freehold',
+    commute_note: 'Persiaran Abu Bakar Sultan · check your daily route',
+    description: 'Explore the Tower 1–3 phase in Danga Bay, with 704 serviced apartments and one-bedroom to two-bedroom-plus-study layouts. Confirm the current selected-unit quotation and completion terms.',
+    status: 'Under Construction', image_url: 'photos/mbw-bay/hero.webp',
+    project_url: '/projects/mbw-bay', published: 'TRUE'
+  },
+  {
     slug: 'aethera-residences', area: 'JB Town', project_name: 'Aethera Residences',
     tagline: 'Freehold city residence with an estimated 400m covered walk to Bukit Chagar RTS',
     price_range: 'Enquire for latest units & prices',

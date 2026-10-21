@@ -281,3 +281,11 @@ Sam approved publication on 7 October 2026. The article was added to the article
 - Next action: confirm production URL after deployment, then monitor Search Console discovery and enquiries; indexing and AI citations remain unverified until observed.
 
 - Production verification: installed Edge returned HTTP 200 for the published URL and confirmed the approved Chinese title, H1 and WhatsApp CTA. Basic non-browser requests received HTTP 403; browser access succeeded.
+
+## 2026-10-21 — MBW Bay Tower 1–3 Project Page
+
+- Sam requested a MBW Bay project page based on mbwbayjb.com and selected Tower 1–3. Created /projects/mbw-bay as a focused conversion page using the existing website visual system, original advisory copy, developer brochure images and three representative floor-plan controls. Added catalogue and sitemap discovery.
+- Checked MB World APDL on 21 October 2026: Vista Tiara 1, freehold, 704 units, expected December 2029 and disclosed RM520,000–RM2,109,000 phase range. Explicitly distinguish this from live available pricing. The October 2025 brochure contains an older 2027 estimate; latest disclosure takes precedence and the contractual date still needs checking.
+- Research: https://www.mbworld.com.my/apdl/ ; https://sampropertiesdevelopment.com/images/001-userprofile/666586florian%20residences%20t1-3_e-brochure%2020251002.pdf ; https://mbwbayjb.com/ . No competitor copy, contact form, tracking or contact number reused. Retained first-party links and Sam's WhatsApp tracking. No unverified walking route, commute time, rental return or current stock claims.
+- Browser plugin not available; bundled Playwright with installed Edge verified desktop 1440x1000 and mobile 390x844, all three plan selections, image loading and no page errors or horizontal overflow. Static checks cover JavaScript, schema and sitemap. Existing untracked tmp preserved.
+- Next action: confirm production deployment, then replace indicative guidance with Sam's current approved unit list when available. Monitor project enquiries through existing tracking.
