@@ -1866,3 +1866,28 @@ footer {
   .project-gallery { grid-template-columns: 1fr 1fr; }
   .project-gallery-item img { height: 160px; }
 }
+
+/* Mobile navigation repair: ensure expanded links are visible at tablet widths too. */
+@media (max-width: 860px) {
+  .nav { isolation: isolate; }
+  .nav-toggle { position: relative; z-index: 102; min-width: 44px; min-height: 44px; touch-action: manipulation; }
+  .nav-links {
+    display: none;
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    max-height: calc(100dvh - 64px);
+    overflow-y: auto;
+    background: #0a1b2e;
+    padding: 20px 24px 28px;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 0 10px 28px rgba(0,0,0,.3);
+    z-index: 101;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { display: block; padding: 8px 0; }
+  .nav-dropdown .nav-mega-panel { position: static; display: block; opacity: 1; visibility: visible; transform: none; box-shadow: none; background: transparent; padding: 8px 0 0 12px; }
+  .nav-dropdown-toggle { pointer-events: none; }
+}
