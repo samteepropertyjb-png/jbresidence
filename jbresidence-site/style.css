@@ -1891,3 +1891,10 @@ footer {
   .nav-dropdown .nav-mega-panel { position: static; display: block; opacity: 1; visibility: visible; transform: none; box-shadow: none; background: transparent; padding: 8px 0 0 12px; }
   .nav-dropdown-toggle { pointer-events: none; }
 }
+
+/* Keep homepage content visible on mobile if scroll-reveal JavaScript fails. */
+@media (max-width: 860px) {
+  .home-page .reveal { opacity: 1 !important; transform: none !important; visibility: visible !important; }
+  .home-page .hero-content { opacity: 1; visibility: visible; }
+  .home-page .home-hero { background-color: #102a43; }
+}
