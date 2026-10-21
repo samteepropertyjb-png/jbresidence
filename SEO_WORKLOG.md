@@ -296,3 +296,9 @@ Sam approved publication on 7 October 2026. The article was added to the article
 - Rewrote Sam's View and closing invitation around accepting more travel time to consider a sea-facing Danga Bay weekend home. Price-per-square-foot comparison is conditional on selected units, views depend on floor/facing and future surroundings, and no unsupported numerical density comparison was introduced. Removed the marked weaker-fit paragraph and repeated old/new completion-date discussion; latest expected completion remains in the summary. Sam then approved a comparison link and preferred CTC SkyOne, so replaced the Aethera link with the existing SkyOne project route.
 - Local Edge/Playwright checked every one of the 16 selections and decoded each main image, verified 7/4/5 group counts, the SkyOne link, removal of the marked copy, no runtime errors and no horizontal overflow at 1440px and 390px. Reviewed image contact sheet and desktop screenshot. Existing GTM/WhatsApp behavior preserved.
 - Next action: verify production after deployment and confirm specific sea-view units and current prices with Sam before adding unit-level sales claims.
+
+## 2026-10-21 — MBW Bay Three Legacy Image Cache Fix
+
+- Sam's screenshots showed the earlier brochure-page images still appearing for Tower 1 A5, Tower 2 A7 and Tower 3 B2A. Confirmed local files already contain the intended clean standalone plans; those three paths had been reused from the first deployment.
+- Added fresh -plan.webp filenames and updated all three layout data references so main images, thumbnails and full-size links bypass the old cached URLs. Preserved all unit metadata, copy and tracking.
+- Next action: check the three new image URLs and selections in production after deployment.
