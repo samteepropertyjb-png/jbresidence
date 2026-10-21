@@ -302,4 +302,19 @@ Sam approved publication on 7 October 2026. The article was added to the article
 - Sam's screenshots showed the earlier brochure-page images still appearing for Tower 1 A5, Tower 2 A7 and Tower 3 B2A. Confirmed local files already contain the intended clean standalone plans; those three paths had been reused from the first deployment.
 - Added fresh -plan.webp filenames and updated all three layout data references so main images, thumbnails and full-size links bypass the old cached URLs. Preserved all unit metadata, copy and tracking.
 - Next action: check the three new image URLs and selections in production after deployment.
-\n## 2026-10-21 — Sunway Iskandar vs Eco Botanic Semi-D\n\n- Added evergreen own-stay Semi-D comparison at `/articles/sunway-iskandar-vs-eco-botanic-semi-d` using the existing editorial template, comparison table, FAQs, Article/Breadcrumb/FAQ structured data, author and first-party images.\n- Verified tenure on Sunway Property official Emerald Residence APDL (lease for 129 years, expiration 31 August 2141) and EcoWorld Eco Botanic official semi-D phase disclosures (freehold). Distinguish project/phase tenure from township-wide generalisations. No current pricing, return forecasts or travel-time claims included.\n- Linked the new guide from the Iskandar Puteri hub and article catalogue, and registered it in the XML sitemap. Internal linking routes readers to existing landed/school/comparison guides and `/sam-tee`.\n- Next action: watch Search Console discovery and internal clicks; check individual titles, listings and unit availability with owners before discussing specific purchases.\n
+
+## 2026-10-21 — Sunway Iskandar vs Eco Botanic Semi-D
+
+- Added evergreen own-stay Semi-D comparison at `/articles/sunway-iskandar-vs-eco-botanic-semi-d` using the existing editorial template, comparison table, FAQs, Article/Breadcrumb/FAQ structured data, author and first-party images.
+- Verified tenure on Sunway Property official Emerald Residence APDL (lease for 129 years, expiration 31 August 2141) and EcoWorld Eco Botanic official semi-D phase disclosures (freehold). Distinguish project/phase tenure from township-wide generalisations. No current pricing, return forecasts or travel-time claims included.
+- Linked the new guide from the Iskandar Puteri hub and article catalogue, and registered it in the XML sitemap. Internal linking routes readers to existing landed/school/comparison guides and `/sam-tee`.
+- Next action: watch Search Console discovery and internal clicks; check individual titles, listings and unit availability with owners before discussing specific purchases.\n
+
+## 2026-10-21 — Forest City SFZ MM2H Retirement Strategy
+
+- Added /articles/forest-city-sfz-mm2h-retirement-strategy in simple English, using the existing article design, comparison table, FAQ and structured data.
+- Compared National Silver USD150,000 fixed deposit with SFZ USD32,000 for age 50+, clearly labelling RM500,000 purchase and RM1,500 rental figures as examples rather than guaranteed eligibility or returns.
+- Explained the rent-elsewhere retirement concept and cautioned that SFZ property eligibility, rental rights, residence conditions and resale restrictions must be confirmed before purchase.
+- Added an internal /sam-tee CTA, article directory entry and sitemap URL. No developer sales links.
+- Added LATEST_ARTICLE.md and an AGENTS.md confirmation rule for future cross-device work.
+- Next action: verify live page and images, check mobile presentation, and verify latest programme conditions with official sources.
