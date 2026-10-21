@@ -22,3 +22,6 @@ If an instruction conflicts with a newer explicit instruction from Sam, follow S
 
 ## Git Sync Rule
 Before SEO or website work, check the branch and working tree, then safely fetch and reconcile with `origin/main`. Preserve local work, never force-push, and never discard changes to make a pull easier. Review, commit and push each completed logical unit so GitHub remains the source of truth.
+
+## Latest Article Confirmation Rule
+Before every new article, read `LATEST_ARTICLE.md`, check the current `main` branch HEAD, and tell Sam the latest article title/path and branch before editing. After publishing, update `LATEST_ARTICLE.md` and `SEO_WORKLOG.md` without deleting history. Do not claim deployment without a live check.
