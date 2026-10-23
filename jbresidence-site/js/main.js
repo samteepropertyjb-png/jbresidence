@@ -77,8 +77,7 @@ function parseCsv(text) {
     } else {
       if (c === '"') inQuotes = true;
       else if (c === ',') { row.push(field); field = ''; }
-      else if (c === '
-') { row.push(field); rows.push(row); row = []; field = ''; }
+      else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
       else if (c === '\r') { /* skip */ }
       else { field += c; }
     }
@@ -144,9 +143,7 @@ const PLACEHOLDER_PROJECTS = [
     slug: 'horizon-hills', area: 'Iskandar Puteri', project_name: 'Horizon Hills',
     tagline: 'Gated golf community, mature landscaping', price_range: 'RM 2.5M – RM 6M',
     tenure: 'Freehold', commute_note: '~15 min to Second Link',
-    description: "Horizon Hills is one of Iskandar Puteri's most established landed townships, built around an 18-hole golf course with 24-hour guarded security across its precincts. It's a common shortlist entry for families relocating from Singapore and for retirees prioritising lifestyle infrastructure over proximity to the city centre.
-
-It may suit households that want a guarded landed environment, golf and mature landscaping, and that can support a higher purchase budget. It may be less suitable for buyers seeking a low entry price, compact high-rise ownership or a home within walking distance of JB city-centre transport links. Compare the exact precinct, house condition, renovation needs and daily route before deciding.",
+    description: "Horizon Hills is one of Iskandar Puteri's most established landed townships, built around an 18-hole golf course with 24-hour guarded security across its precincts. It's a common shortlist entry for families relocating from Singapore and for retirees prioritising lifestyle infrastructure over proximity to the city centre.\n\nIt may suit households that want a guarded landed environment, golf and mature landscaping, and that can support a higher purchase budget. It may be less suitable for buyers seeking a low entry price, compact high-rise ownership or a home within walking distance of JB city-centre transport links. Compare the exact precinct, house condition, renovation needs and daily route before deciding.",
     status: 'Now Selling',
     image_url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1200&auto=format&fit=crop',
     published: 'TRUE'
@@ -155,9 +152,7 @@ It may suit households that want a guarded landed environment, golf and mature l
     slug: 'eco-botanic', area: 'Iskandar Puteri', project_name: 'Eco Botanic',
     tagline: 'Eco-themed township, strong family amenities', price_range: 'RM 1.8M – RM 4.5M',
     tenure: 'Freehold', commute_note: '~20 min to Second Link',
-    description: "Eco Botanic is a nature-themed township with extensive parks, lakes, and family-oriented amenities. It draws buyers looking for a balance between greenery and connectivity, with schools and retail options developing steadily around it.
-
-It may suit families that value a planned township environment and outdoor space within the Iskandar Puteri corridor. It may be less suitable when the shortest possible trip to central Johor Bahru or the lowest purchase budget is the first priority. Buyers should compare the precise phase, traffic pattern, maintenance obligations and total ownership cost.",
+    description: "Eco Botanic is a nature-themed township with extensive parks, lakes, and family-oriented amenities. It draws buyers looking for a balance between greenery and connectivity, with schools and retail options developing steadily around it.\n\nIt may suit families that value a planned township environment and outdoor space within the Iskandar Puteri corridor. It may be less suitable when the shortest possible trip to central Johor Bahru or the lowest purchase budget is the first priority. Buyers should compare the precise phase, traffic pattern, maintenance obligations and total ownership cost.",
     status: 'Now Selling',
     image_url: 'https://images.unsplash.com/photo-1592595896551-12b371d546d5?q=80&w=1200&auto=format&fit=crop',
     published: 'TRUE'
@@ -166,9 +161,7 @@ It may suit families that value a planned township environment and outdoor space
     slug: 'east-ledang', area: 'Iskandar Puteri', project_name: 'East Ledang',
     tagline: 'Premium gated enclave, larger plot sizes', price_range: 'RM 2M – RM 5M',
     tenure: 'Freehold', commute_note: '~25 min to Second Link',
-    description: "East Ledang is a premium gated enclave known for larger plot sizes and a quieter, more exclusive feel than some of its neighbouring townships. It is often considered by upgrading families that want more land and privacy within Iskandar Puteri.
-
-It may suit buyers who value space, a lower-density setting and a freehold landed home. It may be less suitable for buyers prioritising compact maintenance, a lower entry price or city-centre walkability. Compare the individual property's condition, security arrangement and driving routes with nearby alternatives.",
+    description: "East Ledang is a premium gated enclave known for larger plot sizes and a quieter, more exclusive feel than some of its neighbouring townships. It is often considered by upgrading families that want more land and privacy within Iskandar Puteri.\n\nIt may suit buyers who value space, a lower-density setting and a freehold landed home. It may be less suitable for buyers prioritising compact maintenance, a lower entry price or city-centre walkability. Compare the individual property's condition, security arrangement and driving routes with nearby alternatives.",
     status: 'Now Selling',
     image_url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop',
     published: 'TRUE'
@@ -205,13 +198,7 @@ It may suit buyers who value space, a lower-density setting and a freehold lande
     price_range: 'Enquire for pricing',
     tenure: 'Freehold',
     commute_note: 'CIQ-oriented city location; test the exact route from your selected tower',
-    description: "R&F Princess Cove is a freehold high-rise development in JB Town with a mixed commercial setting and layouts from compact studios to larger family homes. It can be relevant to buyers who want a city base and who use the Causeway regularly.
-
-The practical test is your own route: check the walk from the selected tower, lift time, weather protection, traffic and immigration routine at the hours you would actually travel. Do not assume that every unit or phase offers the same connection.
-
-The RTS Link is a separate transport option. It was officially scheduled to begin operations on 1 January 2027; buyers should verify the service and their complete station route when making a decision.
-
-The commercial environment, facilities, unit layout, monthly costs and building density can matter as much as the location. Compare the exact unit and do not rely on a project name or future transport story alone.",
+    description: "R&F Princess Cove is a freehold high-rise development in JB Town with a mixed commercial setting and layouts from compact studios to larger family homes. It can be relevant to buyers who want a city base and who use the Causeway regularly.\n\nThe practical test is your own route: check the walk from the selected tower, lift time, weather protection, traffic and immigration routine at the hours you would actually travel. Do not assume that every unit or phase offers the same connection.\n\nThe RTS Link is a separate transport option. It was officially scheduled to begin operations on 1 January 2027; buyers should verify the service and their complete station route when making a decision.\n\nThe commercial environment, facilities, unit layout, monthly costs and building density can matter as much as the location. Compare the exact unit and do not rely on a project name or future transport story alone.",
     unit_types: [
       { type: 'Studio', size: '313 sq ft' },
       { type: '1-Bedroom', size: '555 – 593 sq ft' },
@@ -387,9 +374,7 @@ async function renderProjectPage(forcedSlug) {
 
   const areaSlugMap = { 'Iskandar Puteri': '/iskandar-puteri', 'JB Town': '/jb-town', 'Forest City': '/forest-city' };
   const areaHref = areaSlugMap[p.area] || '/';
-  const descParagraphs = (p.description || '').split('
-
-').filter(Boolean).map(t => `<p style="color: var(--ink-muted); margin-bottom: 16px;">${t}</p>`).join('');
+  const descParagraphs = (p.description || '').split('\n\n').filter(Boolean).map(t => `<p style="color: var(--ink-muted); margin-bottom: 16px;">${t}</p>`).join('');
   const waMsg = encodeURIComponent(`Hi Sam, I'm interested in ${p.project_name}. Please share the latest available units and sales package.`);
   const heroImage = /^https?:\/\//.test(p.image_url || '') || (p.image_url || '').startsWith('/')
     ? (p.image_url || '')
@@ -1052,15 +1037,7 @@ const EXTENDED_PROJECTS = [
     price_range: 'Terrace from RM 1M · Cluster from RM 1.5M',
     tenure: 'Freehold',
     commute_note: 'Minutes to Tuas Checkpoint via Second Link Expressway',
-    description: "Riveria Garden @ Wawari is KSL Holdings' flagship township project in Iskandar Puteri — a 627-acre freehold master-planned community built along the scenic Sungai Melayu riverfront. It is one of the largest freehold landed developments to launch in Iskandar Puteri in recent years, positioned at the quieter, greener end of the district near EduCity and the Tuas Checkpoint corridor.
-
-Two product types are available. Riveria Garden Terrace offers 20' x 70' land and 2,219 sq ft built-up. Riveria Garden Cluster steps up to a wider 32' x 70' land and 2,592 sq ft built-up. Both types carry freehold individual land titles.
-
-The township is built around three core ideas. First, individual freehold land titles on every unit — not strata, not leasehold. Second, a riverside setting: the development faces Sungai Melayu, with landscaped riverfront promenades designed as the centrepiece of daily community life. Third, a scaled amenities programme anchored by The Wawari Club — a full-facility club with co-working lounges, sports courts, gymnasium, and swimming facilities, plus dedicated jogging and cycling tracks throughout the community.
-
-Connectivity is a key part of the proposition. The site sits within reach of the Iskandar Coastal Highway, the Second Link Expressway (Tuas), and the Pasir Gudang-Perling Highway — giving residents multiple route options to Singapore and JB Town. EduCity, with its cluster of international schools and university campuses, is nearby, making this a natural choice for families who prioritise education infrastructure. Gleneagles Hospital Medini is also within the broader Iskandar Puteri catchment.
-
-As a new KSL township, Riveria Garden represents a primary market purchase — progressive payment schedule, developer warranty, and new-launch specifications. The freehold title, generous built-up sizes, and riverside positioning place it in a compelling segment for buyers who want more space than a typical JB Town high-rise at a more accessible price than the established Horizon Hills or Eco Botanic resale market.",
+    description: "Riveria Garden @ Wawari is KSL Holdings' flagship township project in Iskandar Puteri — a 627-acre freehold master-planned community built along the scenic Sungai Melayu riverfront. It is one of the largest freehold landed developments to launch in Iskandar Puteri in recent years, positioned at the quieter, greener end of the district near EduCity and the Tuas Checkpoint corridor.\n\nTwo product types are available. Riveria Garden Terrace offers 20' x 70' land and 2,219 sq ft built-up. Riveria Garden Cluster steps up to a wider 32' x 70' land and 2,592 sq ft built-up. Both types carry freehold individual land titles.\n\nThe township is built around three core ideas. First, individual freehold land titles on every unit — not strata, not leasehold. Second, a riverside setting: the development faces Sungai Melayu, with landscaped riverfront promenades designed as the centrepiece of daily community life. Third, a scaled amenities programme anchored by The Wawari Club — a full-facility club with co-working lounges, sports courts, gymnasium, and swimming facilities, plus dedicated jogging and cycling tracks throughout the community.\n\nConnectivity is a key part of the proposition. The site sits within reach of the Iskandar Coastal Highway, the Second Link Expressway (Tuas), and the Pasir Gudang-Perling Highway — giving residents multiple route options to Singapore and JB Town. EduCity, with its cluster of international schools and university campuses, is nearby, making this a natural choice for families who prioritise education infrastructure. Gleneagles Hospital Medini is also within the broader Iskandar Puteri catchment.\n\nAs a new KSL township, Riveria Garden represents a primary market purchase — progressive payment schedule, developer warranty, and new-launch specifications. The freehold title, generous built-up sizes, and riverside positioning place it in a compelling segment for buyers who want more space than a typical JB Town high-rise at a more accessible price than the established Horizon Hills or Eco Botanic resale market.",
     unit_types: [
       { type: 'Riveria Garden Terrace', size: '20\' x 70\' land · 2,219 sq ft built-up' },
       { type: 'Riveria Garden Cluster', size: '32\' x 70\' land · 2,592 sq ft built-up' },
@@ -1108,9 +1085,7 @@ As a new KSL township, Riveria Garden represents a primary market purchase — p
     slug: 'forest-city-golf-villa', area: 'Forest City', project_name: 'Forest City Golf Villa',
     tagline: 'Completed freehold homes inside the golf resort', price_range: 'V120 RM 1.5M · V160 RM 1.8M',
     tenure: 'Freehold Strata', commute_note: '~5 km to Second Link corridor',
-    description: "Forest City Golf Villa offers two completed landed-style layouts inside Forest City Golf Resort. V120 has 2 bedrooms, 2 bathrooms and approximately 2,034 sq ft, while V160 has 3 bedrooms, 3 bathrooms and approximately 2,917 sq ft. Both combine indoor living with private garden and open-terrace space.
-
-It may suit golfers, Singapore-based buyers using the Second Link, and second-home or retirement buyers who prefer a quiet environment and are comfortable driving for daily needs.",
+    description: "Forest City Golf Villa offers two completed landed-style layouts inside Forest City Golf Resort. V120 has 2 bedrooms, 2 bathrooms and approximately 2,034 sq ft, while V160 has 3 bedrooms, 3 bathrooms and approximately 2,917 sq ft. Both combine indoor living with private garden and open-terrace space.\n\nIt may suit golfers, Singapore-based buyers using the Second Link, and second-home or retirement buyers who prefer a quiet environment and are comfortable driving for daily needs.",
     status: 'Now Selling',
     image_url: 'photos/forest-city/forest-city-site-2.jpg',
     published: 'TRUE'
@@ -1119,9 +1094,7 @@ It may suit golfers, Singapore-based buyers using the Second Link, and second-ho
     slug: 'forest-city-high-rise', area: 'Forest City', project_name: 'Forest City High-Rise',
     tagline: 'Completed waterfront apartments with resort facilities', price_range: 'RM577,252 – RM2,697,700',
     tenure: 'Freehold Strata', commute_note: 'Second Link corridor',
-    description: "Forest City High-Rise offers six current choices from a 517 sq ft 1+1-room unit to a 1,841 sq ft four-room home. Prices supplied for this page range from RM577,252 to RM2,697,700.
-
-Y225, Y076 and Y221 are practical starting choices for many MM2H applicants. The project may suit buyers who value a completed waterfront resort environment and are comfortable driving for their daily routine.",
+    description: "Forest City High-Rise offers six current choices from a 517 sq ft 1+1-room unit to a 1,841 sq ft four-room home. Prices supplied for this page range from RM577,252 to RM2,697,700.\n\nY225, Y076 and Y221 are practical starting choices for many MM2H applicants. The project may suit buyers who value a completed waterfront resort environment and are comfortable driving for their daily routine.",
     status: 'Now Selling',
     image_url: 'fc-pool.jpg',
     published: 'TRUE'
@@ -1158,13 +1131,7 @@ Y225, Y076 and Y221 are practical starting choices for many MM2H applicants. The
     price_range: 'Enquire for pricing',
     tenure: 'Freehold',
     commute_note: 'CIQ-oriented city location; test the exact route from your selected tower',
-    description: "R&F Princess Cove is a freehold high-rise development in JB Town with a mixed commercial setting and layouts from compact studios to larger family homes. It can be relevant to buyers who want a city base and who use the Causeway regularly.
-
-The practical test is your own route: check the walk from the selected tower, lift time, weather protection, traffic and immigration routine at the hours you would actually travel. Do not assume that every unit or phase offers the same connection.
-
-The RTS Link is a separate transport option. It was officially scheduled to begin operations on 1 January 2027; buyers should verify the service and their complete station route when making a decision.
-
-The commercial environment, facilities, unit layout, monthly costs and building density can matter as much as the location. Compare the exact unit and do not rely on a project name or future transport story alone.",
+    description: "R&F Princess Cove is a freehold high-rise development in JB Town with a mixed commercial setting and layouts from compact studios to larger family homes. It can be relevant to buyers who want a city base and who use the Causeway regularly.\n\nThe practical test is your own route: check the walk from the selected tower, lift time, weather protection, traffic and immigration routine at the hours you would actually travel. Do not assume that every unit or phase offers the same connection.\n\nThe RTS Link is a separate transport option. It was officially scheduled to begin operations on 1 January 2027; buyers should verify the service and their complete station route when making a decision.\n\nThe commercial environment, facilities, unit layout, monthly costs and building density can matter as much as the location. Compare the exact unit and do not rely on a project name or future transport story alone.",
     unit_types: [
       { type: 'Studio', size: '313 sq ft' },
       { type: '1-Bedroom', size: '555 – 593 sq ft' },
