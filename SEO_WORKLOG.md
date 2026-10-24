@@ -318,3 +318,11 @@ Sam approved publication on 7 October 2026. The article was added to the article
 - Added an internal /sam-tee CTA, article directory entry and sitemap URL. No developer sales links.
 - Added LATEST_ARTICLE.md and an AGENTS.md confirmation rule for future cross-device work.
 - Next action: verify live page and images, check mobile presentation, and verify latest programme conditions with official sources.
+
+
+## 2026-10-24 — Kota Iskandar article review
+
+- Replaced the existing English article with Sam-approved Trust / Authority area review, preserving its indexed URL, published date, layout and tracking. Corrected administrative history and buildings; court completion is distinguished from expected 1 January 2027 operations.
+- Removed unsupported income, financing, property-premium and appreciation claims. Added balanced Bandar Wawari, Medini, Puteri Harbour and UEM Sunrise context, with three contextual first-party links. Updated title, description, catalogue, directory and sitemap date.
+- Facts checked against Johor government history, KKR court handover announcement, Bernama 29 September 2026 report, PLANMalaysia Wawari records and UEM Sunrise disclosures. No external public links added.
+- Next action: verify production and monitor the existing URL in Search Console; indexing status is user-reported, not independently rechecked.
