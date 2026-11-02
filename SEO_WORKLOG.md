@@ -332,3 +332,9 @@ Sam approved publication on 7 October 2026. The article was added to the article
 - At Sam's request, embedded his supplied Mandarin YouTube video OY4TigjwcZc after the existing article conclusion and before the WhatsApp invitation. Added a direct YouTube fallback link, responsive 16:9 sizing, lazy loading and fullscreen support. Existing article copy, internal links and tracking preserved.
 - Updated Article dateModified and this URL's sitemap lastmod. Browser plugin not available; use installed Playwright/Edge for desktop and mobile checks.
 - Next action: verify the production embed after deployment; monitor reader engagement without treating video views as enquiries.
+
+## 2026-11-02 — Three Medini article images
+
+- Sam confirmed only the bottom three articles in his screenshot: first-home guide uses Mall of Medini; condo-versus-landed guide uses Kota Iskandar; Medini-versus-JB-city-centre guide uses Puteri Harbour Terminal. Used the three supplied photographs, optimized to local WebP without cropping.
+- Updated catalogue thumbnails, article hero images and alt text, Open Graph and Article image references, modification dates and sitemap dates. Bumped the guide directory script version for cache refresh. The upper Medini Condo Guide image remains unchanged.
+- Next action: verify all three images in production after deployment.
