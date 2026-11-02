@@ -326,3 +326,9 @@ Sam approved publication on 7 October 2026. The article was added to the article
 - Removed unsupported income, financing, property-premium and appreciation claims. Added balanced Bandar Wawari, Medini, Puteri Harbour and UEM Sunrise context, with three contextual first-party links. Updated title, description, catalogue, directory and sitemap date.
 - Facts checked against Johor government history, KKR court handover announcement, Bernama 29 September 2026 report, PLANMalaysia Wawari records and UEM Sunrise disclosures. No external public links added.
 - Next action: verify production and monitor the existing URL in Search Console; indexing status is user-reported, not independently rechecked.
+
+## 2026-11-02 — Bandar Wawari article video
+
+- At Sam's request, embedded his supplied Mandarin YouTube video OY4TigjwcZc after the existing article conclusion and before the WhatsApp invitation. Added a direct YouTube fallback link, responsive 16:9 sizing, lazy loading and fullscreen support. Existing article copy, internal links and tracking preserved.
+- Updated Article dateModified and this URL's sitemap lastmod. Browser plugin not available; use installed Playwright/Edge for desktop and mobile checks.
+- Next action: verify the production embed after deployment; monitor reader engagement without treating video views as enquiries.
