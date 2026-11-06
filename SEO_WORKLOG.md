@@ -361,3 +361,8 @@ Sam approved publication on 7 October 2026. The article was added to the article
 - Shared JavaScript currently dispatches whatsapp_click on each matching link click, not once per session; sends only send_to in the explicit event payload, with no custom CTA placement identifier. Project CTA clicks/visibility are not explicitly tracked in this function. Runtime GTM/GA4 delivery and historical CTA counts were not verified. Search Console clicks are arrivals from search, not CTA clicks; 132 combined October search clicks are not unique visitors or CTA exposures.
 - Sam reports two website enquiries and one in-person appointment/area tour in October, no completed sale; source article and analytics attribution unknown. This user-reported outcome is distinct from search and tracked click data.
 - Next action: verify GA4 events and article-to-project journeys, then test one earlier context-specific CTA on Wawari/Ascent Park while retaining useful article content. Forest City already offers a concrete next step; do not label it weak without reach/click evidence. No public content changed.
+
+## 2026-11-06 — Three buyer-guide cover images
+
+- Replaced the repeated marina image on the foreign-buyer checklist, agent verification and housing-loan guides with distinct AI-generated, photo-style illustrations. Updated the guide cards, article hero and alt text, sharing and structured-data images, and sitemap dates.
+- The three covers and hero images loaded in Edge at desktop and mobile widths. Next action: verify the live site after deployment.
