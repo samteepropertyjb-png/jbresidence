@@ -366,3 +366,11 @@ Sam approved publication on 7 October 2026. The article was added to the article
 
 - Replaced the repeated marina image on the foreign-buyer checklist, agent verification and housing-loan guides with distinct AI-generated, photo-style illustrations. Updated the guide cards, article hero and alt text, sharing and structured-data images, and sitemap dates.
 - The three covers and hero images loaded in Edge at desktop and mobile widths. Next action: verify the live site after deployment.
+
+## 2026-11-09 — September versus October monthly email reports
+
+- Compared Sam-provided Search Console monthly email PDFs by visually inspecting the report pages. September/October Web clicks: 251/296 (+17.9%); rounded impressions: 10.3k/13.2k (about +28.2%); calculated approximate CTR: 2.44%/2.24%. Daily clicks increased from 8.37 to 9.55 (+14.1%), allowing for 30 versus 31 days. Estimated pages with first impressions: 45/19; this is not total indexed pages or published articles.
+- Leading page clicks September/October: Bandar Wawari 38/64; Ascent Park 39/37; Forest City worth-buying 28/31. October email's top growing pages: Wawari +26, Medini overview +14, Forest City golf villa project +13. Top three pages supplied 132/296 October clicks (44.6%). These email growth lists are selected highlights, not a complete page comparison.
+- Search-location clicks September/October: Singapore 98/137; Malaysia 126/108; United States 9/13. Singapore share rose from 39.0% to 46.3%; location does not establish nationality or buyer quality. Devices: desktop 117/101, mobile 131/186, tablet 3/9; mobile share rose from 52.2% to 62.8%. Image/video clicks both zero in both reports.
+- Interpretation: stronger discovery and search traffic, with Wawari a major contributor; impressions grew faster than clicks. Monthly emails do not supply average position, complete queries, conversion attribution or evidence that newly published articles caused growth. No website content or analytics settings changed.
+- Next action: use query/page-level Search Console comparisons to explain CTR changes and Ascent Park's small decline; review mobile article-to-project/WhatsApp journeys on leading pages, and measure actual enquiries separately from search and WhatsApp clicks. Preserve these monthly baselines for the next comparison.
