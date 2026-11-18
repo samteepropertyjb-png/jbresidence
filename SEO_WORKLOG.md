@@ -382,3 +382,8 @@ Sam approved publication on 7 October 2026. The article was added to the article
 - Fixed: 301s for 404 paths `/medini`, `/horizon-hills`, `/projects/horizon-hills` (also the target of the horizon-hills project card/slug redirect) and `/articles/jb-condo-vs-landed-2026`; corrected the same three broken links on `/sam-tee`. Added missing healthcare article to sitemap. Set `/box-fight` (non-property game page) to noindex via `_headers`. Unified Sam Tee Person schema on 80 pages with `@id` `#sam-tee` and `url` `/about-sam-tee`; added `@id` on the About page. Added `/llms.txt` listing hubs and key guides (internal links only). All JSON-LD re-validated.
 - Found but not changed (needs Sam's decision): Cloudflare Managed robots.txt blocks GPTBot, ClaudeBot, Google-Extended, Applebot-Extended, GoogleOther, meta-externalagent and also Baiduspider and PetalBot (search engines). `/sam-tee` (ads landing page) and `/about-sam-tee` are both indexable profile pages competing for the "sam tee" query.
 - Next action: verify redirects and llms.txt live after deploy; Sam to decide Cloudflare crawler settings and the two Sam pages.
+
+## 2026-11-18 — /sam-tee set to noindex (Sam's decision)
+
+- Sam chose Option A: `/sam-tee` stays live as the ads landing page but is now `noindex,follow` and removed from the sitemap, so `/about-sam-tee` is the single indexable profile for "sam tee" searches. Internal CTA links and ads tracking on `/sam-tee` unchanged.
+- Next action: after deployment, confirm the noindex live and watch the "sam tee" query position in GSC.
