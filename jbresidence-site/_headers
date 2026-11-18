@@ -10,3 +10,6 @@
 /articles/_shared
   X-Robots-Tag: noindex, nofollow
 
+
+/box-fight
+  X-Robots-Tag: noindex, nofollow
