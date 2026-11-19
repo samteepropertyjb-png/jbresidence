@@ -641,3 +641,27 @@ footer {
   .art-gallery-wide { height: 180px; }
   .lightbox-nav { width: 38px; height: 38px; font-size: 20px; }
 }
+
+/* Quick answer box and project picks (top of key articles) */
+.quick-answer { margin: 0 0 36px; padding: 22px 24px; background: #f7f5f1; border-left: 4px solid var(--gold); border-radius: 6px; }
+.art-wrap .quick-answer p { margin: 0 0 10px; }
+.art-wrap .quick-answer p:last-child { margin-bottom: 0; }
+.quick-answer-label { display: block; margin-bottom: 6px; font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); }
+.project-picks { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 16px; }
+.project-pick { display: block; padding: 16px 18px; background: #fff; border: 1px solid #e6e0d4; border-radius: 6px; text-decoration: none; color: var(--navy); transition: border-color .2s, transform .2s; }
+.project-pick:hover { border-color: var(--gold); transform: translateY(-2px); }
+.project-pick strong { display: block; font-size: 1rem; color: var(--navy); }
+.project-pick span { display: block; margin-top: 4px; font-size: .85rem; color: var(--ink-light); line-height: 1.45; }
+.project-pick em { display: inline-block; margin-top: 10px; font-style: normal; font-size: .8rem; font-weight: 700; color: var(--gold); }
+
+/* About the author box (end of every article) */
+.author-box { display: flex; gap: 18px; align-items: flex-start; margin: 48px 0 8px; padding: 24px; background: #fff; border: 1px solid #e6e0d4; border-radius: 8px; }
+.author-box img { width: 72px; height: 72px; flex: 0 0 72px; border-radius: 50%; object-fit: cover; }
+.art-wrap .author-box p { margin: 0 0 8px; font-size: .95rem; }
+.author-box-name { font-weight: 700; color: var(--navy); }
+.author-box-role { display: block; font-size: .82rem; color: var(--ink-light); }
+.author-box-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.author-box-links a { display: inline-block; padding: 9px 16px; border-radius: 4px; font-size: .82rem; font-weight: 700; text-decoration: none; }
+.author-box-links .ab-about { border: 1px solid var(--navy); color: var(--navy); }
+.author-box-links .ab-wa { background: var(--gold); color: #fff; }
+@media (max-width: 560px) { .author-box { flex-direction: column; } }
