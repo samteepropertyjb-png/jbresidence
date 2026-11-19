@@ -141,7 +141,7 @@ const PLACEHOLDER_ARTICLES = {
 const PLACEHOLDER_PROJECTS = [
   {
     slug: 'horizon-hills', area: 'Iskandar Puteri', project_name: 'Horizon Hills',
-    tagline: 'Gated golf community, mature landscaping', price_range: 'RM 2.5M – RM 6M',
+    tagline: 'Gated golf community, mature landscaping', price_range: 'Subsale from RM 1M',
     tenure: 'Freehold', commute_note: '~15 min to Second Link',
     description: "Horizon Hills is one of Iskandar Puteri's most established landed townships, built around an 18-hole golf course with 24-hour guarded security across its precincts. It's a common shortlist entry for families relocating from Singapore and for retirees prioritising lifestyle infrastructure over proximity to the city centre.\n\nIt may suit households that want a guarded landed environment, golf and mature landscaping, and that can support a higher purchase budget. It may be less suitable for buyers seeking a low entry price, compact high-rise ownership or a home within walking distance of JB city-centre transport links. Compare the exact precinct, house condition, renovation needs and daily route before deciding.",
     status: 'Now Selling',
