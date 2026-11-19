@@ -404,3 +404,12 @@ Sam approved publication on 7 October 2026. The article was added to the article
 - Live check 19 Nov: `/medini`, `/horizon-hills`, `/projects/horizon-hills`, `/articles/jb-condo-vs-landed-2026` 301 to their targets; `/llms.txt` 200; `/box-fight` X-Robots-Tag noindex; healthcare article in sitemap; `/sam-tee` noindex and out of sitemap; author `@id` live.
 - Note: the `thejbresidence` Worker is also linked to this repo and builds on every push; it does not serve the domain.
 - Next action: request indexing of `/about-sam-tee` in GSC; Sam to decide Cloudflare crawler settings (Baiduspider, PetalBot, AI crawlers).
+
+
+## 2026-11-19 — Independent verification after deployment restore
+
+- Synced main to 806fc70 without disturbing untracked local folders. GitHub confirms its Cloudflare Pages deployment succeeded at 08:25:06 Malaysia time, linked to project jbresidence-page and preview 205ffcb1.jbresidence.pages.dev. The separate thejbresidence Worker build also succeeded.
+- Independently checked production: homepage and llms.txt 200; all four repaired source URLs 301 to intended targets, each ending at 200; sam-tee has noindex,follow and is absent from sitemap; box-fight returns X-Robots-Tag noindex,nofollow; healthcare article is present in sitemap. All 79 article HTML pages (excluding _shared) return 200, parse as JSON-LD and have author URLs pointing to https://thejbresidence.com/about-sam-tee.
+- Original jbresidence.pages.dev/llms.txt now returns 200. Duplicate jbresidence-2r5.pages.dev no longer resolves, consistent with reported deletion; dashboard deletion, root settings and Worker domain/routes were not independently inspected. Cloudflare-managed crawler exclusions remain live.
+- Clarification: noindex is a live instruction, not proof that Google has already removed a URL. Current deployment recovery is verified; future pushes remain subject to successful builds. No public content or hosting settings changed during verification.
+- Next action: retain the original Pages production project, monitor subsequent deploys and Google recrawling; decide crawler access separately. Verify Worker routes/dependencies before considering removal.
