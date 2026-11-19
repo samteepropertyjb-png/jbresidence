@@ -468,3 +468,10 @@ Sam approved publication on 7 October 2026. The article was added to the article
 - Consistency fixes: Resale vs New Launch article prices replaced with Sam's guide and the incorrect "some precincts leasehold" statement corrected (dateModified 2026-11-19); Horizon/Eco/East article Horizon Hills prices aligned (semi-D entry ~RM2M); `horizon-hills` catalogue price_range in both JS files now "Subsale from RM 1M".
 - Redirects: removed `/horizon-hills` → comparison redirect; `/projects/horizon-hills` now 301s to `/horizon-hills`. Added to sitemap and llms.txt; linked from `/iskandar-puteri` and three Horizon Hills articles.
 - Next action: Eco Botanic area guide in the same format (subsale focus); request indexing for `/horizon-hills`.
+
+## 2026-11-19 — Horizon Hills guide revised to Sam's brief
+
+- Sam's direction: the page is a generous general guide for people who do not know Horizon Hills, not a promotion. Removed the history section and launch-year narrative; removed mid-article home-tour sections and the top budget button; no headings singling out cluster or semi-D tours.
+- New order: quick answer → at a glance (location, developer, size, freehold, gated and guarded, golf course) → what is inside (golf club, Invictus, SJK(C) Ming Chih, Horizon Mall and Horizon Square) → what living there is like → 2026 home prices table → subsale checklist → is it right for you + new-launch box → more guides → FAQ → "Watch my Horizon Hills property tours" (Canal Garden South, Golf East, Horizon Mall videos) with a listings WhatsApp button at the end.
+- Prices labelled as Sam's **2026** subsale price guide ("valid for 2026 only"); same 2026 label added in the Resale vs New Launch and Horizon/Eco/East articles. Title now "Horizon Hills Guide: Living, Schools, Horizon Mall and 2026 Home Prices"; related cards, hub card and llms.txt updated.
+- Not added: clickable link to Sam's PropertyGuru listings (third-party link needs Sam's explicit approval).
