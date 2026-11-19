@@ -14,8 +14,7 @@
 
 # Retired or never-built paths that Search Console reports as 404.
 /medini                                  /articles/medini-iskandar-2026 301
-/horizon-hills                           /articles/horizon-hills-vs-eco-botanic-vs-east-ledang 301
-/projects/horizon-hills                  /articles/horizon-hills-vs-eco-botanic-vs-east-ledang 301
+/projects/horizon-hills                  /horizon-hills 301
 /articles/jb-condo-vs-landed-2026        /articles/jb-condo-vs-landed-investment-2026 301
 
 # Legacy broken paths reported by Search Console (doubled /articles/ folder,
