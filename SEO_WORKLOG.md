@@ -443,3 +443,9 @@ Sam approved publication on 7 October 2026. The article was added to the article
 - Mobile (375px audit of 20 key pages): Horizon/Eco/East article table widened the whole page to 420px — article tables now scroll inside the article on phones. Footer links, language toggle, menu button and translate button enlarged to comfortable tap size; small 13px card descriptions raised to 14px on phones. Re-tested on preview branch `preview-mobile-indexing`: no page overflow, footer/nav tap issues cleared.
 - Project links: Ascent Park review gets two buttons to `/projects/ascent-park` (after quick answer and after price section); Forest City worth-buying gets a property-type box linking High-Rise and Golf Villa near the top; Riveria Garden article now links to `/projects/riveria-garden-wawari` (it had no project link). Facts reused from existing site pages; dateModified not changed for navigation-only additions.
 - Next action: Sam to use GSC URL Inspection → Request indexing for `/projects/ascent-park` and the highest-value discovered articles; consider merging overlapping Medini articles; propose title fix for Sunway/Horizon/Eco article and a "new launches nearby" box on the two township comparison articles for Sam's approval.
+
+## 2026-11-19 — Indexing request attempt and sitemap resubmission
+
+- URL Inspection on `/projects/ascent-park`: "Discovered – currently not indexed", referring page none detected, sitemap listed. Request indexing failed twice ("We had a problem submitting your indexing request. Please try again later."); not retried further.
+- Resubmitted `https://thejbresidence.com/sitemap.xml` in GSC: read 19 Nov 2026, Success, 100 discovered pages.
+- Next action: retry Request indexing for `/projects/ascent-park`, `is-ascent-park-overpriced-estuari-ksl-riveria` and `the-kews-iskandar-puteri-landed-near-second-link` on a later day.
