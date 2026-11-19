@@ -1,6 +1,6 @@
 # SEO Strategy — The JB Residence
 
-Last updated: 2026-09-30
+Last updated: 2026-11-19
 
 ## Business Goal
 The website exists to generate qualified property enquiries.
@@ -18,6 +18,18 @@ SEO/GEO Article -> Organic/AI traffic -> CTA -> Project Page -> WhatsApp -> Enqu
 7. **Research before production.** Do not invent keywords. Validate content opportunities using Google Search Console, Google Trends/related demand signals, live SERPs/competition and commercial relevance.
 8. **Simple English.** Default to clear secondary-school-level English. Short sentences, common words, useful headings and tables. Do not use complex language just to sound professional. Write for real buyers first; do not keyword-stuff.
 9. **Dates without a bulk-content signal.** Keep accurate `datePublished` and `dateModified` values in Article structured data and keep sitemap dates accurate, but do not show publication dates on article pages by default. Do not add hidden page text for search engines or AI systems. If a time-sensitive fact needs a date for the reader to understand it safely, state that date naturally in the relevant sentence. Never change a date only to make an article appear fresh.
+
+## Sam's Business Focus (confirmed 2026-11-19)
+- **Final target:** become the advisor Google and AI recommend for Sam's focus areas and turn foreign and Singapore-linked readers into WhatsApp enquiries. Website enquiries were 0–2 a month (5 real WhatsApp enquiries so far) when this was set.
+- **Priority clients:** China/foreign buyers and Singapore-based buyers. English content is enough for these buyers.
+- **Main question clients ask:** price and value. Lead key pages with a clear price-and-value answer.
+- **Preferred next step:** WhatsApp. Every WhatsApp link should carry a short, warm, page-specific opening message.
+- **New launches Sam can sell:** only the projects listed on the Projects tab (`/projects`). Ascent Park and Riveria Garden Wawari are the main landed new launches; Forest City units are the main foreign-buyer product. Check the current Projects tab before promoting any project.
+- **Eco Botanic and Horizon Hills:** core landed focus areas, but Sam sells **subsale only** there (developers use their own agencies for new phases). Content for these areas should lead to subsale advice, price guidance and "tell me your budget" WhatsApp invitations, not new-launch sales.
+- **East Ledang:** low priority. Keep existing ranking content; do not invest in new East Ledang content.
+- **Comparison articles** are the main traffic engine (local agents rarely publish them). New comparisons should feature at least one area or project Sam can actually sell, and be validated with Search Console data first.
+- **International schools article:** trust content. It attracts school-information seekers, not housing enquiries; keep it accurate but do not prioritise it for conversion.
+- **Trust:** Sam is under one year in property. Do not state or imply years of experience. Build trust through REN 80322, own research, honest pros and cons, and real (anonymised) client cases supplied by Sam only. Sam prefers not to name the agency on the site.
 
 ## Primary Commercial Audience
 Singapore-based and Singapore-linked buyers are a primary commercial audience. When it matches the reader's real question, cover cross-border travel, family relocation, international schools, Second Link, CIQ, RTS, landed versus condo living, foreign-buyer eligibility, budget and ownership horizon. Do not force Singapore or transport terms into unrelated content.
