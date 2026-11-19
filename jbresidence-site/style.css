@@ -1898,3 +1898,11 @@ footer {
   .home-page .hero-content { opacity: 1; visibility: visible; }
   .home-page .home-hero { background-color: #102a43; }
 }
+
+/* ---- Mobile usability: comfortable tap targets and readable text ---- */
+@media (max-width: 760px) {
+  footer .footer-col a, footer .f-col a { display: block; padding: 9px 0; margin-bottom: 2px; font-size: 14px; }
+  .lang-toggle { min-height: 40px; min-width: 44px; }
+  .nav-toggle { min-height: 44px; min-width: 44px; }
+  .area-card-desc, .guide-cluster-desc, .footer-tagline, .f-tagline { font-size: 14px; }
+}

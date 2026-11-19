@@ -17,3 +17,16 @@
 /horizon-hills                           /articles/horizon-hills-vs-eco-botanic-vs-east-ledang 301
 /projects/horizon-hills                  /articles/horizon-hills-vs-eco-botanic-vs-east-ledang 301
 /articles/jb-condo-vs-landed-2026        /articles/jb-condo-vs-landed-investment-2026 301
+
+# Legacy broken paths reported by Search Console (doubled /articles/ folder,
+# root pages requested under /articles/, and old WordPress theme paths).
+/articles/articles/*                              /articles/:splat 301
+/articles/index.html                              / 301
+/articles/about-sam-tee.html                      /about-sam-tee 301
+/articles/projects.html                           /projects 301
+/articles/jb-town.html                            /jb-town 301
+/articles/forest-city.html                        /forest-city 301
+/articles/iskandar-puteri.html                    /iskandar-puteri 301
+/articles/who-                                    /articles/who-should-buy-landed-iskandar-puteri 301
+/wp-content/themes/astra/articles/*               /articles/:splat 301
+/wp-content/themes/astra/*                        /:splat 301

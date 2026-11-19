@@ -665,3 +665,24 @@ footer {
 .author-box-links .ab-about { border: 1px solid var(--navy); color: var(--navy); }
 .author-box-links .ab-wa { background: var(--gold); color: #fff; }
 @media (max-width: 560px) { .author-box { flex-direction: column; } }
+
+/* Inline project link button inside articles */
+.inline-project-cta { margin: -8px 0 32px; }
+.inline-project-cta a { display: inline-block; padding: 12px 20px; background: var(--navy); color: #fff; border-radius: 4px; font-size: .88rem; font-weight: 700; text-decoration: none; }
+.inline-project-cta a:hover { background: var(--gold); }
+@media (max-width: 560px) { .inline-project-cta a { display: block; text-align: center; } }
+
+/* ---- Mobile usability: comfortable tap targets and readable text ---- */
+@media (max-width: 760px) {
+  footer .footer-col a, footer .f-col a { display: block; padding: 9px 0; margin-bottom: 2px; font-size: 14px; }
+  .lang-toggle { min-height: 40px; min-width: 44px; }
+  .nav-toggle { min-height: 44px; min-width: 44px; }
+  .area-card-desc, .guide-cluster-desc, .footer-tagline, .f-tagline { font-size: 14px; }
+}
+/* Wide tables scroll inside the article instead of widening the whole page on phones */
+@media (max-width: 760px) {
+  .art-wrap table { display: block; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
+@media (max-width: 760px) {
+  .translate-bar-btn { min-height: 40px; display: inline-flex; align-items: center; }
+}
