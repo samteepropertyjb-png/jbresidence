@@ -449,3 +449,14 @@ Sam approved publication on 7 October 2026. The article was added to the article
 - URL Inspection on `/projects/ascent-park`: "Discovered – currently not indexed", referring page none detected, sitemap listed. Request indexing failed twice ("We had a problem submitting your indexing request. Please try again later."); not retried further.
 - Resubmitted `https://thejbresidence.com/sitemap.xml` in GSC: read 19 Nov 2026, Success, 100 discovered pages.
 - Next action: retry Request indexing for `/projects/ascent-park`, `is-ascent-park-overpriced-estuari-ksl-riveria` and `the-kews-iskandar-puteri-landed-near-second-link` on a later day.
+
+## 2026-11-19 — Medini merge, Eco Botanic title, new-launches box (Sam approved "all")
+
+- Medini cluster: only `/articles/medini-iskandar-2026` had real search visibility (788 impressions, 3 months); other Medini articles were near zero / discovered-not-indexed. Merged two overlapping articles:
+  - `medini-condo-first-home-young-buyers` → `medini-condo-guide-2026` (new `#first-home` section: first-home problem, stepping-stone plan, renting after upgrading, loan effect, three tests table; two FAQs added). Duplicate price paragraph not carried over.
+  - `medini-condo-vs-iskandar-puteri-landed` → `medini-condo-vs-bandar-wawari-investment` (new `#first-home-or-landed` section: when a condo fits, when landed is worth waiting for, hidden cost of buying twice; one FAQ added).
+  - 301s added; source files removed; removed from sitemap, `articles.html` and both `js/main.js` / `js/main-v3.98.js` catalogues; internal links on `/iskandar-puteri` and the zh salary article repointed. Kept separate: Medini Iskandar 2026, Why Medini empty, Medini vs JB city centre. dateModified/lastmod 2026-11-19 on both targets.
+- Renamed `sunway-city-vs-horizon-hills-vs-eco-botanic` (URL unchanged) to "Eco Botanic vs Sunway City vs Horizon Hills: Which Should You Buy?" in title, H1, JSON-LD, meta description, catalogues, `articles.html` and related cards, to match the "eco botanic vs sunway city" queries (pos ~4, 0 clicks).
+- Added an "Also considering a brand-new landed home?" box (Riveria Garden Wawari, Ascent Park with Malaysian-buyers-only note) to both township comparison articles. dateModified/lastmod 2026-11-19.
+- Verified on preview branch `preview-merge-rename` before publishing.
+- Next action: compare CTR for the renamed article and project-page views from the comparison articles after 4 weeks; retry Request indexing for `/projects/ascent-park`.
