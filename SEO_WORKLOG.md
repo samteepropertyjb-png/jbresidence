@@ -387,3 +387,12 @@ Sam approved publication on 7 October 2026. The article was added to the article
 
 - Sam chose Option A: `/sam-tee` stays live as the ads landing page but is now `noindex,follow` and removed from the sitemap, so `/about-sam-tee` is the single indexable profile for "sam tee" searches. Internal CTA links and ads tracking on `/sam-tee` unchanged.
 - Next action: after deployment, confirm the noindex live and watch the "sam tee" query position in GSC.
+
+
+## 2026-11-19 — Deployment diagnosis reconfirmation
+
+- Read-only live checks: homepage returns 200; four November 18 redirect sources still return 404; /llms.txt returns 404; /sam-tee lacks noindex; /box-fight lacks X-Robots-Tag; healthcare article remains absent from live sitemap. The repository fixes are not reflected on the public domain.
+- Fetched origin/main and fast-forwarded local main to bd6e891, preserving untracked .wrangler/ and tmp/. GitHub check runs for bd6e891 report successful Cloudflare Pages jbresidence and Workers Builds thejbresidence at 23:36 Malaysia time on November 18. Therefore the assertion that GitHub pushes cannot trigger any build is no longer supported by current evidence. App-removal history and deploy-hook 400 were not independently verified.
+- The Pages check links to https://10561266.jbresidence-2r5.pages.dev: / and /llms.txt return 404, but /jbresidence-site/llms.txt and /jbresidence-site/sam-tee return 200. This demonstrates the nested site directory is exposed in that deployment; investigate build output/root configuration. https://jbresidence.pages.dev still serves the older markers, like the public domain. Custom-domain/project routing is not yet verified in the dashboard.
+- Live robots.txt confirms Cloudflare-managed Baiduspider, PetalBot and several AI crawler disallows. Sample /about-sam-tee.html correctly redirects 308 to the extensionless URL. No hosting settings or public content changed.
+- Next action: inspect which Pages/Workers project serves the custom domain, its production branch and output directory; deploy the contents of jbresidence-site at the serving root, then verify live markers and redirects. Do not assume reconnecting alone resolves production delivery.
