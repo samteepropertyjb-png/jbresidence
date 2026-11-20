@@ -15,6 +15,8 @@
 # Retired or never-built paths that Search Console reports as 404.
 /medini                                  /articles/medini-iskandar-2026 301
 /projects/horizon-hills                  /horizon-hills 301
+/projects/eco-botanic                    /articles/horizon-hills-vs-eco-botanic-vs-east-ledang 301
+/projects/east-ledang                    /articles/horizon-hills-vs-eco-botanic-vs-east-ledang 301
 /articles/jb-condo-vs-landed-2026        /articles/jb-condo-vs-landed-investment-2026 301
 
 # Legacy broken paths reported by Search Console (doubled /articles/ folder,
@@ -33,3 +35,35 @@
 # Merged Medini articles (2026-11-19)
 /articles/medini-condo-first-home-young-buyers    /articles/medini-condo-guide-2026 301
 /articles/medini-condo-vs-iskandar-puteri-landed  /articles/medini-condo-vs-bandar-wawari-investment 301
+
+# Images converted from PNG to compressed JPG (2026-11-20)
+/photos/articles/rf-princess-cove-jb-ciq-buyer-guide.png        /photos/articles/rf-princess-cove-jb-ciq-buyer-guide.jpg 301
+/photos/articles/rf-princess-cove-ciq-connectivity-guide.png    /photos/articles/rf-princess-cove-ciq-connectivity-guide.jpg 301
+/photos/articles/foreign-buyer-jb-ciq-rts-condo-guide.png       /photos/articles/foreign-buyer-jb-ciq-rts-condo-guide.jpg 301
+/photos/articles/foreign-buyer-ciq-rts-checklist.png            /photos/articles/foreign-buyer-ciq-rts-checklist.jpg 301
+/photos/articles/jb-1-bedroom-layout.png                        /photos/articles/jb-1-bedroom-layout.jpg 301
+/photos/articles/jb-2-plus-1-bedroom-layout.png                 /photos/articles/jb-2-plus-1-bedroom-layout.jpg 301
+/photos/articles/jb-1-bedroom-vs-2-plus-1-bedroom-guide.png     /photos/articles/jb-1-bedroom-vs-2-plus-1-bedroom-guide.jpg 301
+/photos/horizon-hills/hh-3.png                                  /photos/horizon-hills/hh-3.jpg 301
+/photos/jb-town/jb-ciq-building.png                             /photos/jb-town/jb-ciq-building.jpg 301
+/photos/jb-town/ciq-causeway-traffic.png                        /photos/jb-town/ciq-causeway-traffic.jpg 301
+/photos/jb-town/bukit-chagar-rts-station-render.png             /photos/jb-town/bukit-chagar-rts-station-render.jpg 301
+/photos/jb-town/rts-link-train.png                              /photos/jb-town/rts-link-train.jpg 301
+/photos/jb-town/shopping-mall.png                               /photos/jb-town/shopping-mall.jpg 301
+/photos/forest-city/golf-2.png                                  /photos/forest-city/golf-2.jpg 301
+/photos/forest-city/24.png                                      /photos/forest-city/24.jpg 301
+/photos/forest-city/11.png                                      /photos/forest-city/11.jpg 301
+/photos/forest-city/forest-city-waterfront-resort.png           /photos/forest-city/forest-city-waterfront-resort.jpg 301
+/photos/forest-city/3.png                                       /photos/forest-city/3.jpg 301
+/photos/forest-city/forest-city-golf-course.png                 /photos/forest-city/forest-city-golf-course.jpg 301
+/photos/forest-city/fc-island.png                               /photos/forest-city/fc-island.jpg 301
+/photos/forest-city/golf-3.png                                  /photos/forest-city/golf-3.jpg 301
+/photos/forest-city/4.png                                       /photos/forest-city/4.jpg 301
+/photos/forest-city/7.png                                       /photos/forest-city/7.jpg 301
+/photos/forest-city/forest-city-overview.png                    /photos/forest-city/forest-city-overview.jpg 301
+/photos/forest-city/2.png                                       /photos/forest-city/2.jpg 301
+/photos/forest-city/12.png                                      /photos/forest-city/12.jpg 301
+/photos/forest-city/25.png                                      /photos/forest-city/25.jpg 301
+/photos/forest-city/golf-1.png                                  /photos/forest-city/golf-1.jpg 301
+/photos/forest-city/10.png                                      /photos/forest-city/10.jpg 301
+/photos/sam-tee-full-hero.png                                   /photos/sam-tee-full-hero.webp 301
