@@ -3,11 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-MZJ9L88');</script>
+<script>/* GTM loads on first interaction or 3s after page load, to keep the page fast */(function(w,d,i){w.dataLayer=w.dataLayer||[];w.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});var done=0,ev=['scroll','pointerdown','keydown','touchstart'];function load(){if(done)return;done=1;ev.forEach(function(e){w.removeEventListener(e,load,true)});var j=d.createElement('script');j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i;d.head.appendChild(j)}ev.forEach(function(e){w.addEventListener(e,load,{capture:true,passive:true})});if(d.readyState==='complete')setTimeout(load,3000);else w.addEventListener('load',function(){setTimeout(load,3000)})})(window,document,'GTM-MZJ9L88');</script>
 <!-- End Google Tag Manager -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Johor Bahru Property Guide &amp; Advisor | Sam Tee JB Property</title>
@@ -82,6 +78,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }
 ]
 </script>
+<link rel="preload" as="image" href="/img-r/photos/horizon-hills/989_HHGCC_-1536x1024-1200.webp" media="(max-width: 900px)" fetchpriority="high">
+<link rel="preload" as="image" href="/photos/horizon-hills/989_HHGCC_-1536x1024.jpeg" media="(min-width: 901px)" fetchpriority="high">
+<style>@media (max-width: 900px){header.hero.home-hero{background-image:url('/img-r/photos/horizon-hills/989_HHGCC_-1536x1024-1200.webp')!important}}</style>
 </head>
 <body class="home-page">
 <!-- Google Tag Manager (noscript) -->
@@ -137,7 +136,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <a href="/articles" data-i18n="hero-btn-guides">Buying Guides</a>
     </div>
     <div class="hero-meta">
-      <img src="sam-edited.jpg" alt="Sam Tee" style="object-position: top center;">
+      <img src="sam-edited.jpg" alt="Sam Tee" style="object-position: top center;" loading="lazy" decoding="async">
       <div class="hero-meta-text">
         <strong>Sam Tee</strong>
         Property Advisor &middot; REN 80322
@@ -164,8 +163,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <!-- JB Town -->
       <a href="/jb-town" class="area-card area-card-collage reveal">
         <div class="area-collage">
-          <div class="area-collage-img" style="background-image:url('photos/jb-town/jb-bay.jpg');"></div>
-          <div class="area-collage-img" style="background-image:url('photos/jb-town/jb-rnf-night.jpg');"></div>
+          <div class="area-collage-img" style="background-image:url('/img-r/photos/jb-town/jb-bay-720.webp');"></div>
+          <div class="area-collage-img" style="background-image:url('/img-r/photos/jb-town/jb-rnf-night-720.webp');"></div>
         </div>
         <div class="area-card-overlay"></div>
         <div class="area-card-body">
@@ -179,8 +178,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <!-- Iskandar Puteri -->
       <a href="/iskandar-puteri" class="area-card area-card-collage reveal">
         <div class="area-collage">
-          <div class="area-collage-img" style="background-image:url('photos/horizon-hills/hh-2.jpg');"></div>
-          <div class="area-collage-img" style="background-image:url('photos/eco-botanic/eco1.jpg');"></div>
+          <div class="area-collage-img" style="background-image:url('/img-r/photos/horizon-hills/hh-2-720.webp');"></div>
+          <div class="area-collage-img" style="background-image:url('/img-r/photos/eco-botanic/eco1-720.webp');"></div>
         </div>
         <div class="area-card-overlay"></div>
         <div class="area-card-body">
@@ -194,8 +193,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <!-- Forest City -->
       <a href="/forest-city" class="area-card area-card-collage reveal">
         <div class="area-collage">
-          <div class="area-collage-img" style="background-image:url('photos/forest-city/fc-island.jpg');"></div>
-          <div class="area-collage-img" style="background-image:url('photos/forest-city/golf-1.jpg');"></div>
+          <div class="area-collage-img" style="background-image:url('/img-r/photos/forest-city/fc-island-720.webp');"></div>
+          <div class="area-collage-img" style="background-image:url('/img-r/photos/forest-city/golf-1-720.webp');"></div>
         </div>
         <div class="area-card-overlay"></div>
         <div class="area-card-body">
@@ -326,7 +325,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0;">
 
         <a href="/articles/js-sez-johor-singapore-special-economic-zone-property-guide" style="display:flex;align-items:flex-start;gap:14px;padding:14px 20px 14px 0;border-bottom:1px solid rgba(255,255,255,0.07);text-decoration:none;">
-          <img src="photos/horizon-hills/hh-2.jpg" alt="JS-SEZ guide" style="width:52px;height:52px;object-fit:cover;border-radius:5px;flex-shrink:0;">
+          <img src="photos/horizon-hills/hh-2.jpg" srcset="/img-r/photos/horizon-hills/hh-2-720.webp 720w, /img-r/photos/horizon-hills/hh-2-1200.webp 1200w, photos/horizon-hills/hh-2.jpg 1536w" sizes="(max-width: 860px) 100vw, 860px" alt="JS-SEZ guide" style="width:52px;height:52px;object-fit:cover;border-radius:5px;flex-shrink:0;" loading="lazy" decoding="async">
           <div>
             <div style="font-family:'Jost',sans-serif;font-size:0.63rem;letter-spacing:0.1em;text-transform:uppercase;color:#C9933A;margin-bottom:4px;">JS-SEZ &middot; Policy</div>
             <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:#fff;line-height:1.3;font-weight:600;" data-i18n="hub-jssez">JS-SEZ Complete Guide: What It Means for Johor Buyers</div>
@@ -334,7 +333,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </a>
 
         <a href="/articles/mm2h-malaysia-2026-complete-guide" style="display:flex;align-items:flex-start;gap:14px;padding:14px 0 14px 20px;border-bottom:1px solid rgba(255,255,255,0.07);text-decoration:none;">
-          <img src="photos/horizon-hills/hh-club.jpg" alt="MM2H guide" style="width:52px;height:52px;object-fit:cover;border-radius:5px;flex-shrink:0;">
+          <img src="photos/horizon-hills/hh-club.jpg" srcset="/img-r/photos/horizon-hills/hh-club-720.webp 720w, photos/horizon-hills/hh-club.jpg 1000w" sizes="(max-width: 860px) 100vw, 860px" alt="MM2H guide" style="width:52px;height:52px;object-fit:cover;border-radius:5px;flex-shrink:0;" loading="lazy" decoding="async">
           <div>
             <div style="font-family:'Jost',sans-serif;font-size:0.63rem;letter-spacing:0.1em;text-transform:uppercase;color:#C9933A;margin-bottom:4px;">MM2H &middot; Visa</div>
             <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:#fff;line-height:1.3;font-weight:600;" data-i18n="hub-mm2h">MM2H 2026 Complete Guide: Eligibility, Costs &amp; How to Apply</div>
@@ -342,7 +341,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </a>
 
         <a href="/articles/is-forest-city-worth-buying-2026" style="display:flex;align-items:flex-start;gap:14px;padding:14px 20px 14px 0;border-bottom:1px solid rgba(255,255,255,0.07);text-decoration:none;">
-          <img src="photos/forest-city/forest-city-site-1.jpg" alt="Forest City guide" style="width:52px;height:52px;object-fit:cover;border-radius:5px;flex-shrink:0;">
+          <img src="photos/forest-city/forest-city-site-1.jpg" srcset="/img-r/photos/forest-city/forest-city-site-1-720.webp 720w, /img-r/photos/forest-city/forest-city-site-1-1200.webp 1200w, photos/forest-city/forest-city-site-1.jpg 1600w" sizes="(max-width: 860px) 100vw, 860px" alt="Forest City guide" style="width:52px;height:52px;object-fit:cover;border-radius:5px;flex-shrink:0;" loading="lazy" decoding="async">
           <div>
             <div style="font-family:'Jost',sans-serif;font-size:0.63rem;letter-spacing:0.1em;text-transform:uppercase;color:#C9933A;margin-bottom:4px;">Market Outlook</div>
             <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:#fff;line-height:1.3;font-weight:600;" data-i18n="hub-fc">Is Forest City Worth Buying in 2026?</div>
@@ -350,7 +349,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </a>
 
         <a href="/articles/is-sunway-city-iskandar-puteri-worth-buying-2026" style="display:flex;align-items:flex-start;gap:14px;padding:14px 0 14px 20px;border-bottom:1px solid rgba(255,255,255,0.07);text-decoration:none;">
-          <img src="photos/sunway-iskandar/sunway-iskandar-drone.jpg" alt="Sunway City guide" style="width:52px;height:52px;object-fit:cover;border-radius:5px;flex-shrink:0;">
+          <img src="photos/sunway-iskandar/sunway-iskandar-drone.jpg" srcset="/img-r/photos/sunway-iskandar/sunway-iskandar-drone-720.webp 720w, photos/sunway-iskandar/sunway-iskandar-drone.jpg 1200w" sizes="(max-width: 860px) 100vw, 860px" alt="Sunway City guide" style="width:52px;height:52px;object-fit:cover;border-radius:5px;flex-shrink:0;" loading="lazy" decoding="async">
           <div>
             <div style="font-family:'Jost',sans-serif;font-size:0.63rem;letter-spacing:0.1em;text-transform:uppercase;color:#C9933A;margin-bottom:4px;">Buyer Guide</div>
             <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:#fff;line-height:1.3;font-weight:600;" data-i18n="hub-sunway">Is Sunway City Iskandar Puteri Worth Buying in 2026?</div>
@@ -358,7 +357,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </a>
 
         <a href="/articles/international-schools-iskandar-puteri-2026" style="display:flex;align-items:flex-start;gap:14px;padding:14px 20px 14px 0;border-bottom:1px solid rgba(255,255,255,0.07);text-decoration:none;">
-          <img src="photos/eco-botanic/educity.jpg" alt="International schools" style="width:52px;height:52px;object-fit:cover;border-radius:5px;flex-shrink:0;">
+          <img src="photos/eco-botanic/educity.jpg" srcset="/img-r/photos/eco-botanic/educity-720.webp 720w, /img-r/photos/eco-botanic/educity-1200.webp 1200w, photos/eco-botanic/educity.jpg 1535w" sizes="(max-width: 860px) 100vw, 860px" alt="International schools" style="width:52px;height:52px;object-fit:cover;border-radius:5px;flex-shrink:0;" loading="lazy" decoding="async">
           <div>
             <div style="font-family:'Jost',sans-serif;font-size:0.63rem;letter-spacing:0.1em;text-transform:uppercase;color:#C9933A;margin-bottom:4px;">Schools &middot; Family</div>
             <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:#fff;line-height:1.3;font-weight:600;" data-i18n="hub-schools">International Schools in Iskandar Puteri 2026: Full Guide</div>
@@ -366,7 +365,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </a>
 
         <a href="/articles/horizon-hills-vs-eco-botanic-vs-east-ledang" style="display:flex;align-items:flex-start;gap:14px;padding:14px 0 14px 20px;border-bottom:1px solid rgba(255,255,255,0.07);text-decoration:none;">
-          <img src="photos/horizon-hills/hh-3.jpg" alt="Area comparison" style="width:52px;height:52px;object-fit:cover;border-radius:5px;flex-shrink:0;">
+          <img src="photos/horizon-hills/hh-3.jpg" alt="Area comparison" style="width:52px;height:52px;object-fit:cover;border-radius:5px;flex-shrink:0;" loading="lazy" decoding="async">
           <div>
             <div style="font-family:'Jost',sans-serif;font-size:0.63rem;letter-spacing:0.1em;text-transform:uppercase;color:#C9933A;margin-bottom:4px;">Comparison</div>
             <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:#fff;line-height:1.3;font-weight:600;" data-i18n="hub-compare">Horizon Hills vs Eco Botanic vs East Ledang: Which to Buy?</div>
@@ -374,7 +373,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </a>
 
         <a href="/articles/forest-city-mm2h-sfz-guide" style="display:flex;align-items:flex-start;gap:14px;padding:14px 20px 14px 0;border-bottom:1px solid rgba(255,255,255,0.07);text-decoration:none;">
-          <img src="photos/forest-city/sfz-mm2h-sunset-aerial.jpg" alt="Forest City SFZ MM2H" style="width:52px;height:52px;object-fit:cover;border-radius:5px;flex-shrink:0;">
+          <img src="photos/forest-city/sfz-mm2h-sunset-aerial.jpg" srcset="/img-r/photos/forest-city/sfz-mm2h-sunset-aerial-720.webp 720w, /img-r/photos/forest-city/sfz-mm2h-sunset-aerial-1200.webp 1200w, photos/forest-city/sfz-mm2h-sunset-aerial.jpg 1600w" sizes="(max-width: 860px) 100vw, 860px" alt="Forest City SFZ MM2H" style="width:52px;height:52px;object-fit:cover;border-radius:5px;flex-shrink:0;" loading="lazy" decoding="async">
           <div>
             <div style="font-family:'Jost',sans-serif;font-size:0.63rem;letter-spacing:0.1em;text-transform:uppercase;color:#C9933A;margin-bottom:4px;">Forest City &middot; SFZ</div>
             <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:#fff;line-height:1.3;font-weight:600;" data-i18n="hub-sfz">Forest City SFZ MM2H: What Property Buyers Should Know</div>
@@ -382,7 +381,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </a>
 
         <a href="/articles/retiring-iskandar-puteri-golf-healthcare" style="display:flex;align-items:flex-start;gap:14px;padding:14px 0 14px 20px;border-bottom:1px solid rgba(255,255,255,0.07);text-decoration:none;">
-          <img src="photos/horizon-hills/hh-4.jpg" alt="Retirement guide" style="width:52px;height:52px;object-fit:cover;border-radius:5px;flex-shrink:0;">
+          <img src="photos/horizon-hills/hh-4.jpg" srcset="/img-r/photos/horizon-hills/hh-4-720.webp 720w, photos/horizon-hills/hh-4.jpg 1200w" sizes="(max-width: 860px) 100vw, 860px" alt="Retirement guide" style="width:52px;height:52px;object-fit:cover;border-radius:5px;flex-shrink:0;" loading="lazy" decoding="async">
           <div>
             <div style="font-family:'Jost',sans-serif;font-size:0.63rem;letter-spacing:0.1em;text-transform:uppercase;color:#C9933A;margin-bottom:4px;">Retirement &middot; Lifestyle</div>
             <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:#fff;line-height:1.3;font-weight:600;" data-i18n="hub-retire">Retiring in Iskandar Puteri: Golf, Healthcare &amp; What to Expect</div>
@@ -390,7 +389,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </a>
 
         <a href="/articles/who-should-buy-landed-iskandar-puteri" style="display:flex;align-items:flex-start;gap:14px;padding:14px 20px 14px 0;border-bottom:1px solid rgba(255,255,255,0.07);text-decoration:none;">
-          <img src="photos/horizon-hills/hh-5.jpg" alt="Landed property guide" style="width:52px;height:52px;object-fit:cover;border-radius:5px;flex-shrink:0;">
+          <img src="photos/horizon-hills/hh-5.jpg" srcset="/img-r/photos/horizon-hills/hh-5-720.webp 720w, photos/horizon-hills/hh-5.jpg 1200w" sizes="(max-width: 860px) 100vw, 860px" alt="Landed property guide" style="width:52px;height:52px;object-fit:cover;border-radius:5px;flex-shrink:0;" loading="lazy" decoding="async">
           <div>
             <div style="font-family:'Jost',sans-serif;font-size:0.63rem;letter-spacing:0.1em;text-transform:uppercase;color:#C9933A;margin-bottom:4px;">Landed &middot; Buying Guide</div>
             <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:#fff;line-height:1.3;font-weight:600;" data-i18n="hub-landed">Who Should Buy Landed Property in Iskandar Puteri?</div>
@@ -398,7 +397,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </a>
 
         <a href="/articles/second-link-sunway-city-vs-forest-city" style="display:flex;align-items:flex-start;gap:14px;padding:14px 0 14px 20px;border-bottom:1px solid rgba(255,255,255,0.07);text-decoration:none;">
-          <img src="photos/sunway-iskandar/sunway-second-link.jpg" alt="Second Link corridor" style="width:52px;height:52px;object-fit:cover;border-radius:5px;flex-shrink:0;">
+          <img src="photos/sunway-iskandar/sunway-second-link.jpg" srcset="/img-r/photos/sunway-iskandar/sunway-second-link-720.webp 720w, photos/sunway-iskandar/sunway-second-link.jpg 1024w" sizes="(max-width: 860px) 100vw, 860px" alt="Second Link corridor" style="width:52px;height:52px;object-fit:cover;border-radius:5px;flex-shrink:0;" loading="lazy" decoding="async">
           <div>
             <div style="font-family:'Jost',sans-serif;font-size:0.63rem;letter-spacing:0.1em;text-transform:uppercase;color:#C9933A;margin-bottom:4px;">Location &middot; Second Link</div>
             <div style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:#fff;line-height:1.3;font-weight:600;" data-i18n="hub-2ndlink">Buying Near the Second Link: Sunway City vs Forest City</div>
@@ -421,7 +420,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="about-sam-photo reveal">
         <div class="photo-frame">
           <div class="photo-accent"></div>
-          <img src="sam-edited.jpg" alt="Sam Tee, Property Advisor">
+          <img src="sam-edited.jpg" alt="Sam Tee, Property Advisor" loading="lazy" decoding="async">
         </div>
       </div>
       <div class="about-sam-text reveal">
