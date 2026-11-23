@@ -95,7 +95,13 @@ September 2026：can-singaporeans-retire-in-johor-bahru · estuari-township-iska
 
 ---
 
-## G. 从别人服务器加载的图片（待换成自己的照片）
+## G. 从别人服务器加载的图片 — ✅ 已于 2026-11-23 全部换成 photos/ 里的本地照片（v4.16）
+
+- R&F：封面及图库改用 jb-town/jb-rnf-night、jb-rnf、jb-rnf-project 与 rf-princess-cove/ 的位置图、设施图、Mercu 3 效果图
+- 高尔夫文章：改用 forest-city/golf-1、golf-2、golf-3、forest-city-golf-course（fc-golf.jpg 有其他代理水印，未使用）
+- Unsplash：地区页主图（Iskandar Puteri → sunway-iskandar-waterfront；JB Town → jb-street）、10 篇文章封面、Guides 卡片及 main.js 卡片全部换成 JB 实景照片
+
+原清单：
 
 读者看不到链接，但图片是直接从别的网站拿的。对方删图或改名，页面会出现空白；部分还有版权风险。
 
