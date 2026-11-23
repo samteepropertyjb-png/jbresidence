@@ -78,7 +78,9 @@ September 2026：can-singaporeans-retire-in-johor-bahru · estuari-township-iska
 
 ---
 
-## F. 规则10：正文中的第三方链接
+## F. 规则10：正文中的第三方链接 — ✅ 已于 2026-11-23 修正（v4.14）
+
+全部改为纯文字来源；两个 PropertyGuru 链接改为 WhatsApp 联系 Sam；LPEPH 改为文字写出网址 lpeph.gov.my。另 about-sam-tee.html 的 PropertyGuru 链接也已改。原清单：
 
 规则10禁止在公开文章中链接政府、发展商、新闻、房产网站等。以下链接仍在正文中（Sam 自己的 Facebook / YouTube / WhatsApp 不算）：
 
