@@ -80,7 +80,7 @@ September 2026：can-singaporeans-retire-in-johor-bahru · estuari-township-iska
 
 ## F. 规则10：正文中的第三方链接 — ✅ 已于 2026-11-23 修正（v4.14）
 
-全部改为纯文字来源；两个 PropertyGuru 链接改为 WhatsApp 联系 Sam；LPEPH 改为文字写出网址 lpeph.gov.my。另 about-sam-tee.html 的 PropertyGuru 链接也已改。原清单：
+第三方链接全部改为纯文字来源；LPEPH 改为文字写出网址 lpeph.gov.my。Sam 本人名下的页面（PropertyGuru 代理页、YouTube、Facebook）可以保留链接 — About Sam 与 Horizon Hills cluster 文章的 PropertyGuru 链接已恢复（v4.15），CLAUDE.md 规则10 已同步更新。原清单：
 
 规则10禁止在公开文章中链接政府、发展商、新闻、房产网站等。以下链接仍在正文中（Sam 自己的 Facebook / YouTube / WhatsApp 不算）：
 
@@ -93,10 +93,32 @@ September 2026：can-singaporeans-retire-in-johor-bahru · estuari-township-iska
 | `verify-property-agent-malaysia` | lpeph.gov.my ×2 |
 | `horizon-hills-cluster-new-vs-subsale-2026` | propertyguru.com.my（Sam 自己的代理页面） |
 
-需 Sam 决定：
-- `verify-property-agent-malaysia` 的 LPEPH 链接是教读者查核代理的核心步骤，可改为写明"在 LPEPH 官网搜索 REN 号码"而不放链接。
-- PropertyGuru 是 Sam 本人的代理页面，但仍属房产网站，按规则应移除。
-- 其余改为纯文字来源说明（例如 "Source: Finance Act 2025"），不带网址。
+---
+
+## G. 从别人服务器加载的图片（待换成自己的照片）
+
+读者看不到链接，但图片是直接从别的网站拿的。对方删图或改名，页面会出现空白；部分还有版权风险。
+
+### 🔴 优先替换：项目/发展商或第三方网站的照片（版权风险）
+
+| 页面 | 来源 | 数量 | 内容 | 建议 |
+|---|---|---|---|---|
+| R&F Princess Cove 项目页（`js/main.js` 第1145–1152行，`/project?slug=rf-princess-cove` 及项目卡片） | rfmalaysia.com（发展商官网） | 7 张（封面 1 + 图库 6） | 外观、海景/城市景、整体规划、RTS 连接图、泳池、健身房 | 用 Sam 现场拍摄：外观、景观、泳池、健身房、往 CIQ 的步行路线 |
+| `articles/forest-city-golf-course-guide.html`（每张出现两次：图库及正文） | golflux.com（高尔夫网站） | 4 张 | Legacy Course ×2、Classic Course ×2 | 用 Sam 自己在 Forest City 球场拍的照片 |
+
+### 🟡 次要：Unsplash 免费图库（可合法使用，但属通用图片、非 JB 实景）
+
+| 位置 | 用途 |
+|---|---|
+| `iskandar-puteri.html`、`jb-town.html` | 地区页主图（hero） |
+| `articles.html` 文章卡片（9 张）及 `js/main.js` 文章/项目卡片 | 卡片缩图 |
+| 文章主图：`bandar-wawari-future-development…`（2 张）、`foreign-buyer-costs-johor-property-2026`、`foreign-buyer-guide-johor-property`、`iskandar-puteri-property-price-outlook-2026`、`jb-condo-vs-landed-investment-2026`、`js-sez-johor-singapore-special-economic-zone-property-guide`（3 张）、`malaysian-working-singapore-buy-jb-town-or-iskandar-puteri`、`mm2h-malaysia-2026-complete-guide`（2 张）、`retiree-checklist-buying-johor-property`、`singaporean-buying-property-jb-guide` | 文章封面或内文配图 |
+
+建议：地区页主图先换（Iskandar Puteri、JB Town 是重要入口），可用 `photos/` 里已有的实景照片。
+
+另：`js/main-v3.98.js` 是旧版 JS，仍被 9 个页面引用，里面也有同样的 rfmalaysia / Unsplash 图片。替换时两边都要改，或把这 9 页统一改用 `js/main.js`。
+
+另发现：`js/main.js` R&F 项目资料写 "RTS Link is separately scheduled for service from 1 January 2027"，属 C 段 RTS 日期问题，一并更新。
 
 ---
 
